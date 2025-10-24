@@ -1,13 +1,19 @@
-<?php namespace App\Controllers;
+<?php
+
+namespace App\Controllers;
+
 use App\Models\UserModel;
 use CodeIgniter\Controller;
 
-class Auth extends Controller {
-    public function login() {
+class Auth extends Controller
+{
+    public function login()
+    {
         echo view('auth/login');
     }
 
-    public function attempt() {
+    public function attempt()
+    {
         $session = session();
         $model = new UserModel();
 
@@ -32,11 +38,13 @@ class Auth extends Controller {
         return redirect()->back()->with('error', 'Email atau password salah');
     }
 
-    public function register() {
+    public function register()
+    {
         echo view('auth/register');
     }
 
-    public function store() {
+    public function store()
+    {
         $model = new UserModel();
         $data = [
             'username' => $this->request->getPost('username'),
@@ -45,10 +53,11 @@ class Auth extends Controller {
             'role' => 'pelanggan'
         ];
         $model->insert($data);
-        return redirect()->to('/auth/login')->with('success','Registrasi berhasil, silakan login.');
+        return redirect()->to('/auth/login')->with('success', 'Registrasi berhasil, silakan login.');
     }
 
-    public function logout() {
+    public function logout()
+    {
         session()->destroy();
         return redirect()->to('/');
     }
