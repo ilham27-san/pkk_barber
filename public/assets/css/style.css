@@ -1,8 +1,12 @@
+/* ===== STYLE DEFAULT (Untuk Halaman Konten Biasa) ===== */
+
 body {
     font-family: Arial, sans-serif;
     max-width: 900px;
     margin: 20px auto;
     padding: 0 16px;
+    background-color: #f9f9f9;
+    /* Menambahkan background default */
 }
 
 nav a {
@@ -39,23 +43,37 @@ td {
 }
 
 
-/* Warna dasar dan font */
-body {
+/* ===== STYLE KHUSUS (Untuk Halaman Login) ===== */
+
+/* [FIX] 
+Style 'body' kedua diubah namanya menjadi class '.body-login'.
+Gunakan class ini HANYA pada tag <body> di halaman login Anda.
+*/
+.body-login {
     margin: 0;
-    padding: 0;
+    /* [EDIT] Padding dipindahkan ke sini dari .login-container */
+    padding: 20px;
     background: linear-gradient(135deg, #dfe9f3 0%, #ffffff 100%);
     font-family: 'Poppins', sans-serif;
-    height: 100vh;
+    /* [EDIT] Gunakan min-height agar fleksibel saat keyboard HP muncul */
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    /* [TAMBAH] Pastikan padding dihitung dengan benar */
+    box-sizing: border-box;
+
+    /* [FIX] Reset style 'body' default agar halaman login penuh */
+    max-width: none;
 }
 
 /* Container */
 .login-container {
     width: 100%;
     max-width: 400px;
-    padding: 20px;
+    /* [EDIT] Padding dipindahkan ke .body-login */
+    /* padding: 20px; */
+    box-sizing: border-box;
 }
 
 /* Card */
@@ -82,7 +100,7 @@ body {
 }
 
 /* Label dan input */
-form {
+.login-card form {
     text-align: left;
 }
 
