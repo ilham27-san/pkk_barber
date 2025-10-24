@@ -9,6 +9,11 @@
   <header>
     <nav>
       <a href="/">Home</a> |
+      <a href="<?= base_url(); ?>">Home</a> |
+    <a href="<?= base_url('about'); ?>">About Us</a> |
+    <a href="<?= base_url('products'); ?>">Products</a> |
+    <a href="<?= base_url('gallery'); ?>">Gallery</a> |
+    <a href="<?= base_url('contact'); ?>">Contact</a>
       <a href="/layanan">Layanan</a> |
       <?php if(session()->get('isLoggedIn')): ?>
         <span>Hi, <?= session()->get('username') ?></span> |

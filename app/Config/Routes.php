@@ -27,4 +27,11 @@ $routes->group('admin', ['filter' => 'authfilter'], function($routes){
 
     $routes->get('pelanggan', 'Admin::pelanggan');
     $routes->get('booking', 'Admin::bookings');
+    // Halaman Informasi
+$routes->get('about', 'Page::about');
+$routes->get('gallery', 'Page::gallery');
+$routes->get('contact', 'Page::contact');
+$routes->post('contact/send', 'Page::sendMessage');
+$routes->get('products', 'Page::products');
+
 });
