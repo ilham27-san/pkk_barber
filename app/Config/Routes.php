@@ -12,7 +12,7 @@ $routes->get('layanan', 'Home::layanan');
 $routes->get('booking/(:num)', 'Booking::form/$1');
 $routes->post('booking/submit', 'Booking::submit');
 
-// [FIX] Halaman Informasi dipindahkan ke luar grup admin
+// Halaman Informasi Publik (Hanya didefinisikan satu kali di sini)
 $routes->get('about', 'Page::about');
 $routes->get('gallery', 'Page::gallery');
 $routes->get('contact', 'Page::contact');
@@ -22,24 +22,16 @@ $routes->get('products', 'Page::products');
 
 // == RUTE AUTENTIKASI (LOGIN/REGISTER) ==
 $routes->get('auth/login', 'Auth::login');
-// [FIX] Diubah agar cocok dengan form login dan mengatasi 404
 $routes->post('auth/attempt', 'Auth::attempt');
 $routes->get('auth/register', 'Auth::register');
 $routes->post('auth/register', 'Auth::store');
 $routes->get('auth/logout', 'Auth::logout');
 
-// Halaman Informasi
-$routes->get('about', 'Page::about');
-$routes->get('gallery', 'Page::gallery');
-$routes->get('contact', 'Page::contact');
-$routes->post('contact/send', 'Page::sendMessage');
-$routes->get('products', 'Page::products');
-
 
 // == RUTE KHUSUS ADMIN (Dilindungi Filter) ==
 $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     // URL: /admin
-    $routes->get('/', 'Admin::index');
+    $routes->get('/', 'Admin::index'); // Menggantikan get('')
 
     // URL: /admin/layanan
     $routes->get('layanan', 'Admin::layanan');
@@ -54,11 +46,6 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
 
     // URL: /admin/booking
     $routes->get('booking', 'Admin::bookings');
-    // Halaman Informasi
-$routes->get('about', 'Page::about');
-$routes->get('gallery', 'Page::gallery');
-$routes->get('contact', 'Page::contact');
-$routes->post('contact/send', 'Page::sendMessage');
-$routes->get('products', 'Page::products');
 
+    // [FIX] Rute Halaman Informasi yang duplikat SUDAH DIHAPUS dari sini.
 });
