@@ -16,6 +16,13 @@ $routes->get('auth/register', 'Auth::register');
 $routes->post('auth/register', 'Auth::store');
 $routes->get('auth/logout', 'Auth::logout');
 
+// Halaman Informasi
+$routes->get('about', 'Page::about');
+$routes->get('gallery', 'Page::gallery');
+$routes->get('contact', 'Page::contact');
+$routes->post('contact/send', 'Page::sendMessage');
+$routes->get('products', 'Page::products');
+
 $routes->group('admin', ['filter' => 'authfilter'], function($routes){
     $routes->get('', 'Admin::index');
     $routes->get('layanan', 'Admin::layanan');
@@ -27,11 +34,7 @@ $routes->group('admin', ['filter' => 'authfilter'], function($routes){
 
     $routes->get('pelanggan', 'Admin::pelanggan');
     $routes->get('booking', 'Admin::bookings');
-    // Halaman Informasi
-$routes->get('about', 'Page::about');
-$routes->get('gallery', 'Page::gallery');
-$routes->get('contact', 'Page::contact');
-$routes->post('contact/send', 'Page::sendMessage');
-$routes->get('products', 'Page::products');
+
+
 
 });
