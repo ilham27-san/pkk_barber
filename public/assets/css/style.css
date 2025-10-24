@@ -7,6 +7,7 @@ body {
     padding: 0 16px;
     background-color: #f9f9f9;
     /* Menambahkan background default */
+    box-sizing: border-box;
 }
 
 nav a {
@@ -41,6 +42,35 @@ td {
     border: 1px solid #ccc;
     padding: 8px;
 }
+
+
+/* ===== STYLE KONTEN (About, Contact, dll.) ===== */
+/* [FIX BARU] Style untuk halaman konten agar rapi */
+main section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+    margin-top: 15px;
+}
+
+main section h2 {
+    margin-top: 0;
+    color: #333;
+    font-size: 22px;
+}
+
+main section p {
+    line-height: 1.6;
+    color: #555;
+}
+
+main section ul {
+    color: #555;
+    padding-left: 20px;
+}
+
+/* ================================================= */
 
 
 /* ===== STYLE KHUSUS (Untuk Halaman Login) ===== */
@@ -104,6 +134,7 @@ Gunakan class ini HANYA pada tag <body> di halaman login Anda.
     text-align: left;
 }
 
+/* [FIX] CSS ini akan berlaku untuk label di login DAN di konten */
 label {
     font-weight: 600;
     color: #444;
