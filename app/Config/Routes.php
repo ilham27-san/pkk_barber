@@ -14,10 +14,11 @@ $routes->post('booking/submit', 'Booking::submit');
 
 // Halaman Informasi Publik (Hanya didefinisikan satu kali di sini)
 $routes->get('about', 'Page::about');
+$routes->get('products', 'Page::products');
 $routes->get('gallery', 'Page::gallery');
 $routes->get('contact', 'Page::contact');
-$routes->post('contact/send', 'Page::sendMessage');
-$routes->get('products', 'Page::products');
+
+
 
 
 // == RUTE AUTENTIKASI (LOGIN/REGISTER) ==

@@ -1,7 +1,7 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
 
-<section class="about">
+<section class="about" style="padding: 40px; line-height: 1.8;">
     <h2>About Us</h2>
     <p><strong>History:</strong> BarberNow berdiri sejak 2020 dengan visi memberikan pengalaman potong rambut modern dan nyaman bagi pria masa kini.</p>
 
