@@ -21,6 +21,7 @@ $routes->get('contact', 'Page::contact');
 
 
 
+
 // == RUTE AUTENTIKASI (LOGIN/REGISTER) ==
 $routes->get('auth/login', 'Auth::login');
 $routes->post('auth/attempt', 'Auth::attempt');
