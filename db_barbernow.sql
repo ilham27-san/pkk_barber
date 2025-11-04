@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Okt 2025 pada 14.59
+-- Waktu pembuatan: 04 Nov 2025 pada 15.25
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -40,6 +40,20 @@ CREATE TABLE `booking` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `contact_messages`
+--
+
+CREATE TABLE `contact_messages` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `pesan` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `layanan`
 --
 
@@ -49,6 +63,20 @@ CREATE TABLE `layanan` (
   `harga` int(11) NOT NULL,
   `deskripsi` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL,
+  `nama_produk` varchar(100) DEFAULT NULL,
+  `harga` decimal(10,2) DEFAULT NULL,
+  `deskripsi` text DEFAULT NULL,
+  `gambar` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -86,7 +114,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`) VALUES
-(1, 'Admin Barber', 'admin@barbernow.test', '$2y$10$Qw1KJZkJkCqH/1phWl0Qqe3uhb4r3p1Jq7E8WZg0S0Y6W/AGT8d06', 'admin', '2025-10-22 11:18:53');
+(1, 'Admin Barber', 'admin@barbernow.test', '$2y$10$Oe3TgWlE08oBssF9G3CQjO5y7W2.yBbRxuRlt7MsoZ4ZYVQOBp/hW\r\n\r\n', 'admin', '2025-10-22 11:18:53');
 
 --
 -- Indexes for dumped tables
@@ -101,9 +129,21 @@ ALTER TABLE `booking`
   ADD KEY `id_layanan` (`id_layanan`);
 
 --
+-- Indeks untuk tabel `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `layanan`
 --
 ALTER TABLE `layanan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `products`
+--
+ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -132,9 +172,21 @@ ALTER TABLE `booking`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT untuk tabel `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `layanan`
 --
 ALTER TABLE `layanan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `products`
+--
+ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
