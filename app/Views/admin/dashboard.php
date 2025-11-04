@@ -1,3 +1,4 @@
+
 <h2>Admin Dashboard</h2>
 <p>Total Pelanggan: <?= $total_pelanggan ?? 0 ?></p>
 <p>Total Booking: <?= $total_booking ?? 0 ?></p>
