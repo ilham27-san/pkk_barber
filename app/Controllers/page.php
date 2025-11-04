@@ -16,35 +16,24 @@ class Page extends BaseController
         $this->contactModel = new ContactModel();
     }
 
-    // [FIX] Menggunakan path 'page/about'
+    // ✅ Langsung return view — tidak perlu "layout/template" lagi
     public function about()
     {
-        echo view('layout/template', [
-            'content' => view('page/about')
-        ]);
+        return view('page/about');
     }
 
-    // [FIX] Menggunakan path 'page/gallery'
     public function gallery()
     {
-        echo view('layout/template', [
-            'content' => view('page/gallery')
-        ]);
+        return view('page/gallery');
     }
 
-    // [FIX] Menggunakan path 'page/contact'
     public function contact()
     {
-        echo view('layout/template', [
-            'content' => view('page/contact')
-        ]);
+        return view('page/contact');
     }
 
     public function sendMessage()
     {
-        // PERINGATAN: Pastikan ContactModel Anda sudah dikonfigurasi
-        // seperti UserModel (useTimestamps = false dan $allowedFields)
-        // agar tidak error 'updated_at' lagi.
         $this->contactModel->insert([
             'nama' => $this->request->getPost('nama'),
             'email' => $this->request->getPost('email'),
@@ -54,13 +43,9 @@ class Page extends BaseController
         return redirect()->to('/contact')->with('success', 'Pesan Anda telah terkirim!');
     }
 
-    // [FIX] Menggunakan path 'page/products'
     public function products()
     {
         $data['products'] = $this->productModel->findAll();
-
-        echo view('layout/template', [
-            'content' => view('page/products', $data)
-        ]);
+        return view('page/products', $data);
     }
 }
