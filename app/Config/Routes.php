@@ -30,12 +30,8 @@ $routes->post('auth/register', 'Auth::store');
 $routes->get('auth/logout', 'Auth::logout');
 
 
-// == RUTE KHUSUS ADMIN (Dilindungi Filter) ==
 $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
-    // URL: /admin
-    $routes->get('/', 'Admin::index'); // Menggantikan get('')
-
-    // URL: /admin/layanan
+    $routes->get('/', 'Admin::index');
     $routes->get('layanan', 'Admin::layanan');
     $routes->get('layanan/create', 'Admin::createLayanan');
     $routes->post('layanan/store', 'Admin::storeLayanan');
@@ -43,11 +39,6 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     $routes->post('layanan/update/(:num)', 'Admin::updateLayanan/$1');
     $routes->get('layanan/delete/(:num)', 'Admin::deleteLayanan/$1');
 
-    // URL: /admin/pelanggan
     $routes->get('pelanggan', 'Admin::pelanggan');
-
-    // URL: /admin/booking
     $routes->get('booking', 'Admin::bookings');
-
-    // [FIX] Rute Halaman Informasi yang duplikat SUDAH DIHAPUS dari sini.
 });

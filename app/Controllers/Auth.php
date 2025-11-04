@@ -24,16 +24,16 @@ class Auth extends Controller
   
 
 
-    // 🧩 Bagian pengecekan login
-    if ($user && password_verify($password, $user['password'])) {
-        // Login berhasil
-        $session->set([
-            'id' => $user['id'],
-            'email' => $user['email'],
-            'username' => $user['username'],
-            'role' => $user['role'],
-            'isLoggedIn' => true
-        ]);
+ if ($user && password_verify($password, $user['password'])) {
+    $session->set([
+        'id'        => $user['id'],
+        'email'     => $user['email'],
+        'username'  => $user['username'],
+        'role'      => $user['role'],
+        'logged_in' => true
+    ]);
+
+
 
         if ($user['role'] === 'admin') {
             return redirect()->to('/admin');
