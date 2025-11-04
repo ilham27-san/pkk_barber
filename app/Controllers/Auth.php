@@ -13,30 +13,43 @@ class Auth extends Controller
     }
 
     public function attempt()
-    {
-        $session = session();
-        $model = new UserModel();
+{
+    $session = session();
+    $model = new \App\Models\UserModel();
 
-        $email = $this->request->getPost('email');
-        $password = $this->request->getPost('password');
+    $email = $this->request->getPost('email');
+    $password = $this->request->getPost('password');
 
-        $user = $model->where('email', $email)->first();
-        if ($user && password_verify($password, $user['password'])) {
-            $session->set([
-                'id' => $user['id'],
-                'email' => $user['email'],
-                'username' => $user['username'],
-                'role' => $user['role'],
-                'isLoggedIn' => true
-            ]);
-            if ($user['role'] === 'admin') {
-                return redirect()->to('/admin');
-            } else {
-                return redirect()->to('/');
-            }
+    $user = $model->where('email', $email)->first();
+  
+
+
+    // 🧩 Bagian pengecekan login
+    if ($user && password_verify($password, $user['password'])) {
+        // Login berhasil
+        $session->set([
+            'id' => $user['id'],
+            'email' => $user['email'],
+            'username' => $user['username'],
+            'role' => $user['role'],
+            'isLoggedIn' => true
+        ]);
+
+        if ($user['role'] === 'admin') {
+            return redirect()->to('/admin');
+        } else {
+            return redirect()->to('/');
         }
-        return redirect()->back()->with('error', 'Email atau password salah');
+    } else {
+        // 🧩 Tambahkan bagian ini untuk tahu kesalahan detail
+        if (!$user) {
+            return redirect()->back()->with('error', 'User tidak ditemukan di database');
+        } elseif (!password_verify($password, $user['password'])) {
+            return redirect()->back()->with('error', 'Password salah (tidak cocok dengan hash)');
+        }
     }
+}
+
 
     public function register()
     {
