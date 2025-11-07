@@ -9,22 +9,19 @@ use CodeIgniter\Controller;
 
 class Admin extends Controller
 {
- public function index()
+public function index()
 {
-    $bookingModel = new BookingModel();
-    $userModel = new UserModel();
+    $bookingModel = new \App\Models\BookingModel();
+    $userModel = new \App\Models\UserModel();
 
     $data = [
         'total_pelanggan' => $userModel->where('role', 'pelanggan')->countAllResults(),
-        'total_booking'   => $bookingModel->countAllResults(),
-        'content'         => view('admin/dashboard', [
-            'total_pelanggan' => $userModel->where('role', 'pelanggan')->countAllResults(),
-            'total_booking'   => $bookingModel->countAllResults(),
-        ])
+        'total_booking'   => $bookingModel->countAllResults()
     ];
 
-    return view('layout/template', $data);
+    return view('admin/dashboard', $data);
 }
+
 
 
     public function layanan()
