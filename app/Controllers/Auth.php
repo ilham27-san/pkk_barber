@@ -12,7 +12,7 @@ class Auth extends Controller
         echo view('auth/login');
     }
 
-    public function attempt()
+public function attempt()
 {
     $session = session();
     $model = new \App\Models\UserModel();
@@ -21,27 +21,25 @@ class Auth extends Controller
     $password = $this->request->getPost('password');
 
     $user = $model->where('email', $email)->first();
-  
 
+    if ($user && password_verify($password, $user['password'])) {
+        // 🔧 Ubah 'logged_in' jadi 'isLoggedIn'
+        $session->set([
+            'id'         => $user['id'],
+            'email'      => $user['email'],
+            'username'   => $user['username'],
+            'role'       => $user['role'],
+            'logged_in' => true // ✅ Ini yang dibaca oleh template.php
+        ]);
 
- if ($user && password_verify($password, $user['password'])) {
-    $session->set([
-        'id'        => $user['id'],
-        'email'     => $user['email'],
-        'username'  => $user['username'],
-        'role'      => $user['role'],
-        'logged_in' => true
-    ]);
-
-
-
+        // 🔁 Redirect sesuai role
         if ($user['role'] === 'admin') {
-            return redirect()->to('/admin');
+            return redirect()->to(base_url('admin/dashboard'));
         } else {
-            return redirect()->to('/');
+            return redirect()->to(base_url('/'));
         }
     } else {
-        // 🧩 Tambahkan bagian ini untuk tahu kesalahan detail
+        // 🧩 Tampilkan pesan error
         if (!$user) {
             return redirect()->back()->with('error', 'User tidak ditemukan di database');
         } elseif (!password_verify($password, $user['password'])) {
@@ -49,7 +47,6 @@ class Auth extends Controller
         }
     }
 }
-
 
     public function register()
     {

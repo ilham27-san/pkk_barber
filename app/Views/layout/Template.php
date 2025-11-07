@@ -11,47 +11,28 @@
 </head>
 
 <body>
+  <header>
+    <nav>
+      <!-- [FIX] Menggunakan base_url() untuk semua link agar konsisten -->
+      <a href="<?= base_url('/'); ?>">Home</a> |
+      <a href="<?= base_url('about'); ?>">About Us</a> |
+      <a href="<?= base_url('products'); ?>">Products</a> |
+      <a href="<?= base_url('gallery'); ?>">Gallery</a> |
+      <a href="<?= base_url('contact'); ?>">Contact</a> |
+      <a href="<?= base_url('layanan'); ?>">Layanan</a> |
 
-<header class="main-header">
-    <div class="container">
-        
-        <div class="logo">
-            </div>
-        
-        <nav class="main-nav">
-            <?php
-                // Mengambil URI service CodeIgniter
-                $uri = service('uri');
-                // Mengecek segmen URL pertama (misal: 'about', 'products', dll)
-                // Jika halaman Home (domain.com/), segmen(1) akan kosong ''
-                $segment1 = $uri->getSegment(1);
-            ?>
-            <ul>
-                <li><a href="<?= base_url('/'); ?>" class="<?= ($segment1 == '') ? 'active' : '' ?>">Home</a></li> 
-                <li><a href="<?= base_url('about'); ?>" class="<?= ($segment1 == 'about') ? 'active' : '' ?>">About Us</a></li>
-                <li><a href="<?= base_url('products'); ?>" class="<?= ($segment1 == 'products') ? 'active' : '' ?>">Products</a></li>
-                <li><a href="<?= base_url('gallery'); ?>" class="<?= ($segment1 == 'gallery') ? 'active' : '' ?>">Gallery</a></li>
-                <li><a href="<?= base_url('contact'); ?>" class="<?= ($segment1 == 'contact') ? 'active' : '' ?>">Contact</a></li>
-                <li><a href="<?= base_url('layanan'); ?>" class="<?= ($segment1 == 'layanan') ? 'active' : '' ?>">Layanan</a></li>
-
-                <?php if (session()->get('isLoggedIn')): ?>
-                  <li><span>Hi, <?= session()->get('username') ?></span></li>
-                  
-                  <?php if (session()->get('role') === 'admin'): ?>
-                    <li><a href="<?= base_url('admin'); ?>" class="<?= ($segment1 == 'admin') ? 'active' : '' ?>">Admin</a></li>
-                  <?php endif; ?>
-                  
-                  <li><a href="<?= base_url('auth/logout'); ?>">Logout</a></li>
-                
-                <?php else: ?>
-                  
-                  <li><a href="<?= base_url('auth/login'); ?>" class="<?= ($segment1 == 'auth') ? 'active' : '' ?>">Login</a></li>
-                  <li><a href="<?= base_url('auth/register'); ?>" class="btn-reservasi">Register</a></li>
-                
-                <?php endif; ?>
-            </ul>
-        </nav>
-    </div>
+      <?php if (session()->get('isLoggedIn')): ?>
+        <span>Hi, <?= session()->get('username') ?></span> |
+        <?php if (session()->get('role') === 'admin'): ?>
+          <a href="<?= base_url('admin'); ?>">Admin</a> |
+        <?php endif; ?>
+        <a href="<?= base_url('auth/logout'); ?>">Logout</a>
+      <?php else: ?>
+        <a href="<?= base_url('auth/login'); ?>">Login</a> |
+        <a href="<?= base_url('auth/register'); ?>">Register</a>
+      <?php endif; ?>
+    </nav>
+    <hr>
   </header>
 
   <main>
