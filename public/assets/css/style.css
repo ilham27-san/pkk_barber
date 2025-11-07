@@ -245,7 +245,6 @@ button:hover {
 
 /* Warna dari logo Sanbarbers dan Palet Anda */
 :root {
-<<<<<<< HEAD
     --primary-red: #A52B2B;
     /* Merah gelap dari logo */
     --secondary-red: #E25B5B;
@@ -262,17 +261,6 @@ button:hover {
     --text-color-light: #F8F4EA;
     --footer-dark: #2a2a2a;
     /* Warna gelap untuk footer baru */
-=======
-    --primary-red: #A52B2B; /* Merah gelap dari logo */
-    --secondary-red: #E25B5B; /* Merah terang/cerah dari logo */
-    --dark-brown: #5C2C27; /* Coklat gelap dari logo */
-    --gold-accent: #B89B66; /* Warna emas/krem dari garis logo */
-    --cream-background: #F8F4EA; /* Cream / Coklat susu terang */
-    --light-cream-background: #FFFBF5; /* Cream yang lebih terang untuk aksen */
-    --text-color-dark: #333333;
-    --text-color-light: #F8F4EA;
-    --footer-dark: #2a2a2a; /* Warna gelap untuk footer baru */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
 }
 
 /* Reset Dasar */
@@ -289,7 +277,6 @@ body {
     color: var(--text-color-dark);
 
     /* [DIUBAH] Menggunakan background 4-kuadran */
-<<<<<<< HEAD
     background-image:
         /* Gradient 1 (Untuk 50% ATAS) */
         linear-gradient(to right, var(--cream-background) 50%, var(--cream-darker-bg) 50%),
@@ -303,19 +290,6 @@ body {
     /* Posisi gradient 1 di atas, 2 di bawah */
     background-repeat: no-repeat;
 
-=======
-    background-image: 
-        /* Gradient 1 (Untuk 50% ATAS) */
-        linear-gradient(to right, var(--cream-background) 50%, var(--cream-darker-bg) 50%),
-        
-        /* Gradient 2 (Untuk 50% BAWAH) */
-        linear-gradient(to right, var(--cream-darker-bg) 50%, var(--cream-background) 50%);
-    
-    background-size: 100% 50%; /* Tiap gradient mengambil 50% tinggi body */
-    background-position: top, bottom; /* Posisi gradient 1 di atas, 2 di bawah */
-    background-repeat: no-repeat;
-    
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     /* [PENTING] Pastikan background menutupi seluruh tinggi halaman */
     min-height: 100vh;
 }
@@ -324,13 +298,8 @@ body {
     /* [DIUBAH] Menggunakan 90% lebar layar, 
        tapi maksimal 1600px agar tidak terlalu lebar di layar super besar */
     width: 90%;
-<<<<<<< HEAD
     max-width: 1600px;
 
-=======
-    max-width: 1600px; 
-    
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -354,15 +323,10 @@ body {
 
 /* Memberi ruang untuk logo meskpun kosong */
 .main-header .logo {
-<<<<<<< HEAD
     min-width: 150px;
     /* Sesuaikan lebarnya */
     min-height: 60px;
     /* Sesuaikan tingginya */
-=======
-    min-width: 150px; /* Sesuaikan lebarnya */
-    min-height: 60px; /* Sesuaikan tingginya */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
 }
 
 .main-header .logo img {
@@ -384,12 +348,8 @@ body {
     color: var(--text-color-light);
     text-decoration: none;
     font-weight: 600;
-<<<<<<< HEAD
     font-size: 0.95rem;
     /* Sedikit lebih kecil agar muat */
-=======
-    font-size: 0.95rem; /* Sedikit lebih kecil agar muat */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     padding: 5px 0;
     position: relative;
     transition: color 0.3s ease;
@@ -420,7 +380,6 @@ body {
 /* === BAGIAN HERO (DIUBAH TOTAL AGAR JADI BOX) === */
 .hero-section {
     /* [DIUBAH] Beri warna latar belakang putih/krem terang */
-<<<<<<< HEAD
     background-color: var(--light-cream-background);
 
     /* [DIUBAH] Ini yang membuatnya "nanggung" tapi rapi */
@@ -430,25 +389,13 @@ body {
     /* Buat dia ke tengah (auto) dan beri jarak atas/bawah */
     padding: 60px;
     /* Beri padding di dalam box */
-=======
-    background-color: var(--light-cream-background); 
-    
-    /* [DIUBAH] Ini yang membuatnya "nanggung" tapi rapi */
-    max-width: 1200px;  /* Batasi lebar box-nya */
-    margin: 40px auto; /* Buat dia ke tengah (auto) dan beri jarak atas/bawah */
-    padding: 60px;     /* Beri padding di dalam box */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
 
     /* [BARU] Tambahan agar terlihat seperti di foto */
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 
     /* [DIUBAH] Pastikan konten di dalamnya (h1, p) tetap di tengah */
-<<<<<<< HEAD
     text-align: center;
-=======
-    text-align: center; 
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
 }
 
 .hero-content {
@@ -459,36 +406,24 @@ body {
 
 .hero-content {
     flex: 1;
-<<<<<<< HEAD
     max-width: 55%;
     /* Teks mengambil setengah bagian kiri */
-=======
-    max-width: 55%; /* Teks mengambil setengah bagian kiri */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     padding-right: 20px;
 }
 
 .hero-content h1 {
     font-family: 'Playfair Display', serif;
     font-size: 3.5rem;
-<<<<<<< HEAD
     color: var(--dark-brown);
     /* GANTI ke warna gelap */
-=======
-    color: var(--dark-brown); /* GANTI ke warna gelap */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     margin-bottom: 20px;
     line-height: 1.2;
 }
 
 .hero-content p {
     font-size: 1.2rem;
-<<<<<<< HEAD
     color: var(--text-color-dark);
     /* GANTI ke warna gelap */
-=======
-    color: var(--text-color-dark); /* GANTI ke warna gelap */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     margin-bottom: 30px;
 }
 
@@ -513,7 +448,6 @@ body {
 .features-section {
     background-color: var(--dark-brown);
     color: var(--text-color-light);
-<<<<<<< HEAD
     padding: 50px;
     /* [DIUBAH] Beri padding di semua sisi, bukan hanya atas-bawah */
 
@@ -525,15 +459,6 @@ body {
     border-radius: 12px;
     /* Lengkungan di setiap sudut, samakan dengan hero-section */
 
-=======
-    padding: 50px; /* [DIUBAH] Beri padding di semua sisi, bukan hanya atas-bawah */
-
-    /* [BARU] Ini adalah 3 baris kunci permintaan Anda */
-    max-width: 1200px; /* Samakan lebarnya dengan hero-section */
-    margin: 40px auto; /* 40px atas/bawah, 'auto' untuk kiri/kanan (otomatis ke tengah) */
-    border-radius: 12px; /* Lengkungan di setiap sudut, samakan dengan hero-section */
-    
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     /* [DIUBAH] Kita pindahkan flex-box ke .container di dalamnya */
     /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); Opsional jika Anda mau shadow juga */
 }
@@ -547,7 +472,6 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     flex-wrap: wrap;
-<<<<<<< HEAD
     width: 100%;
     /* Pastikan kontainer mengisi box */
     padding: 0;
@@ -565,20 +489,6 @@ body {
 
 .feature-box i {
     /* Style untuk ikon Font Awesome */
-=======
-    width: 100%; /* Pastikan kontainer mengisi box */
-    padding: 0; /* Hapus padding default container */
-}
-
-.feature-box {
-    flex-basis: 30%; /* Tiap box lebarnya 30% */
-    text-align: left;
-    padding: 20px;
-    position: relative; /* Untuk ikon */
-}
-
-.feature-box i { /* Style untuk ikon Font Awesome */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     position: absolute;
     right: 20px;
     top: 20px;
@@ -589,12 +499,8 @@ body {
 
 .feature-box h3 {
     font-family: 'Playfair Display', serif;
-<<<<<<< HEAD
     color: var(--gold-accent);
     /* Judul pakai warna emas */
-=======
-    color: var(--gold-accent); /* Judul pakai warna emas */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     font-size: 1.6rem;
     margin-bottom: 10px;
 }
@@ -602,12 +508,8 @@ body {
 .feature-box p {
     font-size: 0.95rem;
     color: var(--text-color-light);
-<<<<<<< HEAD
     max-width: 90%;
     /* Agar teks tidak menabrak ikon */
-=======
-    max-width: 90%; /* Agar teks tidak menabrak ikon */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     line-height: 1.5;
 }
 
@@ -619,11 +521,7 @@ body {
     text-align: center;
     padding: 25px 0;
     font-size: 0.9rem;
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     /* Properti 'position: fixed' dan 'transition' telah dihapus */
     /* Ini membuatnya jadi elemen statis normal di bawah halaman */
 }
@@ -631,15 +529,10 @@ body {
 /* === Responsive (Sederhana) === */
 @media (max-width: 992px) {
     .main-nav ul li {
-<<<<<<< HEAD
         margin-left: 20px;
         /* Rapatkan menu */
     }
 
-=======
-        margin-left: 20px; /* Rapatkan menu */
-    }
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     .hero-content {
         max-width: 70%;
     }
@@ -649,25 +542,18 @@ body {
     .main-header .container {
         flex-direction: column;
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     .main-nav ul {
         margin-top: 15px;
         flex-wrap: wrap;
         justify-content: center;
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     .main-nav ul li {
         margin: 5px 10px;
     }
 
     .hero-content {
-<<<<<<< HEAD
         max-width: 100%;
         /* Lebar penuh di mobile */
         text-align: center;
@@ -696,28 +582,6 @@ body {
         margin-bottom: 15px;
     }
 
-=======
-        max-width: 100%; /* Lebar penuh di mobile */
-        text-align: center;
-        padding-right: 0;
-    }
-    .hero-content h1 {
-        font-size: 2.5rem;
-    }
-    
-    .features-section .container {
-        flex-direction: column; /* Susun 3 kolom ke bawah */
-    }
-    .feature-box {
-        flex-basis: 100%; /* Lebar penuh */
-        margin-bottom: 20px;
-        text-align: center;
-    }
-    .feature-box i { /* Posisikan ulang ikon */
-        position: static;
-        margin-bottom: 15px;
-    }
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     .feature-box p {
         max-width: 100%;
     }
@@ -729,11 +593,7 @@ body {
 .main-header {
     /* [TAMBAHKAN] Transisi mulus untuk properti 'transform' */
     transition: transform 0.4s ease-in-out;
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     /* [SUDAH ADA] Pastikan ini sudah ada dari sebelumnya */
     position: sticky;
     top: 0;
@@ -753,24 +613,15 @@ body {
 }
 
 /* [BARU] Reset Body & HTML */
-<<<<<<< HEAD
 html,
 body {
-=======
-html, body {
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     width: 100%;
     margin: 0;
     padding: 0;
     /* Pastikan tidak ada yang membatasi body */
-<<<<<<< HEAD
     max-width: none;
     overflow-x: hidden;
     /* Mencegah scroll horizontal */
-=======
-    max-width: none; 
-    overflow-x: hidden; /* Mencegah scroll horizontal */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
 }
 
 /* Di bagian paling atas style.css Anda */
@@ -779,21 +630,13 @@ html, body {
     --secondary-red: #E25B5B;
     --dark-brown: #5C2C27;
     --gold-accent: #B89B66;
-<<<<<<< HEAD
     --cream-background: #F8F4EA;
     /* Ini adalah krem TERANG */
-=======
-    --cream-background: #F8F4EA; /* Ini adalah krem TERANG */
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
     --light-cream-background: #FFFBF5;
     --text-color-dark: #333333;
     --text-color-light: #F8F4EA;
     --footer-dark: #2a2a2a;
 
     /* [TAMBAHKAN INI] Warna krem yang lebih gelap untuk background */
-<<<<<<< HEAD
     --cream-darker-bg: #EADFCA;
-=======
-    --cream-darker-bg: #EADFCA; 
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
 }

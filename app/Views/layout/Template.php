@@ -1,5 +1,4 @@
 <!doctype html>
-<<<<<<< HEAD
 <html lang="id">
 
 <head>
@@ -9,21 +8,11 @@
 
   <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
 
-=======
-<html lang="id"> <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BarberNow</title>
-  
-  <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
-  
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
-<<<<<<< HEAD
 
   <header class="main-header">
     <div class="container">
@@ -64,30 +53,6 @@
         </ul>
       </nav>
     </div>
-=======
-  <header>
-    <nav>
-      <!-- [FIX] Menggunakan base_url() untuk semua link agar konsisten -->
-      <a href="<?= base_url('/'); ?>">Home</a> |
-      <a href="<?= base_url('about'); ?>">About Us</a> |
-      <a href="<?= base_url('products'); ?>">Products</a> |
-      <a href="<?= base_url('gallery'); ?>">Gallery</a> |
-      <a href="<?= base_url('contact'); ?>">Contact</a> |
-      <a href="<?= base_url('layanan'); ?>">Layanan</a> |
-
-      <?php if (session()->get('isLoggedIn')): ?>
-        <span>Hi, <?= session()->get('username') ?></span> |
-        <?php if (session()->get('role') === 'admin'): ?>
-          <a href="<?= base_url('admin'); ?>">Admin</a> |
-        <?php endif; ?>
-        <a href="<?= base_url('auth/logout'); ?>">Logout</a>
-      <?php else: ?>
-        <a href="<?= base_url('auth/login'); ?>">Login</a> |
-        <a href="<?= base_url('auth/register'); ?>">Register</a>
-      <?php endif; ?>
-    </nav>
-    <hr>
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
   </header>
   <main>
     <?php if (session()->getFlashdata('error')): ?>
@@ -102,7 +67,6 @@
 
   <footer class="main-footer">
     <div class="container">
-<<<<<<< HEAD
       <p>&copy; <?= date('Y') ?> BarberNow</p>
     </div>
   </footer>
@@ -142,44 +106,5 @@
   </script>
 
 </body>
-=======
-        <p>&copy; <?= date('Y') ?> BarberNow</p>
-    </div>
-  </footer>
-  
-  <script>
-    // Pilih elemen header
-    const header = document.querySelector('.main-header');
-    
-    // Variabel untuk menyimpan posisi scroll terakhir
-    let lastScrollY = window.scrollY;
->>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
 
-    // Tambahkan event listener saat pengguna scroll
-    window.addEventListener('scroll', () => {
-        const currentScrollY = window.scrollY;
-
-        // Cek jika scroll ke bawah dan sudah melewati 10px
-        if (currentScrollY > lastScrollY && currentScrollY > 10) {
-            // === SCROLL KE BAWAH ===
-            // Sembunyikan Header (Animasi ke atas)
-            header.classList.add('header-hidden');
-
-        } else if (currentScrollY < lastScrollY) {
-            // === SCROLL KE ATAS ===
-            // Tampilkan Header (Animasi dari atas)
-            header.classList.remove('header-hidden');
-        }
-
-        // Jika scroll mentok di paling atas (0)
-        if (currentScrollY <= 10) {
-            header.classList.remove('header-hidden'); // Pastikan header terlihat
-        }
-
-        // Perbarui posisi scroll terakhir
-        lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
-    });
-  </script>
-
-</body>
 </html>
