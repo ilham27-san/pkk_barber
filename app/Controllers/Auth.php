@@ -29,7 +29,7 @@ class Auth extends Controller
             'email'      => $user['email'],
             'username'   => $user['username'],
             'role'       => $user['role'],
-            'isLoggedIn' => true // ✅ Ini yang dibaca oleh template.php
+            'logged_in' => true // ✅ Ini yang dibaca oleh template.php
         ]);
 
         // 🔁 Redirect sesuai role

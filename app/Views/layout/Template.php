@@ -35,7 +35,7 @@
           <li><a href="<?= base_url('contact'); ?>" class="<?= ($segment1 == 'contact') ? 'active' : '' ?>">Contact</a></li>
           <li><a href="<?= base_url('layanan'); ?>" class="<?= ($segment1 == 'layanan') ? 'active' : '' ?>">Layanan</a></li>
 
-          <?php if (session()->get('isLoggedIn')): ?>
+          <?php if (session()->get('logged_in')): ?>
             <li><span>Hi, <?= session()->get('username') ?></span></li>
 
             <?php if (session()->get('role') === 'admin'): ?>
