@@ -1,5 +1,12 @@
 <h2>Daftar Booking</h2>
 
+<a href="/admin/tambah_booking" class="btn btn-primary">+ Tambah Booking Baru</a>
+
+
+<?php if (session()->getFlashdata('success')): ?>
+    <div style="color: green;"><?= session()->getFlashdata('success'); ?></div>
+<?php endif; ?>
+
 <?php if (!empty($bookings) && is_array($bookings)): ?>
     <table border="1" cellpadding="8" cellspacing="0">
         <tr>

@@ -52,6 +52,10 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
 
     // Data Booking
     $routes->get('booking', 'Admin::booking');
+   $routes->get('tambah_booking', 'Admin::tambah_booking');
+$routes->post('simpan_booking', 'Admin::simpan_booking');
+
+
 });
 
 

@@ -39,4 +39,33 @@ class Admin extends Controller
     echo view('admin/data_booking', $data);
 }
 
+public function tambah_booking()
+{
+    $userModel = new \App\Models\UserModel();
+    $layananModel = new \App\Models\LayananModel();
+
+    $data['users'] = $userModel->where('role', 'pelanggan')->findAll();
+    $data['layanans'] = $layananModel->findAll();
+
+    echo view('admin/tambah_booking', $data);
+}
+
+public function simpan_booking()
+{
+    $model = new \App\Models\BookingModel();
+
+    $data = [
+        'id_user' => $this->request->getPost('id_user'),
+        'id_layanan' => $this->request->getPost('id_layanan'),
+        'tanggal' => $this->request->getPost('tanggal'),
+        'jam' => $this->request->getPost('jam'),
+        'status' => $this->request->getPost('status')
+    ];
+
+    $model->insert($data);
+
+    return redirect()->to('/admin/booking')->with('success', 'Booking berhasil ditambahkan.');
+}
+
+
 }
