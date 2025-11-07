@@ -1,33 +1,48 @@
-<h2>Daftar Booking</h2>
+<?= $this->extend('layout/template'); ?>
 
-<a href="/admin/tambah_booking" class="btn btn-primary">+ Tambah Booking Baru</a>
+<?= $this->section('content'); ?>
 
+<div class="admin-container">
+    <div class="content-box">
 
-<?php if (session()->getFlashdata('success')): ?>
-    <div style="color: green;"><?= session()->getFlashdata('success'); ?></div>
-<?php endif; ?>
+        <div class="admin-header">
+            <h2 class="admin-title">Daftar Booking</h2>
+            <a href="<?= base_url('admin/tambah_booking') ?>" class="btn-primary">+ Tambah Booking Baru</a>
+        </div>
 
-<?php if (!empty($bookings) && is_array($bookings)): ?>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <tr>
-            <th>ID</th>
-            <th>Nama Pelanggan</th>
-            <th>Layanan</th>
-            <th>Tanggal</th>
-            <th>Jam</th>
-            <th>Status</th>
-        </tr>
-        <?php foreach ($bookings as $booking): ?>
-            <tr>
-                <td><?= esc($booking['id']) ?></td>
-                <td><?= esc($booking['nama_pelanggan']) ?></td>
-                <td><?= esc($booking['layanan']) ?></td>
-                <td><?= esc($booking['tanggal_booking']) ?></td>
-                <td><?= esc($booking['jam_booking']) ?></td>
-                <td><?= esc($booking['status']) ?></td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-<?php else: ?>
-    <p>Tidak ada data booking.</p>
-<?php endif; ?>
+        <?php if (session()->getFlashdata('success')): ?>
+            <div class="alert success"><?= session()->getFlashdata('success'); ?></div>
+        <?php endif; ?>
+
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama Pelanggan</th>
+                    <th>Layanan</th>
+                    <th>Tanggal</th>
+                    <th>Jam</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($bookings) && is_array($bookings)): ?>
+                    <?php foreach ($bookings as $booking): ?>
+                        <tr>
+                            <td><?= esc($booking['id']) ?></td>
+                            <td><?= esc($booking['nama_pelanggan']) ?></td>
+                            <td><?= esc($booking['layanan']) ?></td>
+                            <td><?= esc($booking['tanggal_booking']) ?></td>
+                            <td><?= esc($booking['jam_booking']) ?></td>
+                            <td><?= esc($booking['status']) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Tidak ada data booking.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+        
+    </div> </div> <?= $this->endSection(); ?>

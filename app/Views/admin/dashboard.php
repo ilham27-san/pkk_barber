@@ -2,14 +2,22 @@
 
 <?= $this->section('content') ?>
 
-<h2>Admin Dashboard</h2>
-<p>Total Pelanggan: <?= $total_pelanggan ?? 0 ?></p>
-<p>Total Booking: <?= $total_booking ?? 0 ?></p>
+<div class="admin-container">
+    <div class="content-box">
 
-<ul>
-  <li><a href="<?= base_url('admin/layanan'); ?>">Kelola Layanan</a></li>
-  <li><a href="<?= base_url('admin/pelanggan'); ?>">Daftar Pelanggan</a></li>
-  <li><a href="<?= base_url('admin/booking'); ?>">Daftar Booking</a></li>
-</ul>
+        <div class="admin-header">
+            <h2 class="admin-title">Admin Dashboard</h2>
+        </div>
 
-<?= $this->endSection() ?>
+        <div class="dashboard-info">
+            <p>Total Pelanggan: <span><?= $total_pelanggan ?? 0 ?></span></p>
+            <p>Total Booking: <span><?= $total_booking ?? 0 ?></span></p>
+        </div>
+
+        <ul class="dashboard-links">
+            <li><a href="<?= base_url('admin/layanan'); ?>">Kelola Layanan</a></li>
+            <li><a href="<?= base_url('admin/pelanggan'); ?>">Daftar Pelanggan</a></li>
+            <li><a href="<?= base_url('admin/booking'); ?>">Daftar Booking</a></li>
+        </ul>
+
+    </div> </div> <?= $this->endSection() ?>

@@ -870,3 +870,55 @@ h2.admin-title {
 .action-links a.btn-delete:hover {
     background-color: var(--secondary-red);
 }
+
+/*
+========================================
+  STYLING HALAMAN DASHBOARD ADMIN
+========================================
+*/
+
+.dashboard-info {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    color: var(--text-color-dark);
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+.dashboard-info p {
+    margin: 5px 0;
+}
+
+/* Membuat angkanya menonjol */
+.dashboard-info span {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark-brown); /* Warna coklat tua */
+    margin-left: 10px;
+}
+
+/* Daftar link cepat */
+.dashboard-links {
+    list-style: none;
+    padding: 20px 0 0 0;
+    margin-top: 20px;
+    border-top: 1px solid #eee; /* Garis pemisah */
+}
+
+.dashboard-links li {
+    margin-bottom: 15px; /* Jarak antar link */
+}
+
+.dashboard-links a {
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-red); /* Warna merah utama */
+    transition: color 0.3s ease;
+}
+
+.dashboard-links a:hover {
+    color: var(--secondary-red); /* Warna merah terang */
+    text-decoration: underline;
+}
