@@ -51,7 +51,7 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     $routes->get('pelanggan', 'Admin::pelanggan');
 
     // Data Booking
-    $routes->get('booking', 'Admin::bookings');
+    $routes->get('booking', 'Admin::booking');
 });
 
 
