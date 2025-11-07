@@ -1,18 +1,29 @@
-<h2>Daftar Layanan</h2>
-<a href="/admin/layanan/create">+ Tambah Layanan</a>
-<table>
-  <thead><tr><th>ID</th><th>Nama</th><th>Harga</th><th>Aksi</th></tr></thead>
-  <tbody>
-    <?php foreach($layanan as $l): ?>
+<h2>Kelola Layanan</h2>
+
+<a href="<?= base_url('admin/layanan/create') ?>">Tambah Layanan</a>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>ID</th>
+    <th>Nama Layanan</th>
+    <th>Harga</th>
+    <th>Deskripsi</th>
+    <th>Aksi</th>
+  </tr>
+  <?php if (!empty($layanan)): ?>
+    <?php foreach ($layanan as $row): ?>
       <tr>
-        <td><?= $l['id'] ?></td>
-        <td><?= esc($l['nama_layanan']) ?></td>
-        <td><?= number_format($l['harga']) ?></td>
+        <td><?= $row['id'] ?></td>
+        <td><?= $row['nama_layanan'] ?></td>
+        <td><?= $row['harga'] ?></td>
+        <td><?= $row['deskripsi'] ?></td>
         <td>
-          <a href="/admin/layanan/edit/<?= $l['id'] ?>">Edit</a> |
-          <a href="/admin/layanan/delete/<?= $l['id'] ?>" onclick="return confirm('Hapus?')">Hapus</a>
+          <a href="<?= base_url('admin/layanan/edit/' . $row['id']) ?>">Edit</a> |
+          <a href="<?= base_url('admin/layanan/delete/' . $row['id']) ?>" onclick="return confirm('Yakin ingin hapus?')">Hapus</a>
         </td>
       </tr>
     <?php endforeach; ?>
-  </tbody>
+  <?php else: ?>
+    <tr><td colspan="5">Belum ada layanan.</td></tr>
+  <?php endif; ?>
 </table>
