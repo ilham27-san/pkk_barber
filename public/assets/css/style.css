@@ -239,3 +239,404 @@ button:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
+
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+/* Warna dari logo Sanbarbers dan Palet Anda */
+:root {
+    --primary-red: #A52B2B;
+    /* Merah gelap dari logo */
+    --secondary-red: #E25B5B;
+    /* Merah terang/cerah dari logo */
+    --dark-brown: #5C2C27;
+    /* Coklat gelap dari logo */
+    --gold-accent: #B89B66;
+    /* Warna emas/krem dari garis logo */
+    --cream-background: #F8F4EA;
+    /* Cream / Coklat susu terang */
+    --light-cream-background: #FFFBF5;
+    /* Cream yang lebih terang untuk aksen */
+    --text-color-dark: #333333;
+    --text-color-light: #F8F4EA;
+    --footer-dark: #2a2a2a;
+    /* Warna gelap untuk footer baru */
+}
+
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ...DENGAN KODE BARU INI */
+body {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color-dark);
+
+    /* [DIUBAH] Menggunakan background 4-kuadran */
+    background-image:
+        /* Gradient 1 (Untuk 50% ATAS) */
+        linear-gradient(to right, var(--cream-background) 50%, var(--cream-darker-bg) 50%),
+
+        /* Gradient 2 (Untuk 50% BAWAH) */
+        linear-gradient(to right, var(--cream-darker-bg) 50%, var(--cream-background) 50%);
+
+    background-size: 100% 50%;
+    /* Tiap gradient mengambil 50% tinggi body */
+    background-position: top, bottom;
+    /* Posisi gradient 1 di atas, 2 di bawah */
+    background-repeat: no-repeat;
+
+    /* [PENTING] Pastikan background menutupi seluruh tinggi halaman */
+    min-height: 100vh;
+}
+
+.container {
+    /* [DIUBAH] Menggunakan 90% lebar layar, 
+       tapi maksimal 1600px agar tidak terlalu lebar di layar super besar */
+    width: 90%;
+    max-width: 1600px;
+
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.main-header {
+    background-color: var(--dark-brown);
+    color: var(--text-color-light);
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Memberi ruang untuk logo meskpun kosong */
+.main-header .logo {
+    min-width: 150px;
+    /* Sesuaikan lebarnya */
+    min-height: 60px;
+    /* Sesuaikan tingginya */
+}
+
+.main-header .logo img {
+    height: 60px;
+}
+
+/* Navigasi */
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.main-nav ul li {
+    margin-left: 30px;
+}
+
+.main-nav ul li a {
+    color: var(--text-color-light);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    /* Sedikit lebih kecil agar muat */
+    padding: 5px 0;
+    position: relative;
+    transition: color 0.3s ease;
+    /* text-transform: uppercase; Opsional jika ingin huruf besar */
+}
+
+.main-nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--gold-accent);
+    transition: width 0.3s ease;
+}
+
+.main-nav ul li a:hover,
+.main-nav ul li a.active {
+    color: var(--gold-accent);
+}
+
+.main-nav ul li a:hover::after,
+.main-nav ul li a.active::after {
+    width: 100%;
+}
+
+/* === BAGIAN HERO (DIUBAH TOTAL AGAR JADI BOX) === */
+.hero-section {
+    /* [DIUBAH] Beri warna latar belakang putih/krem terang */
+    background-color: var(--light-cream-background);
+
+    /* [DIUBAH] Ini yang membuatnya "nanggung" tapi rapi */
+    max-width: 1200px;
+    /* Batasi lebar box-nya */
+    margin: 40px auto;
+    /* Buat dia ke tengah (auto) dan beri jarak atas/bawah */
+    padding: 60px;
+    /* Beri padding di dalam box */
+
+    /* [BARU] Tambahan agar terlihat seperti di foto */
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+
+    /* [DIUBAH] Pastikan konten di dalamnya (h1, p) tetap di tengah */
+    text-align: center;
+}
+
+.hero-content {
+    /* [DIUBAH] Tidak perlu max-width lagi, biarkan 100% di dalam hero-section */
+    max-width: 100%;
+    padding-right: 0;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 55%;
+    /* Teks mengambil setengah bagian kiri */
+    padding-right: 20px;
+}
+
+.hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: var(--dark-brown);
+    /* GANTI ke warna gelap */
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: var(--text-color-dark);
+    /* GANTI ke warna gelap */
+    margin-bottom: 30px;
+}
+
+.btn-primary {
+    display: inline-block;
+    background-color: var(--primary-red);
+    color: var(--text-color-light);
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-red);
+}
+
+/* === BAGIAN FITUR 3 KOLOM (BARU) === */
+/* ...MENJADI SEPERTI INI */
+.features-section {
+    background-color: var(--dark-brown);
+    color: var(--text-color-light);
+    padding: 50px;
+    /* [DIUBAH] Beri padding di semua sisi, bukan hanya atas-bawah */
+
+    /* [BARU] Ini adalah 3 baris kunci permintaan Anda */
+    max-width: 1200px;
+    /* Samakan lebarnya dengan hero-section */
+    margin: 40px auto;
+    /* 40px atas/bawah, 'auto' untuk kiri/kanan (otomatis ke tengah) */
+    border-radius: 12px;
+    /* Lengkungan di setiap sudut, samakan dengan hero-section */
+
+    /* [DIUBAH] Kita pindahkan flex-box ke .container di dalamnya */
+    /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); Opsional jika Anda mau shadow juga */
+}
+
+/* * [PENTING] 
+ * Pastikan kode .features-section .container Anda masih ada seperti ini.
+ * Jika belum ada, tambahkan ini di bawah .features-section
+*/
+.features-section .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    /* Pastikan kontainer mengisi box */
+    padding: 0;
+    /* Hapus padding default container */
+}
+
+.feature-box {
+    flex-basis: 30%;
+    /* Tiap box lebarnya 30% */
+    text-align: left;
+    padding: 20px;
+    position: relative;
+    /* Untuk ikon */
+}
+
+.feature-box i {
+    /* Style untuk ikon Font Awesome */
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 2rem;
+    color: var(--gold-accent);
+    opacity: 0.8;
+}
+
+.feature-box h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-accent);
+    /* Judul pakai warna emas */
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.feature-box p {
+    font-size: 0.95rem;
+    color: var(--text-color-light);
+    max-width: 90%;
+    /* Agar teks tidak menabrak ikon */
+    line-height: 1.5;
+}
+
+
+/* ...MENJADI SEPERTI INI */
+.main-footer {
+    background-color: var(--footer-dark);
+    color: #999;
+    text-align: center;
+    padding: 25px 0;
+    font-size: 0.9rem;
+
+    /* Properti 'position: fixed' dan 'transition' telah dihapus */
+    /* Ini membuatnya jadi elemen statis normal di bawah halaman */
+}
+
+/* === Responsive (Sederhana) === */
+@media (max-width: 992px) {
+    .main-nav ul li {
+        margin-left: 20px;
+        /* Rapatkan menu */
+    }
+
+    .hero-content {
+        max-width: 70%;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-header .container {
+        flex-direction: column;
+    }
+
+    .main-nav ul {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .main-nav ul li {
+        margin: 5px 10px;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        /* Lebar penuh di mobile */
+        text-align: center;
+        padding-right: 0;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .features-section .container {
+        flex-direction: column;
+        /* Susun 3 kolom ke bawah */
+    }
+
+    .feature-box {
+        flex-basis: 100%;
+        /* Lebar penuh */
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .feature-box i {
+        /* Posisikan ulang ikon */
+        position: static;
+        margin-bottom: 15px;
+    }
+
+    .feature-box p {
+        max-width: 100%;
+    }
+}
+
+/* === CSS UNTUK ANIMASI SCROLL === */
+
+/* 2A. Animasi Header */
+.main-header {
+    /* [TAMBAHKAN] Transisi mulus untuk properti 'transform' */
+    transition: transform 0.4s ease-in-out;
+
+    /* [SUDAH ADA] Pastikan ini sudah ada dari sebelumnya */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* [BARU] Kelas ini akan ditambahkan oleh JavaScript saat scroll ke BAWAH */
+.header-hidden {
+    /* Menggeser header ke atas (keluar layar) */
+    transform: translateY(-100%);
+}
+
+/* [BARU] Kelas ini akan ditambahkan oleh JavaScript saat scroll ke BAWAH */
+.footer-hidden {
+    /* Menggeser footer ke bawah (keluar layar) */
+    transform: translateY(100%);
+}
+
+/* [BARU] Reset Body & HTML */
+html,
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    /* Pastikan tidak ada yang membatasi body */
+    max-width: none;
+    overflow-x: hidden;
+    /* Mencegah scroll horizontal */
+}
+
+/* Di bagian paling atas style.css Anda */
+:root {
+    --primary-red: #A52B2B;
+    --secondary-red: #E25B5B;
+    --dark-brown: #5C2C27;
+    --gold-accent: #B89B66;
+    --cream-background: #F8F4EA;
+    /* Ini adalah krem TERANG */
+    --light-cream-background: #FFFBF5;
+    --text-color-dark: #333333;
+    --text-color-light: #F8F4EA;
+    --footer-dark: #2a2a2a;
+
+    /* [TAMBAHKAN INI] Warna krem yang lebih gelap untuk background */
+    --cream-darker-bg: #EADFCA;
+}
