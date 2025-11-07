@@ -37,6 +37,7 @@ $routes->get('auth/logout', 'Auth::logout');
 $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     // Dashboard Admin
     $routes->get('/', 'Admin::index');
+    $routes->get('dashboard', 'Admin::index'); // <-- Tambahan penting!
 
     // CRUD Layanan
     $routes->get('layanan', 'Admin::layanan');
@@ -52,4 +53,5 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     // Data Booking
     $routes->get('booking', 'Admin::bookings');
 });
+
 

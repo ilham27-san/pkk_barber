@@ -33,13 +33,12 @@ class Auth extends Controller
         'logged_in' => true
     ]);
 
+if ($user['role'] === 'admin') {
+    return redirect()->to(base_url('admin/dashboard'));
+} else {
+    return redirect()->to(base_url('/'));
+}
 
-
-        if ($user['role'] === 'admin') {
-            return redirect()->to('/admin');
-        } else {
-            return redirect()->to('/');
-        }
     } else {
         // 🧩 Tambahkan bagian ini untuk tahu kesalahan detail
         if (!$user) {
