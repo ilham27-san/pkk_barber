@@ -7,6 +7,7 @@
         <div class="hero-content">
             <h1>Welcome to BarberNow</h1>
             <p>Potong rambut modern, cepat, dan stylish untuk pria masa kini!</p>
+<<<<<<< HEAD
 
             <a href="#" class="btn-primary">Book Now</a>
         </div>
@@ -18,6 +19,18 @@
         <div class="feature-box">
             <i class="fas fa-cut"></i>
             <h3>Laset Pistetion</h3>
+=======
+            
+            <a href="#" class="btn-primary">Book Now</a>
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="container">
+        <div class="feature-box">
+            <i class="fas fa-cut"></i> <h3>Laset Pistetion</h3>
+>>>>>>> c9225c3d83a8295d50dcfdaf376fd22e8125fbca
             <p>Potong rambut modern dan pria masa kini.</p>
         </div>
         <div class="feature-box">
