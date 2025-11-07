@@ -10,7 +10,7 @@
 <body>
   <header>
     <nav>
-      <!-- [FIX] Menggunakan base_url() untuk semua link agar konsisten -->
+      <!-- [FIX] Menggunakan base_url() untuk semua link agar konsiste -->
       <a href="<?= base_url('/'); ?>">Home</a> |
       <a href="<?= base_url('about'); ?>">About Us</a> |
       <a href="<?= base_url('products'); ?>">Products</a> |
@@ -18,7 +18,7 @@
       <a href="<?= base_url('contact'); ?>">Contact</a> |
       <a href="<?= base_url('layanan'); ?>">Layanan</a> |
 
-      <?php if (session()->get('isLoggedIn')): ?>
+      <?php if (session()->get('logged_in')): ?>
         <span>Hi, <?= session()->get('username') ?></span> |
         <?php if (session()->get('role') === 'admin'): ?>
           <a href="<?= base_url('admin'); ?>">Admin</a> |
