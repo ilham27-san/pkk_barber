@@ -29,11 +29,30 @@
         ?>
         <ul>
           <li><a href="<?= base_url('/'); ?>" class="<?= ($segment1 == '') ? 'active' : '' ?>">Home</a></li>
-          <li><a href="<?= base_url('about'); ?>" class="<?= ($segment1 == 'about') ? 'active' : '' ?>">About Us</a></li>
+         <li class="dropdown">
+  <a href="<?= base_url('about'); ?>" class="<?= ($segment1 == 'about') ? 'active' : '' ?>">About Us ▾</a>
+
+  <ul class="dropdown-menu">
+    <li><a href="<?= base_url('about/history'); ?>">History</a></li>
+    <li><a href="<?= base_url('about/lokasi'); ?>">Lokasi</a></li>
+    <li><a href="<?= base_url('about/review'); ?>">Review</a></li>
+  </ul>
+</li>
+
+
           <li><a href="<?= base_url('products'); ?>" class="<?= ($segment1 == 'products') ? 'active' : '' ?>">Products</a></li>
           <li><a href="<?= base_url('gallery'); ?>" class="<?= ($segment1 == 'gallery') ? 'active' : '' ?>">Gallery</a></li>
           <li><a href="<?= base_url('contact'); ?>" class="<?= ($segment1 == 'contact') ? 'active' : '' ?>">Contact</a></li>
-          <li><a href="<?= base_url('layanan'); ?>" class="<?= ($segment1 == 'layanan') ? 'active' : '' ?>">Layanan</a></li>
+         <li class="dropdown">
+  <a href="<?= base_url('layanan'); ?>" class="<?= ($segment1 == 'layanan') ? 'active' : '' ?>">Layanan ▾</a>
+
+  <ul class="dropdown-menu">
+    <li><a href="<?= base_url('layanan/pricelist'); ?>">Pricelist</a></li>
+    <li><a href="<?= base_url('layanan/capster'); ?>">Capster</a></li>
+  </ul>
+</li>
+
+
 
           <?php if (session()->get('logged_in')): ?>
             <li><span>Hi, <?= session()->get('username') ?></span></li>

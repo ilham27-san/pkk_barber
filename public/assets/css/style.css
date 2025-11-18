@@ -922,3 +922,60 @@ h2.admin-title {
     color: var(--secondary-red); /* Warna merah terang */
     text-decoration: underline;
 }
+
+/* ================================
+   DROPDOWN NAVIGATION FIX
+================================ */
+
+/* Pastikan item dropdown bisa jadi posisi relatif */
+.main-nav ul li.dropdown {
+    position: relative;
+}
+
+/* Sembunyikan dropdown awalnya */
+.main-nav ul li .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* tepat di bawah menu induk */
+    left: 0;
+    background: #222;
+    padding: 15px 25px;
+    border-radius: 12px;
+    min-width: 220px;
+    z-index: 9999;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Link di dalam dropdown */
+.main-nav ul li .dropdown-menu li {
+    margin: 10px 0;
+    list-style: none;
+}
+
+.main-nav ul li .dropdown-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    display: block;
+}
+
+.main-nav ul li .dropdown-menu a:hover {
+    color: #facc15; /* hover kuning */
+}
+
+/* == Dropdown muncul hanya saat hover menu induk == */
+.main-nav ul li.dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+/* Hilangkan efek hover dari navbar yang terlalu lebar */
+.main-nav ul {
+    display: flex;
+    align-items: center;
+}
+
+.main-nav ul > li > a {
+    padding: 12px 10px;
+    display: inline-block;
+}
+

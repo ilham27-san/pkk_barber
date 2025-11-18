@@ -58,4 +58,12 @@ $routes->post('simpan_booking', 'Admin::simpan_booking');
 
 });
 
+// ABOUT
+$routes->get('/about/history', 'About::history');
+$routes->get('/about/lokasi', 'About::lokasi');
+$routes->get('/about/review', 'About::review');
+
+// LAYANAN
+$routes->get('/layanan/pricelist', 'Layanan::pricelist');
+$routes->get('/layanan/capster', 'Layanan::capster');
 
