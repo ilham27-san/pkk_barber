@@ -5,21 +5,21 @@
 <section class="contact-page">
     <div class="container">
         <h2>Kontak Kami</h2>
-        <p>Hubungi BarberNow untuk pertanyaan, kerja sama, atau reservasi. Kami siap bantu kamu tampil makin keren 💈</p>
+        <p>Hubungi SANBARBERS untuk pertanyaan, kerja sama, atau reservasi. Kami siap bantu kamu tampil makin keren 💈</p>
 
         <div class="contact-grid">
             <!-- Kolom kiri: Info kontak -->
             <div class="contact-info">
-                <img src="<?= base_url('assets/images/logo-barber.png'); ?>" alt="BarberNow Logo" width="180">
-                <h4>BarberNow Indonesia</h4>
-                <p>Jl. A. Yani No.308, Gumpang Lor, Pabelan,<br>Kec. Kartasura, Kab. Sukoharjo,<br>Jawa Tengah 57162</p>
+                <img src="<?= base_url('assets/images/logo-barber.png'); ?>" alt="SANBARBERS Logo" width="180">
+                <h4>SANBARBERS</h4>
+                <p>Jl. Widuri 1, Bangetayu Kulon, Kec. Genuk, Kota Semarang, Jawa Tengah</p>
                 <ul>
-                    <li>📞 <a href="tel:082177332015">0821 7733 2015</a></li>
-                    <li>💬 <a href="https://wa.me/6282177332015" target="_blank">Chat WhatsApp</a></li>
-                    <li>✉️ <a href="mailto:info@barbernow.com">info@barbernow.com</a></li>
+                    <li>📞 <a href="tel:+6281513728023">+62 815-1372-8023</a></li>
+                    <li>💬 <a href="https://wa.me/6281513728023" target="_blank">Chat WhatsApp</a></li>
+                    <li>✉️ <a href="mailto:bagasilham@gmail.com">bagasilham@gmail.com</a></li>
                 </ul>
                 <div class="social-icons">
-                    <a href="https://www.instagram.com/barbernow" target="_blank">Instagram</a> |
+                    <a href="https://www.instagram.com/sanbarbers" target="_blank">Instagram</a> |
                     <a href="https://www.facebook.com/" target="_blank">Facebook</a> |
                     <a href="https://www.youtube.com/" target="_blank">YouTube</a>
                 </div>

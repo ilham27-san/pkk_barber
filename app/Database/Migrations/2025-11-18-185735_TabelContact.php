@@ -11,7 +11,7 @@ class CreateContactsTableSafe extends Migration
         $db = \Config\Database::connect();
         $forge = \Config\Database::forge();
 
-        // Cek apakah tabel sudah ada
+        // Jika tabel belum ada, buat tabel baru
         if (! $db->tableExists('contacts')) {
             $forge->addField([
                 'id' => [
@@ -39,6 +39,12 @@ class CreateContactsTableSafe extends Migration
                     'type' => 'TEXT',
                     'null' => false,
                 ],
+                'status' => [
+                    'type'       => 'VARCHAR',
+                    'constraint' => '20',
+                    'default'    => 'new',
+                    'null'       => false,
+                ],
                 'created_at' => [
                     'type'    => 'DATETIME',
                     'null'    => true,
@@ -52,23 +58,31 @@ class CreateContactsTableSafe extends Migration
             $forge->addKey('id', true);
             $forge->createTable('contacts');
         } else {
-            // Contoh menambahkan kolom baru jika belum ada
-            if (! $db->fieldExists('status', 'contacts')) {
-                $forge->addColumn('contacts', [
-                    'status' => [
-                        'type'       => 'VARCHAR',
-                        'constraint' => '20',
-                        'default'    => 'new',
-                        'null'       => false,
-                    ]
-                ]);
+            // Jika tabel sudah ada, pastikan kolom yang dibutuhkan ada
+            $columns = [
+                'name'       => ['type' => 'VARCHAR', 'constraint' => '50', 'null' => false],
+                'email'      => ['type' => 'VARCHAR', 'constraint' => '100', 'null' => false],
+                'phone'      => ['type' => 'VARCHAR', 'constraint' => '20', 'null' => false],
+                'message'    => ['type' => 'TEXT', 'null' => false],
+                'status'     => ['type' => 'VARCHAR', 'constraint' => '20', 'default' => 'new', 'null' => false],
+                'created_at' => ['type' => 'DATETIME', 'null' => true],
+                'updated_at' => ['type' => 'DATETIME', 'null' => true],
+            ];
+
+            foreach ($columns as $columnName => $definition) {
+                if (! $db->fieldExists($columnName, 'contacts')) {
+                    $forge->addColumn('contacts', [
+                        $columnName => $definition
+                    ]);
+                }
             }
         }
     }
 
     public function down()
     {
-        // Hati-hati, ini akan menghapus tabel
-        // $this->forge->dropTable('contacts', true);
+        // Aman untuk rollback
+        $forge = \Config\Database::forge();
+        $forge->dropTable('contacts', true);
     }
 }
