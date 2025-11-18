@@ -52,6 +52,7 @@
   </ul>
 </li>
 
+<li><a href="<?= base_url('booking'); ?>" class="<?= ($segment1 == 'booking') ? 'active' : '' ?>">Booking</a></li>
 
 
           <?php if (session()->get('logged_in')): ?>
