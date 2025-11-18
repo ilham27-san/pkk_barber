@@ -6,8 +6,10 @@ use CodeIgniter\Model;
 
 class ContactModel extends Model
 {
-    protected $table = 'contact_messages';
+    protected $table = 'contacts';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['nama', 'email', 'pesan', 'created_at'];
+    protected $allowedFields = ['name', 'email', 'phone', 'message', 'created_at'];
     protected $useTimestamps = true;
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
 }

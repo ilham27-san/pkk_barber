@@ -19,6 +19,9 @@ $routes->get('about', 'Page::about');
 $routes->get('products', 'Page::products');
 $routes->get('gallery', 'Page::gallery');
 $routes->get('contact', 'Page::contact');
+$routes->get('contact', 'Contact::index');
+$routes->post('contact/send', 'Contact::send');
+
 
 
 // ======================================================
