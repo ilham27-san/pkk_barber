@@ -58,7 +58,7 @@ class Review extends Controller
     // create (from form)
     public function add()
     {
-        if (! session()->get('isLoggedIn')) {
+        if (! session()->get('logged_in')) {
             return redirect()->to('/auth/login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
