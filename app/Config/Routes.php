@@ -11,7 +11,7 @@ use CodeIgniter\Router\RouteCollection;
 // ======================================================
 $routes->get('/', 'Home::index');
 $routes->get('layanan', 'Home::layanan');
-$routes->get('booking/(:num)', 'Booking::form/$1');
+$routes->get('booking', 'Booking::form');  // versi tanpa angka
 $routes->post('booking/submit', 'Booking::submit');
 
 // Halaman Informasi Publik
