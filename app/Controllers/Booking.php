@@ -11,12 +11,10 @@ class Booking extends BaseController
     public function form()
     {
         $layananModel = new LayananModel();
-        $layanan = $layananModel->findAll(); // tampilkan semua layanan
+        $layanan = $layananModel->findAll();
 
-        return view('layout/template', [
-            'content' => view('booking/form_booking', [
-                'layanan' => $layanan
-            ])
+        return view('booking/form_booking', [
+            'layanan' => $layanan
         ]);
     }
 
@@ -24,12 +22,12 @@ class Booking extends BaseController
     {
         $session = session();
 
-        // Cek login
         if (! $session->get('logged_in')) {
-            return redirect()->to('/auth/login')->with('error', 'Silakan login terlebih dahulu');
+            return redirect()
+                ->to('/auth/login')
+                ->with('error', 'Silakan login terlebih dahulu');
         }
 
-        // Validasi
         $rules = [
             'id_layanan' => 'required|integer',
             'tanggal'    => 'required|valid_date',
@@ -37,10 +35,12 @@ class Booking extends BaseController
         ];
 
         if (! $this->validate($rules)) {
-            return redirect()->back()->withInput()->with('error', 'Data tidak valid');
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Data tidak valid');
         }
 
-        // Simpan ke database
         $bookingModel = new BookingModel();
 
         $data = [
@@ -53,6 +53,8 @@ class Booking extends BaseController
 
         $bookingModel->insert($data);
 
-        return redirect()->to('/')->with('success', 'Booking berhasil dibuat');
+        return redirect()
+            ->to('/booking')
+            ->with('success', 'Booking berhasil dibuat');
     }
 }
