@@ -29,7 +29,7 @@
         ?>
         <ul>
           <li><a href="<?= base_url('/'); ?>" class="<?= ($segment1 == '') ? 'active' : '' ?>">Home</a></li>
-         <li class="dropdown">
+<li class="dropdown">
   <a href="<?= base_url('about'); ?>" class="<?= ($segment1 == 'about') ? 'active' : '' ?>">About Us ▾</a>
 
   <ul class="dropdown-menu">
@@ -38,6 +38,7 @@
     <li><a href="<?= base_url('about/review'); ?>">Review</a></li>
   </ul>
 </li>
+
 
 
           <li><a href="<?= base_url('products'); ?>" class="<?= ($segment1 == 'products') ? 'active' : '' ?>">Products</a></li>
