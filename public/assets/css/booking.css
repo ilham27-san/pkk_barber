@@ -1,92 +1,114 @@
-/* Container utama */
 .booking-page {
-    font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 50px 20px;
-    min-height: 80vh;
-}
-
-/* Judul step */
-.booking-page h2 {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 40px;
-    color: #343a40;
-    font-weight: 700;
-}
-
-/* Form container */
-.booking-page form {
-    background: #fff;
-    padding: 40px 30px;
-    max-width: 600px;
+    max-width: 900px;
     margin: 0 auto;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
 }
 
-.booking-page form:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Label */
-.booking-page label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #495057;
-}
-
-/* Input & select */
-.booking-page select,
-.booking-page input[type="text"],
-.booking-page input[type="date"],
-.booking-page input[type="time"] {
-    width: 100%;
-    padding: 12px 15px;
-    border-radius: 8px;
-    border: 1px solid #ced4da;
+.layanan-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    max-height: 400px;
+    overflow-y: auto;
     margin-bottom: 20px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    align-items: stretch; /* semua card sama tinggi */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.2) transparent;
+}
+.layanan-container::-webkit-scrollbar {
+    width: 6px;
+}
+.layanan-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 3px;
 }
 
-.booking-page select:focus,
-.booking-page input:focus {
-    border-color: #28a745;
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
-    outline: none;
-}
-
-/* Tombol submit */
-.booking-page button {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    background: #28a745;
+.layanan-card {
+    display: flex;
+    flex-direction: column; /* tombol selalu di bawah */
+    justify-content: space-between;
+    background: #1c1c1c;
     color: #fff;
-    font-weight: 700;
-    font-size: 1rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    flex: 1 1 250px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 150px; /* tinggi seragam, sesuaikan jika perlu */
+}
+.layanan-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-.booking-page button:hover {
-    background: #218838;
+.layanan-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.layanan-name {
+    font-weight: 600;
+}
+.layanan-price {
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+.select-layanan-btn {
+    flex-shrink: 0;      /* jangan mengecil */
+    width: 100%;          /* tombol full lebar card */
+    text-align: center;
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: #fff;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    margin-top: auto;    /* tombol selalu di bawah */
+}
+.select-layanan-btn:hover {
+    background-color: #218838;
+}
+.select-layanan-btn:focus {
+    outline: 2px solid #28a745;
+    outline-offset: 2px;
+}
+.select-layanan-btn.selected {
+    background-color: #2aa04a;
     transform: translateY(-2px);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .booking-page form {
-        padding: 30px 20px;
-    }
+form {
+    background: #1c1c1c;
+    padding: 20px;
+    border-radius: 12px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+form select, form button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    box-sizing: border-box;
+}
+form button {
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+form button:disabled {
+    background-color: #444;
+    cursor: not-allowed;
+}
 
-    .booking-page h2 {
-        font-size: 1.75rem;
+@media (max-width: 600px) {
+    .layanan-card {
+        flex: 1 1 100%;
+        height: auto; /* card menyesuaikan layar kecil */
     }
 }
