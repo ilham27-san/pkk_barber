@@ -1,60 +1,75 @@
-<?php
+<?php namespace App\Controllers;
 
-namespace App\Controllers;
-
-use App\Controllers\BaseController;
-use App\Models\BookingModel;
 use App\Models\LayananModel;
+use App\Models\BookingModel;
 
 class Booking extends BaseController
 {
-    public function form()
-    {
-        $layananModel = new LayananModel();
-        $layanan = $layananModel->findAll();
+    protected $layananModel;
+    protected $bookingModel;
 
-        return view('booking/form_booking', [
-            'layanan' => $layanan
-        ]);
+    public function __construct()
+    {
+        $this->layananModel = new LayananModel();
+        $this->bookingModel = new BookingModel();
+        helper(['form', 'url', 'session']);
+    }
+
+    public function step1()
+    {
+        $data['layanan'] = $this->layananModel->findAll();
+        return view('booking/step1', $data);
+    }
+
+    public function step1Submit()
+    {
+        session()->set('booking_step1', $this->request->getPost());
+        return redirect()->to('/booking/step2');
+    }
+
+    public function step2()
+    {
+        return view('booking/step2');
+    }
+
+    public function step2Submit()
+    {
+        session()->set('booking_step2', $this->request->getPost());
+        return redirect()->to('/booking/step3');
+    }
+
+    public function step3()
+    {
+        return view('booking/step3');
+    }
+
+    public function step3Submit()
+    {
+        session()->set('booking_step3', $this->request->getPost());
+        return redirect()->to('/booking/step4');
+    }
+
+    public function step4()
+    {
+        $data['booking'] = array_merge(
+            session()->get('booking_step1') ?? [],
+            session()->get('booking_step2') ?? [],
+            session()->get('booking_step3') ?? []
+        );
+        return view('booking/step4', $data);
     }
 
     public function submit()
     {
-        $session = session();
+        $bookingData = array_merge(
+            session()->get('booking_step1') ?? [],
+            session()->get('booking_step2') ?? [],
+            session()->get('booking_step3') ?? []
+        );
 
-        if (! $session->get('logged_in')) {
-            return redirect()
-                ->to('/auth/login')
-                ->with('error', 'Silakan login terlebih dahulu');
-        }
+        $this->bookingModel->insert($bookingData);
 
-        $rules = [
-            'id_layanan' => 'required|integer',
-            'tanggal'    => 'required|valid_date',
-            'jam'        => 'required'
-        ];
-
-        if (! $this->validate($rules)) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', 'Data tidak valid');
-        }
-
-        $bookingModel = new BookingModel();
-
-        $data = [
-            'id_user'    => $session->get('id'),
-            'id_layanan' => $this->request->getPost('id_layanan'),
-            'tanggal'    => $this->request->getPost('tanggal'),
-            'jam'        => $this->request->getPost('jam'),
-            'status'     => 'pending'
-        ];
-
-        $bookingModel->insert($data);
-
-        return redirect()
-            ->to('/booking')
-            ->with('success', 'Booking berhasil dibuat');
+        session()->remove(['booking_step1','booking_step2','booking_step3']);
+        return redirect()->to('/booking')->with('success', 'Booking berhasil!');
     }
 }
