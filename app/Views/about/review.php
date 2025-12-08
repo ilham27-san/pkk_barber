@@ -11,6 +11,7 @@ $reviews = $reviews ?? [];
 
 <div class="review-page container">
 
+  <!-- TOP BAR -->
   <div class="review-top">
     <div class="avg-box">
       <div class="avg-value"><?= esc($avg_rating) ?></div>
@@ -33,13 +34,16 @@ $reviews = $reviews ?? [];
 
   <h3>Tulis Review</h3>
 
+  <!-- ALERT -->
   <?php if (session()->getFlashdata('error')): ?>
-    <div class="alert error"><?= session()->getFlashdata('error') ?></div>
-  <?php endif; ?>
-  <?php if (session()->getFlashdata('success')): ?>
-    <div class="alert success"><?= session()->getFlashdata('success') ?></div>
+    <div class="alert error"><?= esc(session()->getFlashdata('error')) ?></div>
   <?php endif; ?>
 
+  <?php if (session()->getFlashdata('success')): ?>
+    <div class="alert success"><?= esc(session()->getFlashdata('success')) ?></div>
+  <?php endif; ?>
+
+  <!-- FORM REVIEW -->
   <?php if (session()->get('logged_in')): ?>
     <form action="<?= base_url('about/review/add') ?>" method="post" class="review-form">
 
@@ -68,6 +72,7 @@ $reviews = $reviews ?? [];
 
   <h3>Semua Review</h3>
 
+  <!-- LIST REVIEW -->
   <?php if (!empty($reviews)): ?>
     <?php foreach ($reviews as $r): ?>
 
@@ -78,23 +83,31 @@ $reviews = $reviews ?? [];
         </div>
 
         <div class="body">
+
+          <!-- META -->
           <div class="meta">
             <strong><?= esc($r['username']) ?></strong>
-            <time><?= esc($r['created_at']) ?></time>
+            <time><?= esc(date('d M Y H:i', strtotime($r['created_at']))) ?></time>
           </div>
 
+          <!-- STAR -->
           <div class="rating">
             <?php for ($i=1;$i<=5;$i++): ?>
               <span class="<?= $i <= $r['rating'] ? 'star-on' : 'star-off' ?>">★</span>
             <?php endfor; ?>
           </div>
 
+          <!-- KOMENTAR -->
           <p class="komentar"><?= esc($r['komentar']) ?></p>
 
+          <!-- ACTIONS -->
           <div class="card-actions">
-            <?php if (session()->get('username') == $r['username']): ?>
+            <?php if (session()->get('username') === $r['username']): ?>
               <a class="link-edit" href="<?= base_url('about/review/edit/'.$r['id']) ?>">Edit</a>
-              <a class="link-delete" href="<?= base_url('about/review/delete/'.$r['id']) ?>" onclick="return confirm('Hapus review?')">Hapus</a>
+              <a class="link-delete" href="<?= base_url('about/review/delete/'.$r['id']) ?>"
+                 onclick="return confirm('Hapus review?')">
+                Hapus
+              </a>
             <?php endif; ?>
           </div>
 
@@ -103,8 +116,9 @@ $reviews = $reviews ?? [];
 
     <?php endforeach; ?>
 
+    <!-- PAGINATION -->
     <div class="pager">
-      <?= $pager->links() ?>
+      <?= isset($pager) ? $pager->links() : '' ?>
     </div>
 
   <?php else: ?>
@@ -113,6 +127,7 @@ $reviews = $reviews ?? [];
 
 </div>
 
+<!-- SCRIPT RATING -->
 <script>
   document.querySelectorAll('.stars-input .star').forEach(star => {
     star.addEventListener('mouseenter', function(){
