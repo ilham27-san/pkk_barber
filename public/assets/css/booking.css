@@ -1,0 +1,92 @@
+/* Container utama */
+.booking-page {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 50px 20px;
+    min-height: 80vh;
+}
+
+/* Judul step */
+.booking-page h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #343a40;
+    font-weight: 700;
+}
+
+/* Form container */
+.booking-page form {
+    background: #fff;
+    padding: 40px 30px;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.booking-page form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Label */
+.booking-page label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Input & select */
+.booking-page select,
+.booking-page input[type="text"],
+.booking-page input[type="date"],
+.booking-page input[type="time"] {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.booking-page select:focus,
+.booking-page input:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+    outline: none;
+}
+
+/* Tombol submit */
+.booking-page button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: #28a745;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.booking-page button:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .booking-page form {
+        padding: 30px 20px;
+    }
+
+    .booking-page h2 {
+        font-size: 1.75rem;
+    }
+}

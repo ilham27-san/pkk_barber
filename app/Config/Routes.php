@@ -11,8 +11,22 @@ use CodeIgniter\Router\RouteCollection;
 // ======================================================
 $routes->get('/', 'Home::index');
 $routes->get('layanan', 'Home::layanan');
-$routes->get('booking', 'Booking::form');  // versi tanpa angka
+
+$routes->get('booking', 'Booking::step1');                // akses /booking → Step 1
+$routes->get('booking/step1', 'Booking::step1');
+$routes->post('booking/step1Submit', 'Booking::step1Submit');
+
+$routes->get('booking/step2', 'Booking::step2');
+$routes->post('booking/step2Submit', 'Booking::step2Submit');
+
+$routes->get('booking/step3', 'Booking::step3');
+$routes->post('booking/step3Submit', 'Booking::step3Submit');
+
+$routes->get('booking/step4', 'Booking::step4');
 $routes->post('booking/submit', 'Booking::submit');
+
+
+
 
 // Halaman Informasi Publik
 $routes->get('about', 'Page::about');
