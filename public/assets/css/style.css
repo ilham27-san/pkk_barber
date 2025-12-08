@@ -1374,3 +1374,97 @@ h2.admin-title {
     display: flex; align-items: center; justify-content: center;
     border: 2px solid #fff;
 }
+
+/*
+========================================
+  STYLE HALAMAN HISTORY (REFINED & CLEAN)
+========================================
+*/
+
+.history-section {
+    padding: 60px 0;
+    text-align: center;
+}
+
+.history-title-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--dark-brown);
+    margin-bottom: 15px;
+}
+
+.history-subtitle {
+    color: #666;
+    font-size: 1rem;
+    max-width: 700px;
+    margin: 0 auto 50px;
+    line-height: 1.6;
+}
+
+/* Grid Layout */
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsif */
+    gap: 30px;
+    padding: 10px;
+}
+
+/* Kartu History yang Lebih Bersih */
+.history-card {
+    background-color: #ffffff;
+    border-radius: 15px; /* Sudut membulat friendly */
+    padding: 30px;
+    text-align: left;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08); /* Shadow halus profesional */
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05); /* Border sangat tipis untuk definisi */
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Agar tinggi kartu seragam */
+}
+
+/* Efek Hover yang Elegan */
+.history-card:hover {
+    transform: translateY(-5px); /* Naik sedikit */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    border-color: var(--gold-accent); /* Aksen emas halus saat hover */
+}
+
+/* Badge Tahun Baru - Jelas & Menarik */
+.history-year-badge {
+    display: inline-block;
+    background-color: var(--dark-brown); /* Latar gelap */
+    color: var(--gold-accent); /* Teks emas */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 6px 18px;
+    border-radius: 50px; /* Bentuk pil */
+    margin-bottom: 20px;
+    align-self: flex-start;
+}
+
+/* Konten Ikon & Teks */
+.history-icon-wrapper {
+    margin-bottom: 15px;
+}
+
+.history-icon {
+    font-size: 1.8rem;
+    color: var(--primary-red); /* Warna ikon merah aksen */
+}
+
+.history-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--dark-brown);
+    margin-bottom: 12px;
+}
+
+.history-card p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.7;
+    flex-grow: 1; /* Mengisi ruang agar rapi */
+}
