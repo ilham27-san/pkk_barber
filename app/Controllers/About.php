@@ -21,20 +21,21 @@ class About extends BaseController
     }
 
     // =================================================================
-    // 2. HALAMAN REVIEW (LOGIKA DIPERBAIKI)
+    // 2. HALAMAN REVIEW (SORTING SUDAH BENAR)
     // =================================================================
     public function review()
     {
         $model = new ReviewModel();
 
-        // [PERBAIKAN 1] Ambil input user DULUAN sebelum query
+        // [LOGIC BENAR] Ambil input user DULUAN sebelum query
         $sort = $this->request->getGet('sort') ?? 'newest';
 
-        // [PERBAIKAN 2] Siapkan Builder (jangan di-findAll dulu)
+        // Siapkan Builder
+        // Kita gunakan LEFT JOIN agar review tetap muncul walau user dihapus
         $builder = $model->select('reviews.*, users.username')
             ->join('users', 'users.id = reviews.user_id', 'left');
 
-        // [PERBAIKAN 3] Terapkan logika sorting berdasarkan input user
+        // Terapkan logika sorting berdasarkan input user
         switch ($sort) {
             case 'oldest':
                 $builder->orderBy('reviews.created_at', 'ASC'); // Paling Lama
@@ -51,7 +52,7 @@ class About extends BaseController
                 break;
         }
 
-        // [PERBAIKAN 4] Baru eksekusi query setelah aturan sort diterapkan
+        // Eksekusi query setelah aturan sort diterapkan
         $data['reviews'] = $builder->findAll();
 
         // Hitung Rata-rata Rating
@@ -103,7 +104,7 @@ class About extends BaseController
     }
 
     // =================================================================
-    // 4. FUNGSI HAPUS REVIEW
+    // 4. FUNGSI HAPUS REVIEW (ADMIN & PEMILIK)
     // =================================================================
     public function delete($id)
     {
@@ -114,8 +115,19 @@ class About extends BaseController
         $model = new ReviewModel();
         $review = $model->find($id);
 
-        // Security: Pastikan hanya pemilik yang bisa menghapus
-        if (!$review || $review['user_id'] != session()->get('id')) {
+        if (!$review) {
+            return redirect()->to('about/review')->with('error', 'Data review tidak ditemukan.');
+        }
+
+        // --- LOGIKA KEAMANAN DIPERBAIKI ---
+        // 1. Cek apakah user adalah PEMILIK review
+        $isOwner = $review['user_id'] == session()->get('id');
+
+        // 2. Cek apakah user adalah ADMIN (Pastikan session 'role' diset saat login)
+        $isAdmin = session()->get('role') == 'admin';
+
+        // 3. Jika BUKAN Pemilik DAN BUKAN Admin, tendang keluar
+        if (!$isOwner && !$isAdmin) {
             return redirect()->to('about/review')->with('error', 'Anda tidak berhak menghapus ulasan ini.');
         }
 

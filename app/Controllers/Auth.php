@@ -2,72 +2,68 @@
 
 namespace App\Controllers;
 
-$model = new UserModel();
+use App\Models\UserModel;
 use CodeIgniter\Controller;
 
 class Auth extends Controller
 {
     public function login()
     {
-        return view('auth/login');
+        echo view('auth/login');
     }
 
     public function attempt()
-{
-    $session = session();
-    $model   = new UserModel();
+    {
+        $session = session();
+        $model = new \App\Models\UserModel();
 
-    $email    = $this->request->getPost('email');
-    $password = $this->request->getPost('password');
+        $email = $this->request->getPost('email');
+        $password = $this->request->getPost('password');
 
-    $user = $model->where('email', $email)->first();
+        $user = $model->where('email', $email)->first();
 
-    if (!$user) {
-        return redirect()->back()->with('error', 'User tidak ditemukan di database');
+        if ($user && password_verify($password, $user['password'])) {
+            // 🔧 Ubah 'logged_in' jadi 'isLoggedIn'
+            $session->set([
+                'id'         => $user['id'],
+                'email'      => $user['email'],
+                'username'   => $user['username'],
+                'role'       => $user['role'],
+                'logged_in' => true // ✅ Ini yang dibaca oleh template.php
+            ]);
+
+            // 🔁 Redirect sesuai role
+            if ($user['role'] === 'admin') {
+                return redirect()->to(base_url('admin'));
+            } else {
+                return redirect()->to(base_url('/'));
+            }
+        } else {
+            // 🧩 Tampilkan pesan error
+            if (!$user) {
+                return redirect()->back()->with('error', 'User tidak ditemukan di database');
+            } elseif (!password_verify($password, $user['password'])) {
+                return redirect()->back()->with('error', 'Password salah (tidak cocok dengan hash)');
+            }
+        }
     }
-
-    if (!password_verify($password, $user['password'])) {
-        return redirect()->back()->with('error', 'Password salah');
-    }
-
-    // Set session dengan benar
-    $session->set([
-        'id'        => $user['id'],       // <- INI WAJIB! supaya user_id tidak NULL
-        'email'     => $user['email'],
-        'username'  => $user['username'],
-        'role'      => $user['role'],
-        'logged_in' => true
-    ]);
-
-    // Redirect berdasarkan role
-    if ($user['role'] === 'admin') {
-        return redirect()->to(base_url('admin'));
-    } else {
-        return redirect()->to(base_url('/'));
-    }
-}
-
 
     public function register()
     {
-        return view('auth/register');
+        echo view('auth/register');
     }
 
     public function store()
     {
         $model = new UserModel();
-
         $data = [
             'username' => $this->request->getPost('username'),
-            'email'    => $this->request->getPost('email'),
+            'email' => $this->request->getPost('email'),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_BCRYPT),
-            'role'     => 'pelanggan'
+            'role' => 'pelanggan'
         ];
-
         $model->insert($data);
-
-        return redirect()->to('/auth/login')
-            ->with('success', 'Registrasi berhasil, silakan login.');
+        return redirect()->to('/auth/login')->with('success', 'Registrasi berhasil, silakan login.');
     }
 
     public function logout()
