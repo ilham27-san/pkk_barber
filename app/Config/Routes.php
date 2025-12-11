@@ -56,14 +56,15 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     $routes->get('/', 'Admin::index');
     $routes->get('dashboard', 'Admin::index'); // <-- Tambahan penting!
 
-    // CRUD Layanan
-    $routes->get('layanan', 'Admin::layanan');
-    $routes->get('layanan/create', 'Admin::createLayanan');
-    $routes->post('layanan/store', 'Admin::storeLayanan');
-    $routes->get('layanan/edit/(:num)', 'Admin::editLayanan/$1');
-    $routes->post('layanan/update/(:num)', 'Admin::updateLayanan/$1');
-    $routes->get('layanan/delete/(:num)', 'Admin::deleteLayanan/$1');
-    
+  // CRUD Layanan
+$routes->get('layanan', 'Admin::layanan');              // List layanan
+$routes->get('layanan/create', 'Admin::createLayanan'); // Form tambah
+$routes->post('layanan/store', 'Admin::storeLayanan');  // Simpan baru
+$routes->get('layanan/edit/(:num)', 'Admin::editLayanan/$1'); // Form edit
+$routes->post('layanan/update/(:num)', 'Admin::updateLayanan/$1'); // Update data
+$routes->post('layanan/delete/(:num)', 'Admin::deleteLayanan/$1'); // Hapus POST
+
+   
     // Data Pelanggan
     $routes->get('pelanggan', 'Admin::pelanggan');
     

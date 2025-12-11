@@ -1,19 +1,16 @@
 <?= $this->extend('layout/template'); ?>
-
 <?= $this->section('content'); ?>
 
 <div class="admin-container">
-
     <div class="content-box">
-
         <div class="admin-header">
             <h2 class="admin-title">Kelola Layanan</h2>
-            
             <a href="<?= base_url('admin/layanan/create') ?>" class="btn-primary">Tambah Layanan</a>
         </div>
 
         <table class="admin-table">
-            <thead> <tr>
+            <thead>
+                <tr>
                     <th>ID</th>
                     <th>Nama Layanan</th>
                     <th>Harga</th>
@@ -21,16 +18,21 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody> <?php if (!empty($layanan)): ?>
+            <tbody>
+                <?php if (!empty($layanan)): ?>
                     <?php foreach ($layanan as $row): ?>
                         <tr>
-                            <td><?= $row['id'] ?></td>
-                            <td><?= $row['nama_layanan'] ?></td>
+                            <td><?= esc($row['id']) ?></td>
+                            <td><?= esc($row['nama_layanan']) ?></td>
                             <td>Rp <?= number_format($row['harga'], 0, ',', '.') ?></td>
-                            <td><?= $row['deskripsi'] ?></td>
+                            <td><?= esc($row['deskripsi']) ?></td>
                             <td class="action-links">
                                 <a href="<?= base_url('admin/layanan/edit/' . $row['id']) ?>" class="btn-edit">Edit</a>
-                                <a href="<?= base_url('admin/layanan/delete/' . $row['id']) ?>" class="btn-delete" onclick="return confirm('Yakin ingin hapus?')">Hapus</a>
+
+                                <form action="<?= base_url('admin/layanan/delete/' . $row['id']) ?>" method="post" style="display:inline;">
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="btn-delete" onclick="return confirm('Yakin ingin hapus?')">Hapus</button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -41,5 +43,7 @@
                 <?php endif; ?>
             </tbody>
         </table>
-        
-    </div> </div> <?= $this->endSection(); ?>
+    </div>
+</div>
+
+<?= $this->endSection(); ?>
