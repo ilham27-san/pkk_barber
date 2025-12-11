@@ -1468,3 +1468,22 @@ h2.admin-title {
     line-height: 1.7;
     flex-grow: 1; /* Mengisi ruang agar rapi */
 }
+
+/* ========================================
+   FIX: STICKY FOOTER (VERSI HANYA CSS)
+   ========================================
+*/
+
+/* 1. Pastikan Body mengambil tinggi minimal 100% layar */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 100vh = 100% Viewport Height (Tinggi Layar) */
+    margin: 0; 
+}
+
+/* 2. Kunci Ajaib: Dorong Footer ke Bawah */
+/* Gunakan selector yang sesuai dengan footer Anda (tag footer atau class .main-footer) */
+footer, .main-footer { 
+    margin-top: auto; 
+}
