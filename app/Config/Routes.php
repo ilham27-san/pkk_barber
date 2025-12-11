@@ -79,16 +79,16 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
 $routes->get('/about/history', 'About::history');
 $routes->get('/about/lokasi', 'About::lokasi');
 $routes->get('/about/review', 'About::review');
-// Review (About -> Review)
-// Pastikan tidak ada duplikasi routes untuk about/review
-$routes->group('about/review', function ($routes) {
-    $routes->get('/', 'Review::index');              // Ke file Review.php method index
-    $routes->post('add', 'Review::add');             // Ke file Review.php method add
-    $routes->get('delete/(:num)', 'Review::delete/$1'); // Ke file Review.php method delete
 
-    // Fitur Edit (Jika nanti dibuat)
-    $routes->get('edit/(:num)', 'Review::edit/$1');
-    $routes->post('update/(:num)', 'Review::update/$1');
+$routes->group('about/review', function ($routes) {
+    // Tampil Halaman
+    $routes->get('/', 'About::review');
+
+    // Proses Tambah (POST)
+    $routes->post('add', 'About::add');
+
+    // Proses Hapus (GET dengan ID)
+    $routes->get('delete/(:num)', 'About::delete/$1');
 });
 
 // LAYANAN
