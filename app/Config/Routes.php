@@ -56,26 +56,23 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     $routes->get('/', 'Admin::index');
     $routes->get('dashboard', 'Admin::index'); // <-- Tambahan penting!
 
-  // CRUD Layanan
-$routes->get('layanan', 'Admin::layanan');              // List layanan
-$routes->get('layanan/create', 'Admin::createLayanan'); // Form tambah
-$routes->post('layanan/store', 'Admin::storeLayanan');  // Simpan baru
-$routes->get('layanan/edit/(:num)', 'Admin::editLayanan/$1'); // Form edit
-$routes->post('layanan/update/(:num)', 'Admin::updateLayanan/$1'); // Update data
-$routes->post('layanan/delete/(:num)', 'Admin::deleteLayanan/$1'); // Hapus POST
+    // CRUD Layanan
+    $routes->get('layanan', 'Admin::layanan');              // List layanan
+    $routes->get('layanan/create', 'Admin::createLayanan'); // Form tambah
+    $routes->post('layanan/store', 'Admin::storeLayanan');  // Simpan baru
+    $routes->get('layanan/edit/(:num)', 'Admin::editLayanan/$1'); // Form edit
+    $routes->post('layanan/update/(:num)', 'Admin::updateLayanan/$1'); // Update data
+    $routes->post('layanan/delete/(:num)', 'Admin::deleteLayanan/$1'); // Hapus POST
 
-   
+
     // Data Pelanggan
     $routes->get('pelanggan', 'Admin::pelanggan');
-    
+
     // Data Booking
     $routes->post('update_status/(:num)', 'Admin::updateStatus/$1');
     $routes->get('booking', 'Admin::booking');
     $routes->get('tambah_booking', 'Admin::tambah_booking');
     $routes->post('simpan_booking', 'Admin::simpan_booking');
-
-
-
 });
 
 // ABOUT
@@ -93,5 +90,3 @@ $routes->get('about/review/delete/(:num)', 'Review::delete/$1');
 // LAYANAN
 $routes->get('/layanan/pricelist', 'Layanan::pricelist');
 $routes->get('/layanan/capster', 'Layanan::capster');
-
-
