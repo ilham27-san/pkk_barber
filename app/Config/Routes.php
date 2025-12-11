@@ -69,10 +69,14 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     $routes->get('pelanggan', 'Admin::pelanggan');
 
     // Data Booking
+    $routes->get('/', 'Admin::index');          // Dashboard
+
+    // Booking
+    // Booking
     $routes->post('update_status/(:num)', 'Admin::updateStatus/$1');
     $routes->get('booking', 'Admin::booking');
-    $routes->get('tambah_booking', 'Admin::tambah_booking');
-    $routes->post('simpan_booking', 'Admin::simpan_booking');
+    $routes->get('booking/tambah', 'Admin::tambahBooking');     // URL: admin/booking/tambah
+    $routes->post('booking/simpan', 'Admin::simpanBooking');    // URL: admin/booking/simpan
 });
 
 // ABOUT

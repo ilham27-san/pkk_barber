@@ -7,7 +7,7 @@
 
         <div class="admin-header">
             <h2 class="admin-title">Daftar Booking</h2>
-            <a href="<?= base_url('admin/tambah_booking') ?>" class="btn-primary">+ Tambah Booking Baru</a>
+            <a href="<?= base_url('admin/booking/tambah') ?>" class="btn-primary">+ Tambah Booking Baru</a>
         </div>
 
         <?php if (session()->getFlashdata('success')): ?>
@@ -41,10 +41,10 @@
                                 <form action="<?= base_url('admin/update_status/' . $booking['id']) ?>" method="post">
                                     <?= csrf_field() ?>
                                     <select name="status" onchange="this.form.submit()">
-                                        <option value="pending"   <?= ($booking['status'] ?? '') === 'pending' ? 'selected' : '' ?>>Pending</option>
+                                        <option value="pending" <?= ($booking['status'] ?? '') === 'pending' ? 'selected' : '' ?>>Pending</option>
                                         <option value="confirmed" <?= ($booking['status'] ?? '') === 'confirmed' ? 'selected' : '' ?>>Confirmed</option>
-                                        <option value="done"      <?= ($booking['status'] ?? '') === 'done' ? 'selected' : '' ?>>Done</option>
-                                        <option value="canceled"  <?= ($booking['status'] ?? '') === 'canceled' ? 'selected' : '' ?>>Canceled</option>
+                                        <option value="done" <?= ($booking['status'] ?? '') === 'done' ? 'selected' : '' ?>>Done</option>
+                                        <option value="canceled" <?= ($booking['status'] ?? '') === 'canceled' ? 'selected' : '' ?>>Canceled</option>
                                     </select>
                                 </form>
                             </td>
