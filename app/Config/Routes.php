@@ -47,23 +47,31 @@ $routes->get('auth/register', 'Auth::register');
 $routes->post('auth/register', 'Auth::store');
 $routes->get('auth/logout', 'Auth::logout');
 
-
 // ======================================================
 // 🧑‍💼 RUTE KHUSUS ADMIN (TERLINDUNGI FILTER)
 // ======================================================
 $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     // Dashboard Admin
     $routes->get('/', 'Admin::index');
-    $routes->get('dashboard', 'Admin::index'); // <-- Tambahan penting!
+    $routes->get('dashboard', 'Admin::index'); 
 
     // CRUD Layanan
-    $routes->get('layanan', 'Admin::layanan');              // List layanan
-    $routes->get('layanan/create', 'Admin::createLayanan'); // Form tambah
-    $routes->post('layanan/store', 'Admin::storeLayanan');  // Simpan baru
-    $routes->get('layanan/edit/(:num)', 'Admin::editLayanan/$1'); // Form edit
-    $routes->post('layanan/update/(:num)', 'Admin::updateLayanan/$1'); // Update data
-    $routes->post('layanan/delete/(:num)', 'Admin::deleteLayanan/$1'); // Hapus POST
+    $routes->get('layanan', 'Admin::layanan'); 
+    $routes->get('layanan/create', 'Admin::createLayanan'); 
+    $routes->post('layanan/store', 'Admin::storeLayanan'); 
+    $routes->get('layanan/edit/(:num)', 'Admin::editLayanan/$1'); 
+    $routes->post('layanan/update/(:num)', 'Admin::updateLayanan/$1'); 
+    $routes->post('layanan/delete/(:num)', 'Admin::deleteLayanan/$1'); 
 
+    // ------------------------------------------------------------------
+    // CRUD Capster (Mengarah ke CapsterController)
+    // ------------------------------------------------------------------
+    $routes->get('capster', 'CapsterController::index');                   // List capster
+    $routes->get('capster/create', 'CapsterController::create');           // Form tambah
+    $routes->post('capster/save', 'CapsterController::save');              // Simpan baru (action dari form_capster.php)
+    $routes->get('capster/edit/(:num)', 'CapsterController::edit/$1');     // Form edit
+    $routes->post('capster/(:num)', 'CapsterController::update/$1');       // Update data (digunakan untuk POST/PUT)
+    $routes->post('capster/delete/(:num)', 'CapsterController::delete/$1'); // Hapus POST
 
     // Data Pelanggan
     $routes->get('pelanggan', 'Admin::pelanggan');
@@ -74,7 +82,6 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     $routes->get('tambah_booking', 'Admin::tambah_booking');
     $routes->post('simpan_booking', 'Admin::simpan_booking');
 });
-
 // ABOUT
 $routes->get('/about/history', 'About::history');
 $routes->get('/about/lokasi', 'About::lokasi');
