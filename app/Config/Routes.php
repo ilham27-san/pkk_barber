@@ -53,15 +53,15 @@ $routes->get('auth/logout', 'Auth::logout');
 $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     // Dashboard Admin
     $routes->get('/', 'Admin::index');
-    $routes->get('dashboard', 'Admin::index'); 
+    $routes->get('dashboard', 'Admin::index');
 
     // CRUD Layanan
-    $routes->get('layanan', 'Admin::layanan'); 
-    $routes->get('layanan/create', 'Admin::createLayanan'); 
-    $routes->post('layanan/store', 'Admin::storeLayanan'); 
-    $routes->get('layanan/edit/(:num)', 'Admin::editLayanan/$1'); 
-    $routes->post('layanan/update/(:num)', 'Admin::updateLayanan/$1'); 
-    $routes->post('layanan/delete/(:num)', 'Admin::deleteLayanan/$1'); 
+    $routes->get('layanan', 'Admin::layanan');
+    $routes->get('layanan/create', 'Admin::createLayanan');
+    $routes->post('layanan/store', 'Admin::storeLayanan');
+    $routes->get('layanan/edit/(:num)', 'Admin::editLayanan/$1');
+    $routes->post('layanan/update/(:num)', 'Admin::updateLayanan/$1');
+    $routes->post('layanan/delete/(:num)', 'Admin::deleteLayanan/$1');
 
     // ------------------------------------------------------------------
     // CRUD Capster (Mengarah ke CapsterController)
@@ -104,4 +104,4 @@ $routes->group('about/review', function ($routes) {
 
 // LAYANAN
 $routes->get('/layanan/pricelist', 'Layanan::pricelist');
-$routes->get('/layanan/capster', 'Layanan::capster');
+$routes->get('/layanan/capster', 'Capster::index');

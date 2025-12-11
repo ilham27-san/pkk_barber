@@ -19,9 +19,4 @@ class Layanan extends BaseController
         // 4. Kirim paket $data ke View
         return view('layanan/pricelist', $data);
     }
-
-    public function capster()
-    {
-        return view('layanan/capster');
-    }
 }
