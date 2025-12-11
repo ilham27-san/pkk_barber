@@ -80,12 +80,16 @@ $routes->get('/about/history', 'About::history');
 $routes->get('/about/lokasi', 'About::lokasi');
 $routes->get('/about/review', 'About::review');
 // Review (About -> Review)
-$routes->get('about/review', 'Review::index');
-$routes->post('about/review/add', 'Review::add');
-$routes->get('about/review/edit/(:num)', 'Review::edit/$1');
-$routes->post('about/review/update/(:num)', 'Review::update/$1');
-$routes->get('about/review/delete/(:num)', 'Review::delete/$1');
+// Pastikan tidak ada duplikasi routes untuk about/review
+$routes->group('about/review', function ($routes) {
+    $routes->get('/', 'Review::index');              // Ke file Review.php method index
+    $routes->post('add', 'Review::add');             // Ke file Review.php method add
+    $routes->get('delete/(:num)', 'Review::delete/$1'); // Ke file Review.php method delete
 
+    // Fitur Edit (Jika nanti dibuat)
+    $routes->get('edit/(:num)', 'Review::edit/$1');
+    $routes->post('update/(:num)', 'Review::update/$1');
+});
 
 // LAYANAN
 $routes->get('/layanan/pricelist', 'Layanan::pricelist');

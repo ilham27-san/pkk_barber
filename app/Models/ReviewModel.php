@@ -6,54 +6,30 @@ use CodeIgniter\Model;
 
 class ReviewModel extends Model
 {
-    protected $table      = 'reviews';
-    protected $primaryKey = 'id';
+    protected $table            = 'reviews';
+    protected $primaryKey       = 'id';
+    protected $allowedFields    = ['user_id', 'rating', 'komentar'];
+    protected $useTimestamps    = true;
 
-    protected $allowedFields = [
-        'user_id',
-        'rating',
-        'komentar',
-        'created_at',
-        'updated_at'
-    ];
+    public function getReviews($sort = 'newest')
+    {
+        // Ubah join biasa menjadi 'left'
+        // Artinya: "Ambil Review, kalau data user-nya ada, bawa sekalian. Kalau gak ada, biarin NULL, jangan dibuang review-nya."
 
-    protected $useTimestamps = true;
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
+        $builder = $this->select('reviews.*, users.username, users.foto')
+            ->join('users', 'users.id = reviews.user_id', 'left'); // <--- TAMBAHKAN 'left'
 
-    protected $returnType = 'array';
+        // Logika Sortir (Tetap sama)
+        if ($sort == 'rating_high') $builder->orderBy('reviews.rating', 'DESC');
+        else if ($sort == 'rating_low') $builder->orderBy('reviews.rating', 'ASC');
+        else if ($sort == 'oldest') $builder->orderBy('reviews.created_at', 'ASC');
+        else $builder->orderBy('reviews.created_at', 'DESC');
 
-    // Ambil semua review dengan data user
-    public function getReviewsWithUser($sort = 'newest')
-{
-    $builder = $this->select('reviews.*, users.username')
-        ->join('users', 'users.id = reviews.user_id', 'left');
-
-    // Sort
-    switch ($sort) {
-        case 'rating_high':
-            $builder->orderBy('reviews.rating', 'DESC');
-            break;
-
-        case 'rating_low':
-            $builder->orderBy('reviews.rating', 'ASC');
-            break;
-
-        case 'oldest':
-            $builder->orderBy('reviews.created_at', 'ASC');
-            break;
-
-        default:
-            $builder->orderBy('reviews.created_at', 'DESC'); // newest
+        return $builder->findAll();
     }
 
-    return $builder->findAll();
-}
-
-
-    // Ambil review berdasarkan user
-    public function getReviewByUser($user_id)
+    public function getAvgRating()
     {
-        return $this->where('user_id', $user_id)->findAll();
+        return $this->selectAvg('rating')->get()->getRow()->rating ?? 0;
     }
 }
