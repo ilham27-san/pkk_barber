@@ -92,7 +92,6 @@
     resize: vertical;
     font-family: inherit;
     box-sizing: border-box;
-    /* Penting agar padding tidak melebar */
   }
 
   .btn-submit {
@@ -240,15 +239,11 @@
   </div>
 
   <?php if (session()->getFlashdata('error')): ?>
-    <div class="alert alert-error">
-      ⚠️ <?= session()->getFlashdata('error') ?>
-    </div>
+    <div class="alert alert-error">⚠️ <?= session()->getFlashdata('error') ?></div>
   <?php endif; ?>
 
   <?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success">
-      ✅ <?= session()->getFlashdata('success') ?>
-    </div>
+    <div class="alert alert-success">✅ <?= session()->getFlashdata('success') ?></div>
   <?php endif; ?>
 
 
@@ -271,7 +266,7 @@
 
         <div style="margin-bottom: 15px;">
           <label style="display:block; margin-bottom:8px; font-weight:600;">Komentar:</label>
-          <textarea name="komentar" class="form-control" rows="4" placeholder="Ceritakan pengalaman potong rambut Anda di sini..." required><?= old('komentar') ?></textarea>
+          <textarea name="komentar" class="form-control" rows="4" placeholder="Ceritakan pengalaman Anda..." required><?= old('komentar') ?></textarea>
         </div>
 
         <button type="submit" class="btn-submit">Kirim Ulasan</button>
@@ -297,7 +292,7 @@
           <div class="card-top">
             <div class="user-info">
               <div class="avatar-circle">
-                <img src="https://ui-avatars.com/api/?name=<?= urlencode($row['username']) ?>&background=random" alt="Avatar">
+                <img src="https://ui-avatars.com/api/?name=<?= urlencode($row['username']) ?>&background=random&color=fff" alt="Avatar">
               </div>
               <div class="user-details">
                 <h4><?= !empty($row['username']) ? esc($row['username']) : '<em>User Terhapus</em>' ?></h4>
@@ -316,7 +311,14 @@
             <p><?= nl2br(esc($row['komentar'])) ?></p>
           </div>
 
-          <?php if (session()->get('logged_in') && session()->get('id') == $row['user_id']): ?>
+          <?php
+          // Cek Logika Akses
+          $isLogin = session()->get('logged_in');
+          $isOwner = session()->get('id') == $row['user_id'];
+          $isAdmin = session()->get('role') == 'admin'; // Pastikan session role diset saat login
+          ?>
+
+          <?php if ($isLogin && ($isOwner || $isAdmin)): ?>
             <div style="margin-top: 15px; text-align: right;">
               <a href="<?= base_url('about/review/delete/' . $row['id']) ?>"
                 class="btn-delete"
