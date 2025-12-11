@@ -25,42 +25,41 @@ class Review extends Controller
     public function index()
 {
     $sort = $this->request->getGet('sort') ?? 'newest';
-
-    // Pagination
     $perPage = 6;
 
-    // --- Query Review + JOIN ---
-    $builder = $this->reviewModel
-        ->select('reviews.*, users.username')
-        ->join('users', 'users.id = reviews.user_id', 'left');
+    // Gunakan model asli agar paginate bekerja
+    $model = new \App\Models\ReviewModel();
+
+    // Base Query + JOIN
+    $model->select('reviews.*, users.username')
+          ->join('users', 'users.id = reviews.user_id', 'left');
 
     // Sorting
     switch ($sort) {
         case 'rating_high':
-            $builder->orderBy('reviews.rating', 'DESC');
+            $model->orderBy('reviews.rating', 'DESC');
             break;
 
         case 'rating_low':
-            $builder->orderBy('reviews.rating', 'ASC');
+            $model->orderBy('reviews.rating', 'ASC');
             break;
 
         case 'oldest':
-            $builder->orderBy('reviews.created_at', 'ASC');
+            $model->orderBy('reviews.created_at', 'ASC');
             break;
 
         default:
-            $builder->orderBy('reviews.created_at', 'DESC');
+            $model->orderBy('reviews.created_at', 'DESC');
     }
 
-    // Ambil data
-    $reviews = $builder->paginate($perPage);
-    $pager   = $this->reviewModel->pager;
+    // Pagination
+    $reviews = $model->paginate($perPage);
+    $pager   = $model->pager;
 
-    // --- Hitung rata-rata (PAKAI MODEL BARU AGAR SELECT JOIN TIDAK HILANG) ---
-    $avgRow = (new ReviewModel())->selectAvg('rating')->first();
+    // Hitung rata-rata rating
+    $avgRow = $this->reviewModel->selectAvg('rating')->first();
     $avg    = isset($avgRow['rating']) ? round($avgRow['rating'], 1) : 0;
 
-    // Kirim ke view
     return view('about/review', [
         'reviews'    => $reviews,
         'pager'      => $pager,
@@ -68,6 +67,8 @@ class Review extends Controller
         'sort'       => $sort,
     ]);
 }
+
+
 
 
     // ======================================================
@@ -87,8 +88,10 @@ class Review extends Controller
             return redirect()->back()->with('error', 'Rating dan komentar wajib diisi.');
         }
 
+        // FIX: user_id harus pakai session('user_id')
         $this->reviewModel->save([
-            'user_id'  => $this->session->get('id'),
+            'user_id' => $this->session->get('id'),
+
             'rating'   => $rating,
             'komentar' => $komentar
         ]);
@@ -108,7 +111,9 @@ class Review extends Controller
             return redirect()->to('/about/review')->with('error', 'Review tidak ditemukan.');
         }
 
+        // FIX: gunakan user_id bukan id
         if ($review['user_id'] != $this->session->get('id')) {
+
             return redirect()->to('/about/review')->with('error', 'Anda tidak boleh mengedit review ini.');
         }
 
@@ -126,7 +131,8 @@ class Review extends Controller
             return redirect()->to('/about/review')->with('error', 'Review tidak ditemukan.');
         }
 
-        if ($review['user_id'] != $this->session->get('id')) {
+       if ($review['user_id'] != $this->session->get('id')) {
+
             return redirect()->to('/about/review')->with('error', 'Anda tidak boleh mengedit review ini.');
         }
 
@@ -153,6 +159,7 @@ class Review extends Controller
         }
 
         if ($review['user_id'] != $this->session->get('id')) {
+
             return redirect()->to('/about/review')->with('error', 'Anda tidak boleh menghapus review ini.');
         }
 
