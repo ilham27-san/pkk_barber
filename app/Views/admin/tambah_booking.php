@@ -1,45 +1,140 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tambah Booking</title>
-</head>
-<body>
+<?= $this->extend('layout/template'); ?>
+
+<?= $this->section('css'); ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/booking.css') ?>">
+<style>
+.booking-page {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.booking-page h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.booking-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #444;
+}
+
+.booking-table td:first-child {
+    font-weight: bold;
+    width: 40%;
+}
+
+.booking-table input,
+.booking-table select,
+.booking-table textarea {
+    width: 95%;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    background: #333;
+    color: #fff;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+</style>
+<?= $this->endSection(); ?>
+
+<?= $this->section('content'); ?>
+
+<div class="booking-page">
     <h2>Tambah Booking Baru</h2>
 
-    <form action="/admin/simpan_booking" method="post">
-        <label>Pelanggan:</label><br>
-        <select name="id_user" required>
-            <option value="">-- Pilih Pelanggan --</option>
-            <?php foreach($users as $user): ?>
-                <option value="<?= $user['id'] ?>"><?= $user['username'] ?></option>
-            <?php endforeach; ?>
-        </select><br><br>
+    <form action="<?= base_url('admin/simpan_booking') ?>" method="post">
+        <table class="booking-table">
 
-        <label>Layanan:</label><br>
-        <select name="id_layanan" required>
-            <option value="">-- Pilih Layanan --</option>
-            <?php foreach($layanans as $layanan): ?>
-                <option value="<?= $layanan['id'] ?>"><?= $layanan['nama_layanan'] ?></option>
-            <?php endforeach; ?>
-        </select><br><br>
+            <tr>
+                <td>Nama</td>
+                <td><input type="text" name="name" required></td>
+            </tr>
 
-        <label>Tanggal:</label><br>
-        <input type="date" name="tanggal" required><br><br>
+            <tr>
+                <td>Nomor HP</td>
+                <td><input type="text" name="phone" required></td>
+            </tr>
 
-        <label>Jam:</label><br>
-        <input type="time" name="jam" required><br><br>
+            <tr>
+                <td>Email</td>
+                <td><input type="email" name="email"></td>
+            </tr>
 
-        <label>Status:</label><br>
-        <select name="status" required>
-            <option value="pending">Pending</option>
-            <option value="selesai">Selesai</option>
-            <option value="batal">Batal</option>
-        </select><br><br>
+            <tr>
+                <td>Layanan</td>
+                <td>
+                    <select name="id_layanan" required>
+                        <option value="">-- Pilih Layanan --</option>
+                        <?php foreach ($layanans as $layanan): ?>
+                            <option value="<?= $layanan['id'] ?>">
+                                <?= $layanan['nama_layanan'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Stylist / Barber</td>
+                <td><input type="text" name="barber" required></td>
+            </tr>
+
+            <tr>
+                <td>Tanggal</td>
+                <td><input type="date" name="tanggal" required></td>
+            </tr>
+
+            <tr>
+                <td>Jam</td>
+                <td><input type="time" name="jam" required></td>
+            </tr>
+
+            <tr>
+                <td>Catatan</td>
+                <td><textarea name="note"></textarea></td>
+            </tr>
+
+            <tr>
+                <td>Status</td>
+                <td>
+                    <select name="status">
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="done">Done</option>
+                        <option value="canceled">Canceled</option>
+                    </select>
+                </td>
+            </tr>
+
+        </table>
 
         <button type="submit">Simpan Booking</button>
     </form>
+</div>
 
-    <br>
-    <a href="/admin/booking">Kembali ke Daftar Booking</a>
-</body>
-</html>
+<?= $this->endSection(); ?>

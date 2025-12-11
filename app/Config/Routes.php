@@ -63,14 +63,16 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     $routes->get('layanan/edit/(:num)', 'Admin::editLayanan/$1');
     $routes->post('layanan/update/(:num)', 'Admin::updateLayanan/$1');
     $routes->get('layanan/delete/(:num)', 'Admin::deleteLayanan/$1');
-
+    
     // Data Pelanggan
     $routes->get('pelanggan', 'Admin::pelanggan');
-
+    
     // Data Booking
+    $routes->post('update_status/(:num)', 'Admin::updateStatus/$1');
     $routes->get('booking', 'Admin::booking');
-   $routes->get('tambah_booking', 'Admin::tambah_booking');
-$routes->post('simpan_booking', 'Admin::simpan_booking');
+    $routes->get('tambah_booking', 'Admin::tambah_booking');
+    $routes->post('simpan_booking', 'Admin::simpan_booking');
+
 
 
 });

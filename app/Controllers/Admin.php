@@ -12,60 +12,85 @@ class Admin extends Controller
     {
         $bookingModel = new BookingModel();
         $userModel = new UserModel();
-        $data['total_pelanggan'] = $userModel->where('role', 'pelanggan')->countAllResults();
-        $data['total_booking'] = $bookingModel->countAllResults();
 
-        echo view('admin/dashboard', $data);
+        $data['total_pelanggan'] = $userModel->where('role', 'pelanggan')->countAllResults();
+        $data['total_booking']   = $bookingModel->countAllResults();
+
+        return view('admin/dashboard', $data);
     }
 
     public function layanan()
     {
         $model = new LayananModel();
         $data['layanan'] = $model->findAll();
-        echo view('admin/data_layanan', $data);
+
+        return view('admin/data_layanan', $data);
     }
 
     public function pelanggan()
     {
         $model = new UserModel();
         $data['pelanggan'] = $model->where('role', 'pelanggan')->findAll();
-        echo view('admin/data_pelanggan', $data);
+
+        return view('admin/data_pelanggan', $data);
     }
 
- public function booking()
+    public function booking()
+    {
+        $model = new BookingModel();
+        $data['bookings'] = $model->findAll();
+
+        return view('admin/data_booking', $data);
+    }
+
+    public function tambah_booking()
 {
-    $model = new \App\Models\BookingModel();
-    $data['bookings'] = $model->findAll();
-    echo view('admin/data_booking', $data);
-}
+    $layananModel = new LayananModel();
 
-public function tambah_booking()
-{
-    $userModel = new \App\Models\UserModel();
-    $layananModel = new \App\Models\LayananModel();
+    $data = [
+        'layanans' => $layananModel->findAll()
+    ];
 
-    $data['users'] = $userModel->where('role', 'pelanggan')->findAll();
-    $data['layanans'] = $layananModel->findAll();
-
-    echo view('admin/tambah_booking', $data);
+    return view('admin/tambah_booking', $data);
 }
 
 public function simpan_booking()
 {
-    $model = new \App\Models\BookingModel();
+    $bookingModel = new BookingModel();
 
     $data = [
-        'id_user' => $this->request->getPost('id_user'),
         'id_layanan' => $this->request->getPost('id_layanan'),
-        'tanggal' => $this->request->getPost('tanggal'),
-        'jam' => $this->request->getPost('jam'),
-        'status' => $this->request->getPost('status')
+        'barber'     => $this->request->getPost('barber'),
+        'tanggal'    => $this->request->getPost('tanggal'),
+        'jam'        => $this->request->getPost('jam'),
+
+        // admin input manual
+        'name'       => $this->request->getPost('name'),
+        'phone'      => $this->request->getPost('phone'),
+        'email'      => $this->request->getPost('email'),
+
+        'note'       => $this->request->getPost('note'),
+        'status'     => $this->request->getPost('status') ?? 'pending'
     ];
 
-    $model->insert($data);
+    $bookingModel->insert($data);
 
     return redirect()->to('/admin/booking')->with('success', 'Booking berhasil ditambahkan.');
 }
 
 
+    public function updateStatus($id)
+    {
+        $status = $this->request->getPost('status');
+
+        $allowed = ['pending', 'confirmed', 'done', 'canceled'];
+        if (!in_array($status, $allowed)) {
+            return redirect()->back()->with('error', 'Status tidak valid.');
+        }
+
+        $bookingModel = new BookingModel();
+        $bookingModel->update($id, ['status' => $status]);
+
+        return redirect()->back()->with('success', 'Status diperbarui.');
+    }
 }
