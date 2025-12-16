@@ -83,6 +83,15 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     $routes->get('gallery/edit/(:num)', 'GalleryController::edit/$1');
     $routes->post('gallery/update/(:num)', 'GalleryController::update/$1'); // Hapus foto (Method POST lebih aman)
 
+     // ------------------------------------------------------------------
+    // CRUD Gallery (Mengarah ke GalleryController)
+    // ------------------------------------------------------------------
+    $routes->get('products', 'ProductController::index');
+    $routes->post('products/simpan', 'ProductController::simpan');
+    $routes->get('products/edit/(:num)', 'ProductController::edit/$1');
+    $routes->post('products/update/(:num)', 'ProductController::update/$1');
+    $routes->post('products/delete/(:num)', 'ProductController::hapus/$1');
+
     // Data Pelanggan
     $routes->get('pelanggan', 'Admin::pelanggan');
 

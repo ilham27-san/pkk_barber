@@ -7,47 +7,29 @@
         <h2 class="section-title">All Our Products</h2>
 
         <div class="product-grid">
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <div style="color: #eee;"><i class="fas fa-pump-soap fa-4x"></i></div>
+            <?php if (!empty($products)) : ?>
+                <?php foreach ($products as $p) : ?>
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img src="<?= base_url('img/products/' . $p['gambar']) ?>" alt="<?= $p['nama_produk'] ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="product-info">
+                            <h3><?= $p['nama_produk'] ?></h3>
+                            <span class="product-price">Rp <?= number_format($p['harga'], 0, ',', '.') ?></span>
+                            <p class="product-desc"><?= $p['deskripsi'] ?></p>
+                            
+                            <button class="btn-pill" onclick="openProductModal('<?= addslashes($p['nama_produk']) ?>', <?= $p['harga'] ?>, '<?= base_url('img/products/' . $p['gambar']) ?>')">
+                                Tambah ke Keranjang
+                            </button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #999;">
+                    <i class="fas fa-box-open fa-4x" style="margin-bottom: 15px; opacity: 0.3;"></i>
+                    <p>Belum ada produk yang tersedia saat ini.</p>
                 </div>
-                <div class="product-info">
-                    <h3>Premium Hair Pomade</h3>
-                    <span class="product-price">Rp 85.000</span>
-                    <p class="product-desc">Pomade water-based dengan daya rekat kuat dan kilau alami.</p>
-                    <button class="btn-pill" onclick="openProductModal('Premium Hair Pomade', 85000, '')">
-                        Tambah ke Keranjang
-                    </button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <div style="color: #eee;"><i class="fas fa-wine-bottle fa-4x"></i></div>
-                </div>
-                <div class="product-info">
-                    <h3>Beard Oil Essence</h3>
-                    <span class="product-price">Rp 50.000</span>
-                    <p class="product-desc">Minyak penumbuh jenggot aroma maskulin.</p>
-                    <button class="btn-pill" onclick="openProductModal('Beard Oil Essence', 50000, '')">
-                        Tambah ke Keranjang
-                    </button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <div style="color: #eee;"><i class="fas fa-cut fa-4x"></i></div>
-                </div>
-                <div class="product-info">
-                    <h3>Pro Scissor Set</h3>
-                    <span class="product-price">Rp 120.000</span>
-                    <p class="product-desc">Set gunting potong rambut profesional.</p>
-                    <button class="btn-pill" onclick="openProductModal('Pro Scissor Set', 120000, '')">
-                        Tambah ke Keranjang
-                    </button>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
     </section>
 </div>
@@ -107,13 +89,13 @@
 </div>
 
 <script>
+    // Logic Javascript tetap sama namun sekarang menerima data dinamis dari loop PHP di atas
     let cart = JSON.parse(localStorage.getItem('barberCart')) || [];
     let tempProduct = { name: "", price: 0, qty: 1 };
     const sellerPhone = "6281513728023"; 
 
     updateCartCount();
 
-    // --- FUNGSI MODAL PRODUK ---
     function openProductModal(name, price, imgSrc) {
         tempProduct = { name: name, price: price, qty: 1 };
         document.getElementById('modalName').innerText = name;
@@ -149,13 +131,11 @@
         saveCart();
         closeProductModal();
         
-        // Animasi kecil pada tombol keranjang
         const btn = document.querySelector('.floating-cart-btn');
         btn.style.transform = "scale(1.2)";
         setTimeout(() => btn.style.transform = "scale(1)", 200);
     }
 
-    // --- FUNGSI KERANJANG ---
     function openCartModal() {
         renderCartList();
         document.getElementById('cartModal').style.display = 'flex';
@@ -184,7 +164,7 @@
             let itemTotal = item.price * item.qty;
             grandTotal += itemTotal;
 
-            let html = `
+            listContainer.innerHTML += `
                 <div class="cart-item">
                     <div class="cart-item-info">
                         <span class="cart-item-title">${item.name}</span>
@@ -198,7 +178,6 @@
                     </div>
                 </div>
             `;
-            listContainer.innerHTML += html;
         });
 
         document.getElementById('cartGrandTotal').innerText = formatRupiah(grandTotal);
@@ -220,7 +199,6 @@
         document.getElementById('cartCountBadge').innerText = count;
     }
 
-    // --- FUNGSI CHECKOUT & CLEAR CART ---
     function checkoutToWhatsapp() {
         if (cart.length === 0) {
             alert("Keranjang kosong!");
@@ -240,14 +218,12 @@
         message += `💰 *TOTAL BAYAR: ${formatRupiah(grandTotal)}*%0A%0A`;
         message += `Mohon info pembayaran dan pengirimannya. Terima kasih!`;
 
-        // 1. Buka WhatsApp
         window.open(`https://wa.me/${sellerPhone}?text=${message}`, '_blank');
         
-        // 2. Kosongkan Keranjang (Logic Baru)
         cart = []; 
-        saveCart(); // Update localStorage jadi kosong
-        renderCartList(); // Update tampilan modal jadi kosong
-        closeCartModal(); // Opsional: tutup modal otomatis
+        saveCart();
+        renderCartList();
+        closeCartModal();
     }
 
     function formatRupiah(angka) {

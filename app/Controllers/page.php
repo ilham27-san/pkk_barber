@@ -51,9 +51,15 @@ class Page extends BaseController
         return redirect()->to('/contact')->with('success', 'Pesan Anda telah terkirim!');
     }
 
-    public function products()
-    {
-        $data['products'] = $this->productModel->findAll();
-        return view('page/products', $data);
-    }
+    public function products() 
+{
+    $productModel = new ProductModel();
+    
+    $data = [
+        'title'    => 'Our Products',
+        'products' => $productModel->findAll() // Mengambil semua data dari database
+    ];
+
+    return view('page/products', $data);
+}
 }

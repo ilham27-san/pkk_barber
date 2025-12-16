@@ -18,6 +18,7 @@
             <li><a href="<?= base_url('admin/layanan'); ?>">Kelola Layanan</a></li>
             <li><a href="<?= base_url('admin/capster'); ?>">Kelola Capster</a></li>
             <li><a href="<?= base_url('admin/gallery'); ?>">Kelola Gallery</a></li>
+            <li><a href="<?= base_url('admin/products'); ?>">Kelola products</a></li>
             <li><a href="<?= base_url('admin/pelanggan'); ?>">Daftar Pelanggan</a></li>
             <li><a href="<?= base_url('admin/booking'); ?>">Daftar Booking</a></li>
         </ul>
