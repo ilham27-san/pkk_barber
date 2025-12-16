@@ -116,56 +116,24 @@
                 Momen terbaik, gaya rambut terbaru, dan suasana nyaman di BarberNow. Intip keseruan kami di sini.
             </p>
 
-            <div class="gallery-grid">
-                
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=600&h=450" alt="Interior">
-                    <div class="gallery-overlay">
-                        <h3>Cozy Interior</h3>
-                        <p>Suasana barbershop klasik & nyaman</p>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&q=80&w=600&h=450" alt="Haircut">
-                    <div class="gallery-overlay">
-                        <h3>Trendy Cuts</h3>
-                        <p>Potongan rambut detail & rapi</p>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&q=80&w=600&h=450" alt="Tools">
-                    <div class="gallery-overlay">
-                        <h3>Premium Tools</h3>
-                        <p>Peralatan steril & berkualitas tinggi</p>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1532710093739-9470acff878f?auto=format&fit=crop&q=80&w=600&h=450" alt="Shaving">
-                    <div class="gallery-overlay">
-                        <h3>Classic Shaving</h3>
-                        <p>Layanan cukur jenggot hot towel</p>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&q=80&w=600&h=450" alt="Team">
-                    <div class="gallery-overlay">
-                        <h3>Professional Team</h3>
-                        <p>Kapster ramah & berpengalaman</p>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1559599189-fe84dea4eb79?auto=format&fit=crop&q=80&w=600&h=450" alt="Hair Products">
-                    <div class="gallery-overlay">
-                        <h3>Hair Products</h3>
-                        <p>Koleksi pomade & vitamin rambut</p>
-                    </div>
-                </div>
-
+          <div class="gallery-grid">
+                <?php if (!empty($gallery)) : ?>
+                    <?php foreach ($gallery as $g) : ?>
+                        <div class="gallery-item">
+                            <img src="<?= base_url('img/gallery/' . $g['gambar']) ?>" alt="<?= $g['judul'] ?>">
+                            <div class="gallery-overlay">
+                                <h3><?= $g['judul'] ?></h3>
+                                <p><?= $g['deskripsi'] ?></p> 
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                       <?php else : ?>
+                     <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #999;">
+                      <i class="far fa-image" style="font-size: 3rem; margin-bottom: 10px;"></i>
+                       <p>Belum ada foto yang diunggah ke gallery.</p>
+                     </div>
+                     <?php endif; ?>
+                </div>  
             </div>
 
         </div>

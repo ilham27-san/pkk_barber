@@ -73,6 +73,16 @@ $routes->group('admin', ['filter' => 'authfilter'], static function ($routes) {
     $routes->post('capster/(:num)', 'CapsterController::update/$1');       // Update data (digunakan untuk POST/PUT)
     $routes->post('capster/delete/(:num)', 'CapsterController::delete/$1'); // Hapus POST
 
+    // ------------------------------------------------------------------
+    // CRUD Gallery (Mengarah ke GalleryController)
+    // ------------------------------------------------------------------
+    $routes->get('gallery', 'GalleryController::index');                  // List gallery admin
+    $routes->get('gallery/create', 'GalleryController::create');          // Form tambah foto
+    $routes->post('gallery/simpan', 'GalleryController::simpan');         // Proses upload
+    $routes->post('gallery/delete/(:num)', 'GalleryController::hapus/$1');
+    $routes->get('gallery/edit/(:num)', 'GalleryController::edit/$1');
+    $routes->post('gallery/update/(:num)', 'GalleryController::update/$1'); // Hapus foto (Method POST lebih aman)
+
     // Data Pelanggan
     $routes->get('pelanggan', 'Admin::pelanggan');
 

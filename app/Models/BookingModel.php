@@ -11,7 +11,7 @@ class BookingModel extends Model
 
     protected $allowedFields = [
         'id_layanan',
-        'barber',      // Ini menyimpan ID Capster
+        'barber',      // ID Capster
         'tanggal',
         'jam',
         'name',
@@ -23,12 +23,13 @@ class BookingModel extends Model
 
     protected $useTimestamps = true;
 
-    // --- TAMBAHKAN FUNCTION INI ---
+    // --- FUNCTION INI HARUS JOIN KE DUA TABEL (CAPSTER & LAYANAN) ---
     public function getBookingLengkap()
     {
-        return $this->select('bookings.*, capster.nama AS nama_capster') // Ambil nama capster
-            ->join('capster', 'capster.id_capster = bookings.barber', 'left') // Hubungkan ID
-            ->orderBy('bookings.id', 'DESC') // Urutkan dari yang terbaru
+        return $this->select('bookings.*, capster.nama AS nama_capster, layanan.nama_layanan') // Ambil juga nama_layanan
+            ->join('capster', 'capster.id_capster = bookings.barber', 'left') // Join tabel capster
+            ->join('layanan', 'layanan.id = bookings.id_layanan', 'left')    // Join tabel layanan (PENTING!)
+            ->orderBy('bookings.id', 'DESC')
             ->findAll();
     }
 }
