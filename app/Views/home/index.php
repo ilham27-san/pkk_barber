@@ -8,7 +8,7 @@
             <h1>Welcome to BarberNow</h1>
             <p>Potong rambut modern, cepat, dan stylish untuk pria masa kini!</p>
 
-            <a href="#" class="btn-primary">Book Now</a>
+            <a href="booking" class="btn-primary">Book Now</a>
         </div>
     </div>
 </section>
