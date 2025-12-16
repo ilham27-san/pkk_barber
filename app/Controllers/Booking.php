@@ -144,33 +144,71 @@ class Booking extends BaseController
             return redirect()->to('/booking/step1');
         }
 
-        // AMBIL NAMA STYLIST LAGI UNTUK DISIMPAN KE DB
-        // (Tergantung DB kamu simpan ID atau Nama. Kalau simpan Nama, pakai logic ini)
+        // Logic penentuan nama barber (seperti kode Anda)
         $namaStylist = 'Any Stylist';
         if (!empty($sessionData['id_capster'])) {
             $stylist = $this->capsterModel->find($sessionData['id_capster']);
             $namaStylist = $stylist['nama'] ?? 'Any Stylist';
         }
 
-        // MAPPING DATA: Sesuaikan Key Array dengan Nama Kolom Database
         $saveData = [
-            'id_layanan' => $sessionData['id_layanan'], // ID Layanan (int)
-            'barber'  => $sessionData['id_capster'], // <-- Ganti ini kalau DB kamu simpannya ID stylist
+            'id_layanan' => $sessionData['id_layanan'],
+            'barber'     => $sessionData['id_capster'],
             'tanggal'    => $sessionData['tanggal'],
             'jam'        => $sessionData['jam'],
             'name'       => $sessionData['name'],
             'phone'      => $sessionData['phone'],
             'email'      => $sessionData['email'],
             'note'       => $sessionData['note'],
-            'status'     => 'pending' // Default status
+            'status'     => 'pending'
         ];
 
-        // Insert ke Database
+        // 1. INSERT DATA
         $this->bookingModel->insert($saveData);
 
-        // Hapus Session
+        // 2. AMBIL ID YANG BARU SAJA DIBUAT (PENTING!)
+        $newBookingId = $this->bookingModel->getInsertID();
+
+        // 3. HAPUS SESSION
         session()->remove(['booking_step1', 'booking_step2', 'booking_step3']);
 
-        return redirect()->to('/booking')->with('success', 'Booking berhasil!');
+        // 4. REDIRECT KE HALAMAN SUKSES MEMBAWA ID
+        return redirect()->to("/booking/success/$newBookingId");
+    }
+
+    // --- TAMBAHKAN METHOD BARU INI ---
+    public function success($id)
+    {
+        // Cari data booking berdasarkan ID untuk ditampilkan sebagai resi
+        // Join dengan tabel layanan supaya nama layanannya muncul, bukan ID doang
+        $booking = $this->bookingModel
+            ->select('bookings.*, layanan.nama_layanan, layanan.harga') // Sesuaikan nama tabel layanan
+            ->join('layanan', 'layanan.id = bookings.id_layanan')
+            ->where('bookings.id', $id) // Sesuaikan primary key tabel booking
+            ->first();
+
+        // Validasi: Kalau user iseng nembak ID ngawur
+        if (!$booking) {
+            return redirect()->to('/booking')->with('error', 'Data booking tidak ditemukan.');
+        }
+
+        // Ambil nama stylist lagi (karena di booking cuma simpan ID/Nama tergantung struktur DB mu)
+        // Kalau di DB booking kolom 'barber' isinya ID, lakukan query lagi ke capsterModel.
+        // Kalau isinya sudah Nama, lewatkan saja.
+        $namaStylist = 'Any Stylist';
+        if (is_numeric($booking['barber'])) {
+            $stylist = $this->capsterModel->find($booking['barber']);
+            $namaStylist = $stylist['nama'] ?? 'Any Stylist';
+        } else {
+            $namaStylist = $booking['barber'];
+        }
+
+        $data = [
+            'title'   => 'Booking Berhasil',
+            'booking' => $booking,
+            'stylist_name' => $namaStylist
+        ];
+
+        return view('booking/success', $data);
     }
 }

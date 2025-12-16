@@ -25,6 +25,7 @@ $routes->post('booking/step3Submit', 'Booking::step3Submit');
 $routes->get('booking/step4', 'Booking::step4');
 $routes->post('booking/submit', 'Booking::submit');
 
+$routes->get('booking/success/(:num)', 'Booking::success/$1');
 
 
 
