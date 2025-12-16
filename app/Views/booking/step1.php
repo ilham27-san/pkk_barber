@@ -40,10 +40,18 @@
             </div>
 
             <div class="action-item center-item">
-                <select name="barber" class="custom-select">
+                <select name="id_capster" id="id_capster" class="custom-select" required>
                     <option value="">-- Pilih Stylist --</option>
-                    <option value="Barber A">Barber A</option>
-                    <option value="Barber B">Barber B</option>
+
+                    <?php if (!empty($stylists) && is_array($stylists)) : ?>
+                        <?php foreach ($stylists as $s): ?>
+                            <option value="<?= $s['id_capster'] ?>">
+                                <?= esc($s['nama']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <option value="" disabled>Stylist tidak tersedia</option>
+                    <?php endif; ?>
                 </select>
             </div>
 
