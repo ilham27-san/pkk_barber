@@ -1,4 +1,6 @@
-<?php namespace App\Models;
+<?php
+
+namespace App\Models;
 
 use CodeIgniter\Model;
 
@@ -19,5 +21,5 @@ class BookingModel extends Model
         'status' // ini yang hilang
     ];
 
-    protected $useTimestamps = true; 
+    protected $useTimestamps = true;
 }

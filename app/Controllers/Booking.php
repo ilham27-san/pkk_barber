@@ -82,26 +82,95 @@ class Booking extends BaseController
 
     public function step4()
     {
-        $data['booking'] = array_merge(
+        // 1. Gabungkan semua data session
+        $rawSessionData = array_merge(
             session()->get('booking_step1') ?? [],
             session()->get('booking_step2') ?? [],
             session()->get('booking_step3') ?? []
         );
+
+        // Cek jika data kosong (user tembak url)
+        if (empty($rawSessionData)) {
+            return redirect()->to('/booking/step1');
+        }
+
+        // 2. AMBIL NAMA LAYANAN BERDASARKAN ID
+        $layananDetail = $this->layananModel->find($rawSessionData['id_layanan']);
+
+        // 3. AMBIL NAMA STYLIST BERDASARKAN ID (Jika dipilih)
+        $namaStylist = 'Any Stylist'; // Default
+        if (!empty($rawSessionData['id_capster'])) {
+            $stylistDetail = $this->capsterModel->find($rawSessionData['id_capster']);
+            if ($stylistDetail) {
+                $namaStylist = $stylistDetail['nama']; // Pastikan kolom di DB capster namanya 'nama'
+            }
+        }
+
+        // 4. Siapkan data matang untuk View
+        $data = [
+            'booking' => [
+                // Data Asli (untuk logic submit nanti jika perlu hidden input)
+                'id_layanan_raw' => $rawSessionData['id_layanan'],
+                'id_capster_raw' => $rawSessionData['id_capster'] ?? null,
+
+                // Data Tampilan (Human Readable)
+                'id_layanan'    => $layananDetail['nama_layanan'] ?? 'Layanan Tidak Ditemukan',
+                'barber'        => $namaStylist,
+                'harga'         => $layananDetail['harga'] ?? 0,
+
+                // Data Inputan User
+                'tanggal'       => $rawSessionData['tanggal'] ?? '-',
+                'jam'           => $rawSessionData['jam'] ?? '-',
+                'name'          => $rawSessionData['name'] ?? '-',
+                'phone'         => $rawSessionData['phone'] ?? '-',
+                'email'         => $rawSessionData['email'] ?? '-',
+                'note'          => $rawSessionData['note'] ?? ''
+            ]
+        ];
+
         return view('booking/step4', $data);
     }
 
+    // --- PERBAIKAN LOGIC SUBMIT (DATABASE) ---
     public function submit()
     {
-        $bookingData = array_merge(
+        $sessionData = array_merge(
             session()->get('booking_step1') ?? [],
             session()->get('booking_step2') ?? [],
             session()->get('booking_step3') ?? []
         );
 
-        // Pastikan field di database booking sesuai dengan key array ini
-        $this->bookingModel->insert($bookingData);
+        if (empty($sessionData)) {
+            return redirect()->to('/booking/step1');
+        }
 
+        // AMBIL NAMA STYLIST LAGI UNTUK DISIMPAN KE DB
+        // (Tergantung DB kamu simpan ID atau Nama. Kalau simpan Nama, pakai logic ini)
+        $namaStylist = 'Any Stylist';
+        if (!empty($sessionData['id_capster'])) {
+            $stylist = $this->capsterModel->find($sessionData['id_capster']);
+            $namaStylist = $stylist['nama'] ?? 'Any Stylist';
+        }
+
+        // MAPPING DATA: Sesuaikan Key Array dengan Nama Kolom Database
+        $saveData = [
+            'id_layanan' => $sessionData['id_layanan'], // ID Layanan (int)
+            'barber'  => $sessionData['id_capster'], // <-- Ganti ini kalau DB kamu simpannya ID stylist
+            'tanggal'    => $sessionData['tanggal'],
+            'jam'        => $sessionData['jam'],
+            'name'       => $sessionData['name'],
+            'phone'      => $sessionData['phone'],
+            'email'      => $sessionData['email'],
+            'note'       => $sessionData['note'],
+            'status'     => 'pending' // Default status
+        ];
+
+        // Insert ke Database
+        $this->bookingModel->insert($saveData);
+
+        // Hapus Session
         session()->remove(['booking_step1', 'booking_step2', 'booking_step3']);
+
         return redirect()->to('/booking')->with('success', 'Booking berhasil!');
     }
 }
