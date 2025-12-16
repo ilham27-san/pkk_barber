@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\LayananModel;
 use App\Models\UserModel;
 use App\Models\BookingModel;
+use App\Models\CapsterModel; // 1. JANGAN LUPA IMPORT INI
 use CodeIgniter\Controller;
 
 class Admin extends Controller
@@ -84,11 +85,14 @@ class Admin extends Controller
         return view('admin/data_pelanggan', $data);
     }
 
-    // ================== BOOKING ==================
+    // ================== BOOKING (DIPERBARUI) ==================
     public function booking()
     {
         $model = new BookingModel();
-        $data['bookings'] = $model->findAll();
+
+        // 2. UBAH DI SINI: Panggil function custom yang ada JOIN-nya
+        // Supaya kolom 'barber' berisi Nama, bukan cuma Angka ID
+        $data['bookings'] = $model->getBookingLengkap();
 
         return view('admin/data_booking', $data);
     }
@@ -96,7 +100,10 @@ class Admin extends Controller
     public function tambahBooking()
     {
         $layananModel = new LayananModel();
+        $capsterModel = new CapsterModel(); // Load Capster biar admin bisa pilih
+
         $data['layanans'] = $layananModel->findAll();
+        $data['stylists'] = $capsterModel->findAll(); // Kirim data stylist ke form tambah
 
         return view('admin/tambah_booking', $data);
     }
@@ -105,9 +112,15 @@ class Admin extends Controller
     {
         $bookingModel = new BookingModel();
 
+        // Ambil data barber (bisa kosong jika opsional)
+        $barberId = $this->request->getPost('barber');
+        if (empty($barberId)) {
+            $barberId = null; // Pastikan null jika tidak dipilih
+        }
+
         $data = [
             'id_layanan' => $this->request->getPost('id_layanan'),
-            'barber'     => $this->request->getPost('barber'),
+            'barber'     => $barberId,
             'tanggal'    => $this->request->getPost('tanggal'),
             'jam'        => $this->request->getPost('jam'),
             'name'       => $this->request->getPost('name'),
@@ -119,7 +132,7 @@ class Admin extends Controller
 
         $bookingModel->insert($data);
 
-        return redirect()->to('/booking')->with('success', 'Booking berhasil ditambahkan.');
+        return redirect()->to('admin/booking')->with('success', 'Booking berhasil ditambahkan.');
     }
 
     public function updateStatus($id)
@@ -135,5 +148,84 @@ class Admin extends Controller
         $bookingModel->update($id, ['status' => $status]);
 
         return redirect()->back()->with('success', 'Status diperbarui.');
+    }
+
+    // ================== MANAJEMEN CAPSTER (BARU) ==================
+    // Tambahkan ini agar menu 'Kelola Data Capster' berfungsi
+
+    public function capster()
+    {
+        $model = new CapsterModel();
+        $data['capster'] = $model->findAll();
+        return view('admin/capster/index', $data); // Sesuaikan nama folder view kamu
+    }
+
+    public function createCapster()
+    {
+        return view('admin/capster/create');
+    }
+
+    public function storeCapster()
+    {
+        $model = new CapsterModel();
+
+        // Upload Foto
+        $fileFoto = $this->request->getFile('foto');
+        if ($fileFoto && $fileFoto->isValid() && !$fileFoto->hasMoved()) {
+            $namaFoto = $fileFoto->getRandomName();
+            $fileFoto->move('assets/img/capster', $namaFoto);
+        } else {
+            $namaFoto = 'default.jpg';
+        }
+
+        $data = [
+            'nama'          => $this->request->getPost('nama'),
+            'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+            'spesialisasi'  => $this->request->getPost('spesialisasi'),
+            'foto'          => $namaFoto
+        ];
+
+        $model->insert($data);
+        return redirect()->to('/admin/capster')->with('pesan', 'Data Capster berhasil ditambahkan.');
+    }
+
+    public function editCapster($id)
+    {
+        $model = new CapsterModel();
+        $data['capster'] = $model->find($id);
+        return view('admin/capster/edit', $data);
+    }
+
+    public function updateCapster($id)
+    {
+        $model = new CapsterModel();
+        $oldData = $model->find($id);
+
+        // Cek jika ada upload foto baru
+        $fileFoto = $this->request->getFile('foto');
+        if ($fileFoto && $fileFoto->isValid() && !$fileFoto->hasMoved()) {
+            $namaFoto = $fileFoto->getRandomName();
+            $fileFoto->move('assets/img/capster', $namaFoto);
+            // Hapus foto lama jika bukan default (opsional)
+        } else {
+            $namaFoto = $oldData['foto'];
+        }
+
+        $data = [
+            'nama'          => $this->request->getPost('nama'),
+            'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+            'spesialisasi'  => $this->request->getPost('spesialisasi'),
+            'foto'          => $namaFoto
+        ];
+
+        $model->update($id, $data);
+        return redirect()->to('/admin/capster')->with('pesan', 'Data Capster berhasil diubah.');
+    }
+
+    public function deleteCapster($id)
+    {
+        $model = new CapsterModel();
+        $model->delete($id);
+        return redirect()->to('/admin/capster')->with('pesan', 'Data Capster berhasil dihapus.');
     }
 }
