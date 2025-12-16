@@ -18,9 +18,9 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nama</th>
+                    <th>Nama Pelanggan</th>
                     <th>Layanan (ID)</th>
-                    <th>Barber</th>
+                    <th>Barber / Stylist</th>
                     <th>Tanggal</th>
                     <th>Jam</th>
                     <th>Status</th>
@@ -33,14 +33,21 @@
                             <td><?= esc($booking['id']) ?></td>
                             <td><?= esc($booking['name']) ?></td>
                             <td><?= esc($booking['id_layanan']) ?></td>
-                            <td><?= esc($booking['barber']) ?></td>
+
+                            <td>
+                                <?php if (!empty($booking['nama_capster'])) : ?>
+                                    <strong><?= esc($booking['nama_capster']) ?></strong>
+                                <?php else : ?>
+                                    <span style="color: #888; font-style: italic;">-- Bebas / Siapa Saja --</span>
+                                <?php endif; ?>
+                            </td>
                             <td><?= esc($booking['tanggal']) ?></td>
                             <td><?= esc($booking['jam']) ?></td>
 
                             <td>
                                 <form action="<?= base_url('admin/update_status/' . $booking['id']) ?>" method="post">
                                     <?= csrf_field() ?>
-                                    <select name="status" onchange="this.form.submit()">
+                                    <select name="status" onchange="this.form.submit()" style="padding: 5px; border-radius: 5px; border: 1px solid #ddd;">
                                         <option value="pending" <?= ($booking['status'] ?? '') === 'pending' ? 'selected' : '' ?>>Pending</option>
                                         <option value="confirmed" <?= ($booking['status'] ?? '') === 'confirmed' ? 'selected' : '' ?>>Confirmed</option>
                                         <option value="done" <?= ($booking['status'] ?? '') === 'done' ? 'selected' : '' ?>>Done</option>
@@ -53,7 +60,7 @@
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="7" style="text-align: center;">Tidak ada data booking.</td>
+                        <td colspan="7" style="text-align: center; padding: 20px;">Tidak ada data booking.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
