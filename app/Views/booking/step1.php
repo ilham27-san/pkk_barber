@@ -5,7 +5,7 @@
     <div class="booking-layout-wrapper">
 
         <div class="booking-header">
-            <h2 class="title">Step 1: Pilih Layanan</h2>
+            <h2 class="title">Pilih Layanan</h2>
             <p class="subtitle">Silakan pilih service yang kamu inginkan</p>
         </div>
 
