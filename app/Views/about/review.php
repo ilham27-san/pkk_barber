@@ -3,341 +3,261 @@
 <?= $this->section('content') ?>
 
 <style>
-  /* Container Utama */
-  .review-container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 0 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-  }
+    .review-wrapper-font { font-family: 'Montserrat', sans-serif; color: #333; }
 
-  /* Header Section */
-  .review-header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
+    /* CONTAINER UTAMA */
+    .review-container-wide {
+        max-width: 1280px;
+        width: 100%;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
 
-  .rating-summary h2 {
-    margin: 0;
-    font-size: 2.5rem;
-    color: #2c3e50;
-  }
+    /* HEADER */
+    .page-header { text-align: center; margin-bottom: 40px; }
+    .page-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem; color: var(--dark-brown, #5C2C27);
+        font-weight: 700; margin: 0 0 10px 0;
+    }
+    .page-subtitle { color: #777; font-size: 1.1rem; }
 
-  .rating-summary span {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-  }
+    /* --- LAYOUT FLOAT SYSTEM --- */
+    .review-hybrid-layout::after {
+        content: ""; display: table; clear: both;
+    }
 
-  .star-gold {
-    color: #f1c40f;
-  }
+    /* === SIDEBAR KIRI (FLOAT) === */
+    .review-sidebar-float {
+        float: left;
+        width: 380px;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 35px 30px; 
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0,0,0,0.02);
 
-  .star-gray {
-    color: #bdc3c7;
-  }
+        /* [KUNCI 1] Tinggi fix 600px (Kira-kira setara 3 kartu review) */
+        height: 609px; 
+        
+        /* Agar isi sidebar menyebar ke bawah (tidak bolong) */
+        display: flex;
+        flex-direction: column;
+    }
 
-  /* Filter Form */
-  .filter-group select {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-  }
+    /* Summary Section */
+    .rating-summary-box { text-align: center; padding-bottom: 20px; border-bottom: 1px dashed #eee; margin-bottom: 20px; }
+    .big-rating { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; color: #3e2b26; line-height: 1; margin-bottom: 5px; }
+    .stars-display { color: #cba155; font-size: 1.2rem; margin-bottom: 5px; }
+    .total-reviews { color: #888; font-size: 0.85rem; font-weight: 500; }
 
-  /* Form Input Review */
-  .review-form-card {
-    background: #ffffff;
-    border: 1px solid #e1e4e8;
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 40px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-  }
+    /* Form Area (Flex Grow) */
+    .write-review-area { 
+        flex-grow: 1; /* Area ini akan mengambil sisa ruang kosong */
+        display: flex; 
+        flex-direction: column; 
+    }
+    .write-review-area h4 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #3e2b26; margin-bottom: 15px; text-align: center; }
+    
+    .star-rating-input { display: flex; flex-direction: row-reverse; justify-content: center; gap: 8px; margin-bottom: 15px; }
+    .star-rating-input input { display: none; }
+    .star-rating-input label { font-size: 1.8rem; color: #ddd; cursor: pointer; transition: color 0.2s; }
+    .star-rating-input label:hover, .star-rating-input label:hover ~ label, .star-rating-input input:checked ~ label { color: #cba155; }
 
-  .review-form-card h3 {
-    margin-top: 0;
-    border-bottom: 2px solid #f1f1f1;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-  }
+    /* [KUNCI 2] Form juga harus flex agar textarea bisa ditarik */
+    .review-form-flex {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Mengisi ruang sisa di sidebar */
+    }
 
-  .radio-group {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-  }
+    .form-group-review { 
+        flex-grow: 1; /* Ini membuat div pembungkus textarea memanjang */
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
 
-  .radio-option {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-  }
+    /* [KUNCI 3] Textarea memanjang otomatis */
+    .input-review-text { 
+        width: 100%; 
+        padding: 15px; 
+        border: 2px solid #eee; 
+        border-radius: 12px; 
+        font-family: 'Montserrat', sans-serif; 
+        resize: none; /* User gabisa resize manual biar ga rusak layout */
+        font-size: 0.95rem;
+        
+        flex-grow: 1; /* Textarea akan memanjang sampai bawah */
+        height: 100%;
+    }
+    .input-review-text:focus { outline: none; border-color: #cba155; background: #fffbf5; }
 
-  textarea.form-control {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    resize: vertical;
-    font-family: inherit;
-    box-sizing: border-box;
-  }
+    .btn-submit-review { 
+        width: 100%; background-color: #3e2b26; color: #fff; border: none; 
+        padding: 14px; border-radius: 50px; font-weight: 700; cursor: pointer; 
+        transition: all 0.3s; margin-top: auto; /* Pastikan tombol di paling bawah */
+    }
+    .btn-submit-review:hover { background-color: #a52b2b; }
 
-  .btn-submit {
-    background-color: #2c3e50;
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 15px;
-    transition: background 0.3s;
-  }
+    .mini-alert { padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 15px; text-align: center; }
+    .alert-err { background: #ffebeb; color: #c0392b; }
+    .alert-suc { background: #eafaf1; color: #27ae60; }
 
-  .btn-submit:hover {
-    background-color: #34495e;
-  }
+    /* === FEED KANAN === */
+    .filter-bar-flow { margin-bottom: 20px; padding: 5px 0; display: flex; justify-content: flex-end; align-items: center; }
+    .filter-select { padding: 8px 15px; border-radius: 20px; border: 1px solid #ddd; font-family: 'Montserrat', sans-serif; color: #333; cursor: pointer; background: #fff; }
 
-  /* Alert Boxes */
-  .alert {
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    font-weight: 500;
-  }
+    .review-card-item {
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 20px; /* Padding sedikit dikecilkan biar muat 3 pas */
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+        border: 1px solid #f9f9f9;
+        transition: transform 0.2s;
+        margin-bottom: 25px; 
+        overflow: hidden; 
+        /* Tinggi min kartu */
+        min-height: 160px; 
+    }
+    .review-card-item:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
+    
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .user-profile { display: flex; gap: 12px; align-items: center; }
+    .avatar-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #f0f0f0; }
+    .user-names h5 { margin: 0; font-size: 1rem; color: #3e2b26; font-weight: 700; }
+    .time-stamp { font-size: 0.75rem; color: #999; }
+    .card-rating-static { color: #cba155; font-size: 0.85rem; letter-spacing: 2px; }
+    .review-msg { color: #555; line-height: 1.5; font-size: 0.9rem; }
+    .card-actions { margin-top: 10px; text-align: right; border-top: 1px solid #f5f5f5; padding-top: 8px; }
+    .link-del { color: #e74c3c; font-size: 0.8rem; text-decoration: none; font-weight: 600; }
 
-  .alert-error {
-    background-color: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
-  }
-
-  .alert-success {
-    background-color: #dcfce7;
-    color: #166534;
-    border: 1px solid #bbf7d0;
-  }
-
-  /* Review Cards (List) */
-  .review-list {
-    display: grid;
-    gap: 20px;
-  }
-
-  .review-card {
-    background: white;
-    border: 1px solid #eee;
-    border-radius: 10px;
-    padding: 20px;
-    transition: transform 0.2s;
-  }
-
-  .review-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-  }
-
-  .card-top {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-  }
-
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .avatar-circle {
-    width: 45px;
-    height: 45px;
-    background-color: #e2e8f0;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .avatar-circle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .user-details h4 {
-    margin: 0;
-    font-size: 1rem;
-    color: #2d3748;
-  }
-
-  .user-details span {
-    font-size: 0.8rem;
-    color: #a0aec0;
-  }
-
-  .review-body {
-    color: #4a5568;
-    line-height: 1.6;
-  }
-
-  .btn-delete {
-    color: #e53e3e;
-    font-size: 0.85rem;
-    text-decoration: none;
-    border: 1px solid #e53e3e;
-    padding: 4px 10px;
-    border-radius: 4px;
-    transition: all 0.2s;
-  }
-
-  .btn-delete:hover {
-    background: #e53e3e;
-    color: white;
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 40px;
-    color: #a0aec0;
-  }
+    /* RESPONSIVE */
+    @media (max-width: 992px) {
+        .review-sidebar-float { float: none; width: 100%; margin-right: 0; height: auto; min-height: auto; }
+        .input-review-text { height: 150px; resize: vertical; } /* Balik normal di HP */
+    }
 </style>
 
-
-<div class="review-container">
-
-  <div class="review-header-section">
-    <div class="rating-summary">
-      <h2><?= number_format($avg_rating ?? 0, 1) ?> <span style="font-size: 1.5rem; color:#f1c40f;">★</span></h2>
-      <span>Dari total <?= count($reviews ?? []) ?> ulasan</span>
-    </div>
-
-    <div class="filter-group">
-      <form action="" method="get">
-        <label for="sort" style="margin-right: 10px; font-weight: 600;">Urutkan:</label>
-        <select name="sort" id="sort" onchange="this.form.submit()">
-          <option value="newest" <?= ($sort ?? '') == 'newest' ? 'selected' : '' ?>>Paling Baru</option>
-          <option value="oldest" <?= ($sort ?? '') == 'oldest' ? 'selected' : '' ?>>Paling Lama</option>
-          <option value="rating_high" <?= ($sort ?? '') == 'rating_high' ? 'selected' : '' ?>>Bintang 5 - 1</option>
-          <option value="rating_low" <?= ($sort ?? '') == 'rating_low' ? 'selected' : '' ?>>Bintang 1 - 5</option>
-        </select>
-      </form>
-    </div>
-  </div>
-
-  <?php if (session()->getFlashdata('error')): ?>
-    <div class="alert alert-error">⚠️ <?= session()->getFlashdata('error') ?></div>
-  <?php endif; ?>
-
-  <?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success">✅ <?= session()->getFlashdata('success') ?></div>
-  <?php endif; ?>
-
-
-  <?php if (session()->get('logged_in')): ?>
-    <div class="review-form-card">
-      <h3>Tulis Pengalaman Anda</h3>
-      <form action="<?= base_url('about/review/add') ?>" method="post">
-        <?= csrf_field() ?>
-
-        <div style="margin-bottom: 15px;">
-          <label style="display:block; margin-bottom:8px; font-weight:600;">Berikan Rating:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="rating" value="5" required> ⭐ 5 (Sempurna)</label>
-            <label class="radio-option"><input type="radio" name="rating" value="4"> ⭐ 4 (Bagus)</label>
-            <label class="radio-option"><input type="radio" name="rating" value="3"> ⭐ 3 (Cukup)</label>
-            <label class="radio-option"><input type="radio" name="rating" value="2"> ⭐ 2 (Kurang)</label>
-            <label class="radio-option"><input type="radio" name="rating" value="1"> ⭐ 1 (Buruk)</label>
-          </div>
+<div class="review-wrapper-font">
+    <div class="review-container-wide">
+        
+        <div class="page-header">
+            <h2 class="page-title">Apa Kata Mereka?</h2>
+            <p class="page-subtitle">Suara jujur dari pelanggan BarberNow.</p>
         </div>
 
-        <div style="margin-bottom: 15px;">
-          <label style="display:block; margin-bottom:8px; font-weight:600;">Komentar:</label>
-          <textarea name="komentar" class="form-control" rows="4" placeholder="Ceritakan pengalaman Anda..." required><?= old('komentar') ?></textarea>
+        <div class="review-hybrid-layout">
+            
+            <aside class="review-sidebar-float">
+                <div class="rating-summary-box">
+                    <div class="big-rating"><?= number_format($avg_rating ?? 0, 1) ?></div>
+                    <div class="stars-display">
+                        <?php 
+                        $avg = $avg_rating ?? 0;
+                        for($i=1; $i<=5; $i++) {
+                            echo ($i <= round($avg)) ? '<i class="fas fa-star"></i>' : '<i class="far fa-star" style="color:#ddd;"></i>';
+                        }
+                        ?>
+                    </div>
+                    <div class="total-reviews">Total <strong><?= count($reviews ?? []) ?></strong> ulasan</div>
+                </div>
+
+                <?php if (session()->getFlashdata('error')): ?>
+                    <div class="mini-alert alert-err">⚠️ <?= session()->getFlashdata('error') ?></div>
+                <?php endif; ?>
+                <?php if (session()->getFlashdata('success')): ?>
+                    <div class="mini-alert alert-suc">✅ <?= session()->getFlashdata('success') ?></div>
+                <?php endif; ?>
+
+                <div class="write-review-area">
+                    <?php if (session()->get('logged_in')): ?>
+                        <h4>Tulis Ulasan Anda</h4>
+                        <form action="<?= base_url('about/review/add') ?>" method="post" class="review-form-flex">
+                            <?= csrf_field() ?>
+                            
+                            <div class="star-rating-input">
+                                <input type="radio" id="st5" name="rating" value="5" required><label for="st5" title="Sempurna"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="st4" name="rating" value="4"><label for="st4" title="Bagus"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="st3" name="rating" value="3"><label for="st3" title="Cukup"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="st2" name="rating" value="2"><label for="st2" title="Kurang"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="st1" name="rating" value="1"><label for="st1" title="Buruk"><i class="fas fa-star"></i></label>
+                            </div>
+
+                            <div class="form-group-review">
+                                <textarea name="komentar" class="input-review-text" placeholder="Ceritakan pengalaman Anda di sini..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-submit-review">Kirim Ulasan</button>
+                        </form>
+                    <?php else: ?>
+                        <div style="flex-grow: 1; display:flex; flex-direction:column; justify-content:center; align-items:center; color: #777;">
+                            <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 20px; color:#eee;"></i>
+                            <p>Silakan <a href="<?= base_url('auth/login') ?>" style="color: #3e2b26; font-weight:bold;">Login</a> untuk menulis ulasan.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </aside>
+
+            <div class="filter-bar-flow">
+                 <form action="" method="get">
+                    <select name="sort" class="filter-select" onchange="this.form.submit()">
+                        <option value="newest" <?= ($sort ?? '') == 'newest' ? 'selected' : '' ?>>✨ Paling Baru</option>
+                        <option value="oldest" <?= ($sort ?? '') == 'oldest' ? 'selected' : '' ?>>📅 Paling Lama</option>
+                        <option value="rating_high" <?= ($sort ?? '') == 'rating_high' ? 'selected' : '' ?>>⭐ Rating Tinggi</option>
+                        <option value="rating_low" <?= ($sort ?? '') == 'rating_low' ? 'selected' : '' ?>>👎 Rating Rendah</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="review-cards-flow">
+                <?php if (empty($reviews)): ?>
+                    <div style="text-align: center; padding: 50px; background: #fff; border-radius: 15px; border:1px solid #f0f0f0; color:#999;">
+                        <p>Belum ada ulasan.</p>
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($reviews as $row): ?>
+                        <div class="review-card-item">
+                            <div class="card-top">
+                                <div class="user-profile">
+                                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($row['username']) ?>&background=random&color=fff&size=128" alt="User" class="avatar-img">
+                                    <div class="user-names">
+                                        <h5><?= !empty($row['username']) ? esc($row['username']) : 'User Terhapus' ?></h5>
+                                        <span class="time-stamp"><?= date('d F Y', strtotime($row['created_at'])) ?></span>
+                                    </div>
+                                </div>
+                                <div class="card-rating-static">
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <i class="<?= $i <= $row['rating'] ? 'fas' : 'far' ?> fa-star"></i>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
+                            
+                            <div class="review-msg">
+                                <?= nl2br(esc($row['komentar'])) ?>
+                            </div>
+
+                            <?php if (session()->get('logged_in') && (session()->get('id') == $row['user_id'] || session()->get('role') == 'admin')): ?>
+                                <div class="card-actions">
+                                    <a href="<?= base_url('about/review/delete/' . $row['id']) ?>" class="link-del" onclick="return confirm('Hapus ulasan ini?')">Hapus</a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+                <?php if (isset($pager)): ?>
+                    <div style="margin-top: 30px; display:flex; justify-content:center;">
+                        <?= $pager->links() ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+
         </div>
-
-        <button type="submit" class="btn-submit">Kirim Ulasan</button>
-      </form>
     </div>
-  <?php else: ?>
-    <div class="alert" style="background: #eef2f6; text-align: center;">
-      Ingin menulis ulasan? Silakan <a href="<?= base_url('auth/login') ?>" style="color: #2c3e50; font-weight: bold;">Login di sini</a>.
-    </div>
-  <?php endif; ?>
-
-
-  <h3 style="margin-bottom: 20px; border-left: 5px solid #2c3e50; padding-left: 15px;">Ulasan Terbaru</h3>
-
-  <div class="review-list">
-    <?php if (empty($reviews)): ?>
-      <div class="empty-state">
-        <p>Belum ada ulasan saat ini. Jadilah yang pertama memberikan review!</p>
-      </div>
-    <?php else: ?>
-      <?php foreach ($reviews as $row): ?>
-        <article class="review-card">
-          <div class="card-top">
-            <div class="user-info">
-              <div class="avatar-circle">
-                <img src="https://ui-avatars.com/api/?name=<?= urlencode($row['username']) ?>&background=random&color=fff" alt="Avatar">
-              </div>
-              <div class="user-details">
-                <h4><?= !empty($row['username']) ? esc($row['username']) : '<em>User Terhapus</em>' ?></h4>
-                <span><?= date('d M Y, H:i', strtotime($row['created_at'])) ?> WIB</span>
-              </div>
-            </div>
-
-            <div class="stars">
-              <?php for ($i = 1; $i <= 5; $i++): ?>
-                <span class="<?= $i <= $row['rating'] ? 'star-gold' : 'star-gray' ?>">★</span>
-              <?php endfor; ?>
-            </div>
-          </div>
-
-          <div class="review-body">
-            <p><?= nl2br(esc($row['komentar'])) ?></p>
-          </div>
-
-          <?php
-          // Cek Logika Akses
-          $isLogin = session()->get('logged_in');
-          $isOwner = session()->get('id') == $row['user_id'];
-          $isAdmin = session()->get('role') == 'admin'; // Pastikan session role diset saat login
-          ?>
-
-          <?php if ($isLogin && ($isOwner || $isAdmin)): ?>
-            <div style="margin-top: 15px; text-align: right;">
-              <a href="<?= base_url('about/review/delete/' . $row['id']) ?>"
-                class="btn-delete"
-                onclick="return confirm('Yakin ingin menghapus ulasan ini secara permanen?')">
-                Hapus Ulasan
-              </a>
-            </div>
-          <?php endif; ?>
-        </article>
-      <?php endforeach; ?>
-    <?php endif; ?>
-  </div>
-
-  <?php if (isset($pager)): ?>
-    <div style="margin-top: 30px;">
-      <?= $pager->links() ?>
-    </div>
-  <?php endif; ?>
-
 </div>
 
 <?= $this->endSection() ?>
