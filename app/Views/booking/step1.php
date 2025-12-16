@@ -45,7 +45,14 @@
 
                     <?php if (!empty($stylists) && is_array($stylists)) : ?>
                         <?php foreach ($stylists as $s): ?>
-                            <option value="<?= $s['id_capster'] ?>">
+                            <?php
+                            // LOGIKA BARU:
+                            // Cek apakah variable $selected_capster ada (dikirim dari controller)
+                            // DAN apakah nilainya sama dengan ID stylist saat ini.
+                            $isSelected = (isset($selected_capster) && $selected_capster == $s['id_capster']) ? 'selected' : '';
+                            ?>
+
+                            <option value="<?= $s['id_capster'] ?>" <?= $isSelected ?>>
                                 <?= esc($s['nama']) ?>
                             </option>
                         <?php endforeach; ?>

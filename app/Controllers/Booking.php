@@ -23,17 +23,20 @@ class Booking extends BaseController
 
     public function step1()
     {
-        // Load Model
-        $capsterModel = new CapsterModel();
+        // 1. Ambil parameter id_capster dari URL (misal: booking?id_capster=5)
+        // Kalau tidak ada, nilainya akan null
+        $selected_capster = $this->request->getGet('id_capster');
 
         // Siapkan data
         $data = [
-            'title'   => 'Pilih Layanan & Stylist',
-            // Ambil layanan (asumsi $this->layananModel sudah ada di construct)
-            'layanan' => $this->layananModel->findAll(),
+            'title'            => 'Pilih Layanan & Stylist',
+            'layanan'          => $this->layananModel->findAll(),
 
-            // LOGIKA BARU: Ambil capster yang status_aktif = 1
-            'stylists' => $capsterModel->where('status_aktif', 1)->findAll()
+            // Gunakan $this->capsterModel (jangan new lagi)
+            'stylists'         => $this->capsterModel->where('status_aktif', 1)->findAll(),
+
+            // Lempar data ini ke View untuk pengecekan
+            'selected_capster' => $selected_capster
         ];
 
         return view('booking/step1', $data);
