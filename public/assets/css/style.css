@@ -306,8 +306,8 @@ body {
 
 /* Header */
 .main-header {
-    background-color: var(--dark-brown);
-    color: var(--text-color-light);
+    background-color: #fffaf5;
+    color: #000000;
     padding: 15px 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: sticky;
@@ -319,19 +319,31 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 100%;      
+    padding: 0 5px;
 }
 
-/* Memberi ruang untuk logo meskpun kosong */
+/* --- LOGO --- */
+
 .main-header .logo {
-    min-width: 150px;
-    /* Sesuaikan lebarnya */
-    min-height: 60px;
-    /* Sesuaikan tingginya */
+    display: flex;
+    align-items: center;
+}
+
+.brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;            /* Jarak antara gambar logo dan tulisan */
+    text-decoration: none; /* Hilangkan garis bawah link */
 }
 
 .main-header .logo img {
-    height: 60px;
+    height: 100px;         /* Ukuran logo jangan terlalu raksasa */
+    width: auto;
+    display: block;
 }
+
+/* -------------------------- */
 
 /* Navigasi */
 .main-nav ul {
@@ -345,7 +357,7 @@ body {
 }
 
 .main-nav ul li a {
-    color: var(--text-color-light);
+    color: #000000;
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
@@ -369,7 +381,7 @@ body {
 
 .main-nav ul li a:hover,
 .main-nav ul li a.active {
-    color: var(--gold-accent);
+    color: #a87531;
 }
 
 .main-nav ul li a:hover::after,
@@ -378,52 +390,57 @@ body {
 }
 
 /* === BAGIAN HERO (DIUBAH TOTAL AGAR JADI BOX) === */
+
 .hero-section {
-    /* [DIUBAH] Beri warna latar belakang putih/krem terang */
-    background-color: var(--light-cream-background);
-
-    /* [DIUBAH] Ini yang membuatnya "nanggung" tapi rapi */
+    /* === UKURAN TETAP (Sesuai Request) === */
     max-width: 1200px;
-    /* Batasi lebar box-nya */
     margin: 40px auto;
-    /* Buat dia ke tengah (auto) dan beri jarak atas/bawah */
     padding: 60px;
-    /* Beri padding di dalam box */
-
-    /* [BARU] Tambahan agar terlihat seperti di foto */
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-
-    /* [DIUBAH] Pastikan konten di dalamnya (h1, p) tetap di tengah */
-    text-align: center;
+    background-color: var(--light-cream-background);
+    
+    /* === PERBAIKAN LAYOUT (Agar Teks & Logo Sejajar) === */
+    display: flex;            /* Ini kuncinya: Baris, bukan Kolom */
+    align-items: center;      /* Vertikal tengah */
+    justify-content: space-between; /* Jarak antara kiri dan kanan */
+    text-align: left;         /* Reset ke kiri agar rapi (bukan center) */
 }
 
 .hero-content {
-    /* [DIUBAH] Tidak perlu max-width lagi, biarkan 100% di dalam hero-section */
+    /* === UKURAN TETAP === */
+    flex: 1;                 /* Mengambil ruang yang tersedia */
+    max-width: 55%;          /* Membatasi teks hanya setengah kiri */
+    padding-right: 20px;     /* Jarak napas ke logo */
+}
+
+/* Wrapper Logo Baru (Agar logo ada di kanan) */
+.hero-logo-wrapper {
+    flex: 1;                 /* Mengambil sisa ruang (45%) */
+    display: flex;
+    justify-content: center; /* Logo rata tengah di areanya */
+    align-items: center;
+}
+
+/* Pastikan gambar logo responsif di dalam kotaknya */
+.hero-logo-wrapper img {
     max-width: 100%;
-    padding-right: 0;
-}
-
-.hero-content {
-    flex: 1;
-    max-width: 55%;
-    /* Teks mengambil setengah bagian kiri */
-    padding-right: 20px;
+    height: auto;
+    /* Opsional: Batasi tinggi biar tidak terlalu raksasa jika file aslinya besar */
+    max-height: 350px; 
 }
 
 .hero-content h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
+    font-size: 3.5rem;       /* TETAP */
     color: var(--dark-brown);
-    /* GANTI ke warna gelap */
     margin-bottom: 20px;
     line-height: 1.2;
 }
 
 .hero-content p {
-    font-size: 1.2rem;
+    font-size: 1.2rem;       /* TETAP */
     color: var(--text-color-dark);
-    /* GANTI ke warna gelap */
     margin-bottom: 30px;
 }
 
@@ -431,11 +448,11 @@ body {
     display: inline-block;
     background-color: var(--primary-red);
     color: var(--text-color-light);
-    padding: 15px 30px;
+    padding: 15px 30px;      /* TETAP */
     text-decoration: none;
     border-radius: 5px;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.1rem;       /* TETAP */
     transition: background-color 0.3s ease;
 }
 
@@ -443,6 +460,23 @@ body {
     background-color: var(--secondary-red);
 }
 
+/* === RESPONSIF HP (Wajib, biar tidak hancur di layar kecil) === */
+@media (max-width: 768px) {
+    .hero-section {
+        flex-direction: column-reverse; /* Logo di atas, Teks di bawah */
+        text-align: center;
+        padding: 40px 20px; /* Sedikit penyesuaian padding di HP */
+    }
+    
+    .hero-content {
+        max-width: 100%;
+        padding-right: 0;
+    }
+    
+    .hero-logo-wrapper {
+        margin-bottom: 30px;
+    }
+}
 /* === BAGIAN FITUR 3 KOLOM (BARU) === */
 /* ...MENJADI SEPERTI INI */
 .features-section {

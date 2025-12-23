@@ -16,7 +16,7 @@
                             <h3 class="service-name"><?= esc($row['nama_layanan']) ?></h3>
                             <p class="service-desc"><?= esc($row['deskripsi']) ?></p>
                         </div>
-                        
+
                         <div class="service-footer">
                             <span class="price-tag">Rp <?= number_format($row['harga'], 0, ',', '.') ?></span>
                         </div>
@@ -34,18 +34,24 @@
 <style>
     /* 1. SETUP WARNA & FONT */
     :root {
-        --bg-cream: #F5F0E6;       /* Background Halaman */
-        --card-white: #FFFFFF;     /* Warna Kartu */
-        --text-dark: #3E2723;      /* Cokelat Tua (Teks Utama) */
-        --text-accent: #6D4C41;    /* Cokelat Sedang (Subjudul) */
-        --gold-accent: #D7CCC8;    /* Garis dekorasi */
+        --bg-cream: #F5F0E6;
+        /* Background Halaman */
+        --card-white: #FFFFFF;
+        /* Warna Kartu */
+        --text-dark: #3E2723;
+        /* Cokelat Tua (Teks Utama) */
+        --text-accent: #6D4C41;
+        /* Cokelat Sedang (Subjudul) */
+        --gold-accent: #a87531;
+        /* Garis dekorasi */
     }
 
     .pricelist-section {
         background-color: var(--bg-cream);
         padding: 60px 20px;
         min-height: 80vh;
-        font-family: 'Poppins', sans-serif; /* Font default body */
+        font-family: 'Poppins', sans-serif;
+        /* Font default body */
     }
 
     .container {
@@ -61,11 +67,13 @@
 
     .title {
         /* INI PERUBAHANNYA: Menggunakan font Serif seperti 'GET IN TOUCH' */
-        font-family: 'Playfair Display', 'Times New Roman', serif; 
-        font-size: 3rem; 
+        font-family: 'Playfair Display', 'Times New Roman', serif;
+        font-size: 3rem;
         color: var(--text-dark);
-        text-transform: uppercase; /* Membuat huruf besar semua */
-        letter-spacing: 2px;       /* Memberi jarak antar huruf agar elegan */
+        text-transform: uppercase;
+        /* Membuat huruf besar semua */
+        letter-spacing: 2px;
+        /* Memberi jarak antar huruf agar elegan */
         font-weight: 700;
         margin-bottom: 15px;
     }
@@ -88,12 +96,13 @@
         background: var(--card-white);
         border-radius: 12px;
         padding: 25px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         display: flex;
         flex-direction: column;
-        justify-content: space-between; /* Memastikan harga selalu di bawah */
-        border: 1px solid rgba(0,0,0,0.02);
+        justify-content: space-between;
+        /* Memastikan harga selalu di bawah */
+        border: 1px solid rgba(0, 0, 0, 0.02);
     }
 
     .card-service:hover {
@@ -102,7 +111,8 @@
     }
 
     .service-name {
-        font-family: 'Playfair Display', serif; /* Nama layanan juga pakai serif biar serasi */
+        font-family: 'Playfair Display', serif;
+        /* Nama layanan juga pakai serif biar serasi */
         font-size: 1.5rem;
         color: var(--text-dark);
         margin-bottom: 10px;
@@ -118,7 +128,8 @@
 
     /* 5. HARGA & FOOTER */
     .service-footer {
-        margin-top: auto; /* Dorong ke paling bawah */
+        margin-top: auto;
+        /* Dorong ke paling bawah */
         text-align: right;
         border-top: 1px dashed var(--gold-accent);
         padding-top: 15px;
@@ -136,8 +147,13 @@
 
     /* Mobile Responsive */
     @media screen and (max-width: 768px) {
-        .title { font-size: 2.2rem; }
-        .card-grid { grid-template-columns: 1fr; }
+        .title {
+            font-size: 2.2rem;
+        }
+
+        .card-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
