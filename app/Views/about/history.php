@@ -4,8 +4,8 @@
 
 <div class="container">
     <section class="history-section">
-        
-        <h2 class="history-title-main">Perjalanan BarberNow</h2>
+
+        <h2 class="history-title-main">Our Journey</h2>
         <p class="history-subtitle">
             Sebuah dedikasi untuk mendefinisikan ulang gaya rambut pria. Inilah tonggak sejarah singkat kami sejak berdiri.
         </p>

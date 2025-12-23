@@ -5,7 +5,7 @@ body {
     max-width: 900px;
     margin: 20px auto;
     padding: 0 16px;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     /* Menambahkan background default */
     box-sizing: border-box;
 }
@@ -253,7 +253,7 @@ button:hover {
     /* Coklat gelap dari logo */
     --gold-accent: #B89B66;
     /* Warna emas/krem dari garis logo */
-    --cream-background: #F8F4EA;
+    --cream-background: #f2f8ea;
     /* Cream / Coklat susu terang */
     --light-cream-background: #FFFBF5;
     /* Cream yang lebih terang untuk aksen */
@@ -276,22 +276,27 @@ body {
     line-height: 1.6;
     color: var(--text-color-dark);
 
-    /* [DIUBAH] Menggunakan background 4-kuadran */
-    background-image:
-        /* Gradient 1 (Untuk 50% ATAS) */
-        linear-gradient(to right, var(--cream-background) 50%, var(--cream-darker-bg) 50%),
+    /* [DIUBAH] Menggunakan Background Foto */
+    /* Pastikan path/lokasi gambarnya benar relative terhadap file CSS ini */
+    /* Jika CSS ada di assets/css/ dan gambar di assets/images/, gunakan ../images/ */
+    background-image: url('../images/background.jpg'); 
 
-        /* Gradient 2 (Untuk 50% BAWAH) */
-        linear-gradient(to right, var(--cream-darker-bg) 50%, var(--cream-background) 50%);
+    /* Agar gambar menutupi seluruh layar secara proporsional tanpa gepeng */
+    background-size: cover;
 
-    background-size: 100% 50%;
-    /* Tiap gradient mengambil 50% tinggi body */
-    background-position: top, bottom;
-    /* Posisi gradient 1 di atas, 2 di bawah */
+    /* Posisi gambar selalu di tengah layar */
+    background-position: center center;
+
+    /* Mencegah gambar berulang-ulang (tile) */
     background-repeat: no-repeat;
+
+    /* OPSI KEREN: Efek Parallax (Background diam saat konten discroll) */
+    /* Jika tidak suka efek ini, hapus baris di bawah ini */
+    background-attachment: fixed;
 
     /* [PENTING] Pastikan background menutupi seluruh tinggi halaman */
     min-height: 100vh;
+    margin: 0; /* Reset margin browser */
 }
 
 .container {
@@ -1416,23 +1421,27 @@ h2.admin-title {
 */
 
 .history-section {
+    background-color: transparent; /* Ubah jadi transparan */
+    box-shadow: none; /* Hilangkan bayangan kotak besar */
     padding: 60px 0;
     text-align: center;
 }
 
 .history-title-main {
     font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    color: var(--dark-brown);
+    font-size: 4.5rem;
+    color: #ffffff; /* SEBELUMNYA: var(--dark-brown) -> GANTI JADI PUTIH */
     margin-bottom: 15px;
+    text-shadow: 3px 3px 0px #000000; /* Bayangan hitam pekat */
 }
 
 .history-subtitle {
-    color: #666;
-    font-size: 1rem;
+    color: #ffffff; /* SEBELUMNYA: #666 -> GANTI JADI TERANG */
+    font-size: 1.3rem;
     max-width: 700px;
     margin: 0 auto 50px;
     line-height: 1.6;
+    text-shadow: 2px 2px 1.5px rgba(0, 0, 0, 0.6);
 }
 
 /* Grid Layout */
