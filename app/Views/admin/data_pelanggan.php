@@ -17,7 +17,10 @@
         --shadow-hover: 0 20px 50px -10px rgba(78, 52, 46, 0.2);
     }
 
-    body { background-color: var(--bg-body); font-family: 'Montserrat', sans-serif; }
+    body {
+        background-color: var(--bg-body);
+        font-family: 'Montserrat', sans-serif;
+    }
 
     /* LAYOUT WRAPPER */
     .admin-wrapper {
@@ -29,23 +32,30 @@
 
     /* HEADER SECTION */
     .page-header {
-        text-align: center; margin-bottom: 50px; position: relative;
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
     }
 
     .page-title {
-        font-family: 'Playfair Display', serif; 
-        font-size: 3rem; font-weight: 800;
-        margin: 0; 
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        font-weight: 800;
+        margin: 0;
         /* Gradient Text Effect */
-        background: linear-gradient(to right, var(--primary-brown), #8d6e63);
+        background: #5C2C27;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         display: inline-block;
     }
 
     .page-subtitle {
-        color: var(--secondary-brown); font-size: 1.05rem; margin-top: 10px; font-weight: 500;
-        opacity: 0.8; letter-spacing: 0.5px;
+        color: var(--secondary-brown);
+        font-size: 1.05rem;
+        margin-top: 10px;
+        font-weight: 500;
+        opacity: 0.8;
+        letter-spacing: 0.5px;
     }
 
     /* --- TABLE CARD CONTAINER --- */
@@ -53,33 +63,44 @@
         background: var(--card-surface);
         border-radius: 20px;
         box-shadow: var(--shadow-soft);
-        overflow: hidden; /* Round corners clip */
+        overflow: hidden;
+        /* Round corners clip */
         border: 1px solid rgba(255, 255, 255, 0.5);
         position: relative;
     }
 
     /* Dekorasi Top Bar pada Card */
     .table-card::before {
-        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
         background: linear-gradient(90deg, var(--primary-brown), var(--accent-gold));
     }
 
     /* TABLE STYLES */
     .custom-table {
-        width: 100%; border-collapse: collapse; margin: 0;
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
     }
 
     /* Table Head */
     .custom-table thead {
-        background-color: var(--soft-gold); /* Latar Header Cream Gold */
+        background-color: var(--soft-gold);
+        /* Latar Header Cream Gold */
         border-bottom: 2px solid #eee;
     }
 
     .custom-table th {
         padding: 25px 30px;
         text-align: left;
-        font-size: 0.8rem; font-weight: 800;
-        text-transform: uppercase; letter-spacing: 1.5px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
         color: var(--primary-brown);
     }
 
@@ -90,13 +111,18 @@
         cursor: default;
     }
 
-    .custom-table tbody tr:last-child { border-bottom: none; }
+    .custom-table tbody tr:last-child {
+        border-bottom: none;
+    }
 
     .custom-table tbody tr:hover {
-        background-color: #fffbf5; /* Efek hover sangat halus */
-        transform: scale(1.005); /* Sedikit membesar */
-        box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-        z-index: 10; position: relative;
+        background-color: #fffbf5;
+        /* Efek hover sangat halus */
+        transform: scale(1.005);
+        /* Sedikit membesar */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        z-index: 10;
+        position: relative;
     }
 
     .custom-table td {
@@ -108,81 +134,156 @@
     /* --- CONTENT STYLING --- */
 
     /* Profile Wrapper */
-    .profile-wrapper { display: flex; align-items: center; gap: 20px; }
+    .profile-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
 
     .avatar-box {
         position: relative;
-        padding: 3px; border: 2px solid #eee; border-radius: 50%; /* Ring luar */
+        padding: 3px;
+        border: 2px solid #eee;
+        border-radius: 50%;
+        /* Ring luar */
         transition: border-color 0.3s;
     }
-    .custom-table tbody tr:hover .avatar-box { border-color: var(--accent-gold); }
 
-    .avatar-circle {
-        width: 45px; height: 45px; border-radius: 50%;
-        color: #fff; font-weight: 700; font-size: 1.1rem;
-        display: flex; align-items: center; justify-content: center;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    .custom-table tbody tr:hover .avatar-box {
+        border-color: var(--accent-gold);
     }
 
-    .profile-text { display: flex; flex-direction: column; }
+    .avatar-circle {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-text {
+        display: flex;
+        flex-direction: column;
+    }
 
     .user-name {
-        font-weight: 700; font-size: 1.05rem; color: var(--primary-brown);
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: var(--primary-brown);
         font-family: 'Playfair Display', serif;
     }
 
     .user-badge {
-        font-size: 0.7rem; font-weight: 700; color: #fff;
-        background: var(--accent-gold); padding: 2px 8px; border-radius: 10px;
-        display: inline-block; width: fit-content; margin-top: 4px;
-        text-transform: uppercase; letter-spacing: 0.5px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #fff;
+        background: var(--accent-gold);
+        padding: 2px 8px;
+        border-radius: 10px;
+        display: inline-block;
+        width: fit-content;
+        margin-top: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
         box-shadow: 0 2px 5px rgba(212, 175, 55, 0.3);
     }
 
     /* Email Styling */
     .email-container {
-        display: inline-flex; align-items: center; gap: 10px;
-        color: var(--text-muted); font-size: 0.95rem; font-weight: 500;
-        padding: 8px 15px; border-radius: 50px;
-        background: #fafafa; border: 1px solid #f0f0f0;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        font-weight: 500;
+        padding: 8px 15px;
+        border-radius: 50px;
+        background: #fafafa;
+        border: 1px solid #f0f0f0;
         transition: all 0.3s;
     }
+
     .custom-table tbody tr:hover .email-container {
-        background: #fff; border-color: var(--accent-gold); color: var(--primary-brown);
+        background: #fff;
+        border-color: var(--accent-gold);
+        color: var(--primary-brown);
     }
-    .email-container i { color: #ccc; transition: color 0.3s; }
-    .custom-table tbody tr:hover .email-container i { color: var(--accent-gold); }
+
+    .email-container i {
+        color: #ccc;
+        transition: color 0.3s;
+    }
+
+    .custom-table tbody tr:hover .email-container i {
+        color: var(--accent-gold);
+    }
 
     /* ID Badge Styling */
-    .id-wrapper { text-align: right; }
+    .id-wrapper {
+        text-align: right;
+    }
+
     .id-ticket {
-        font-family: 'Courier New', monospace; font-weight: 700;
-        color: var(--secondary-brown); background: #efebe9;
-        padding: 6px 12px; border-radius: 6px;
+        font-family: 'Courier New', monospace;
+        font-weight: 700;
+        color: var(--secondary-brown);
+        background: #efebe9;
+        padding: 6px 12px;
+        border-radius: 6px;
         border-left: 3px solid var(--primary-brown);
-        font-size: 0.9rem; letter-spacing: 1px;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
     }
 
     /* EMPTY STATE */
-    .empty-row td { text-align: center; padding: 80px; }
-    .empty-content { color: #ccc; opacity: 0.6; }
+    .empty-row td {
+        text-align: center;
+        padding: 80px;
+    }
+
+    .empty-content {
+        color: #ccc;
+        opacity: 0.6;
+    }
 
     /* RESPONSIVE MOBILE */
     @media (max-width: 768px) {
-        .custom-table thead { display: none; }
-        .custom-table tbody tr {
-            display: flex; flex-direction: column; padding: 25px; gap: 15px;
-            border-bottom: 8px solid var(--bg-body); /* Jarak antar kartu di HP */
+        .custom-table thead {
+            display: none;
         }
-        .custom-table td { padding: 0; border: none; }
-        
-        .profile-wrapper { margin-bottom: 10px; }
-        .id-wrapper { text-align: left; margin-top: 10px; }
+
+        .custom-table tbody tr {
+            display: flex;
+            flex-direction: column;
+            padding: 25px;
+            gap: 15px;
+            border-bottom: 8px solid var(--bg-body);
+            /* Jarak antar kartu di HP */
+        }
+
+        .custom-table td {
+            padding: 0;
+            border: none;
+        }
+
+        .profile-wrapper {
+            margin-bottom: 10px;
+        }
+
+        .id-wrapper {
+            text-align: left;
+            margin-top: 10px;
+        }
     }
 </style>
 
 <div class="admin-wrapper">
-    
+
     <div class="page-header">
         <h2 class="page-title">Daftar Pelanggan</h2>
         <p class="page-subtitle">Kelola data eksklusif pelanggan BarberNow.</p>
@@ -199,7 +300,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                     <?php if (!empty($pelanggan)): ?>
                         <?php foreach ($pelanggan as $p): ?>
                             <tr>
@@ -210,7 +311,7 @@
                                                 <?= strtoupper(substr($p['username'], 0, 1)) ?>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="profile-text">
                                             <span class="user-name"><?= esc($p['username']) ?></span>
                                             <span class="user-badge">Registered</span>
@@ -232,7 +333,7 @@
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                    
+
                     <?php else: ?>
                         <tr class="empty-row">
                             <td colspan="3">
@@ -252,18 +353,19 @@
 </div>
 
 <?php
-    function getGradientColor($string) {
-        $gradients = [
-            'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', // Pink
-            'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)', // Purple
-            'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)', // Green-Blue
-            'linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)', // Peach
-            'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)', // Gold-Purple
-            'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)', // Soft Blue
-        ];
-        $index = strlen($string) % count($gradients);
-        return $gradients[$index];
-    }
+function getGradientColor($string)
+{
+    $gradients = [
+        'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', // Pink
+        'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)', // Purple
+        'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)', // Green-Blue
+        'linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)', // Peach
+        'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)', // Gold-Purple
+        'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)', // Soft Blue
+    ];
+    $index = strlen($string) % count($gradients);
+    return $gradients[$index];
+}
 ?>
 
 <?= $this->endSection(); ?>

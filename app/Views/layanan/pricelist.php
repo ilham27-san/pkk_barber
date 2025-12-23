@@ -69,7 +69,7 @@
         /* INI PERUBAHANNYA: Menggunakan font Serif seperti 'GET IN TOUCH' */
         font-family: 'Playfair Display', 'Times New Roman', serif;
         font-size: 3rem;
-        color: var(--text-dark);
+        color: var(--dark-brown);
         text-transform: uppercase;
         /* Membuat huruf besar semua */
         letter-spacing: 2px;

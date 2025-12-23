@@ -106,7 +106,7 @@
         .title {
             font-family: 'Playfair Display', serif;
             font-size: 2.2rem;
-            color: var(--text-dark);
+            color: #5C2C27;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 700;
