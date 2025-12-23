@@ -2,323 +2,224 @@
 
 <?= $this->section('content'); ?>
 
-<div class="admin-wrapper">
-    <div class="admin-container">
-
-        <div class="page-header">
-            <div>
-                <h2 class="page-title">Kelola Layanan</h2>
-                <p class="page-subtitle">Daftar paket perawatan dan harga</p>
-            </div>
-            <a href="<?= base_url('admin/layanan/create') ?>" class="btn-add">
-                <i class="fas fa-plus"></i> Tambah Layanan
-            </a>
-        </div>
-
-        <?php if (session()->getFlashdata('pesan')) : ?>
-            <div class="alert-box">
-                <i class="fas fa-check-circle"></i>
-                <span><?= session()->getFlashdata('pesan'); ?></span>
-            </div>
-        <?php endif; ?>
-
-        <div class="table-responsive">
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th width="5%">No</th>
-                        <th width="25%">Nama Layanan</th>
-                        <th width="20%">Harga</th>
-                        <th width="35%">Deskripsi</th>
-                        <th width="15%" class="text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $no = 1; ?>
-                    <?php if (!empty($layanan)): ?>
-                        <?php foreach ($layanan as $row): ?>
-                            <tr>
-                                <td><?= $no++; ?></td>
-                                <td>
-                                    <span class="fw-bold text-dark"><?= esc($row['nama_layanan']) ?></span>
-                                </td>
-                                <td>
-                                    <span class="price-tag">
-                                        Rp <?= number_format($row['harga'], 0, ',', '.') ?>
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="desc-truncate" title="<?= esc($row['deskripsi']) ?>">
-                                        <?= esc($row['deskripsi']) ?>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <div class="action-buttons">
-                                        <a href="<?= base_url('admin/layanan/edit/' . $row['id']) ?>" class="btn-icon btn-edit" title="Edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                        </a>
-
-                                        <form action="<?= base_url('admin/layanan/delete/' . $row['id']) ?>" method="post" class="d-inline">
-                                            <?= csrf_field() ?>
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn-icon btn-delete" onclick="return confirm('Yakin ingin menghapus layanan ini?')" title="Hapus">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="5">
-                                <div class="empty-state">
-                                    <i class="fas fa-box-open"></i>
-                                    <p>Belum ada data layanan tersedia.</p>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
 <style>
-    /* --- VARIABLES & LAYOUT (Konsisten dengan halaman Capster) --- */
+    /* VARIABLES (Consistent with Frontend) */
     :root {
-        --primary-dark: #3E2723;
-        --primary-gold: #D4AF37;
-        --bg-color: #F8F9FA;
-        --card-bg: #FFFFFF;
-        --border-color: #E0E0E0;
-        --text-main: #2d3436;
-        --text-muted: #636e72;
+        --primary-brown: #3e2b26;
+        --secondary-brown: #5d4037;
+        --accent-gold: #cba155;
+        --bg-light: #fdfaf7; /* Cream background like frontend */
+        --card-bg: #ffffff;
+        --text-dark: #333;
+        --text-muted: #777;
     }
 
+    body { background-color: var(--bg-light); font-family: 'Montserrat', sans-serif; }
+
+    /* CONTAINER UTAMA */
     .admin-wrapper {
-        font-family: 'Poppins', sans-serif;
-        background-color: var(--bg-color);
-        padding: 40px 20px;
-        min-height: 85vh;
-        display: flex;
-        justify-content: center;
+        padding: 50px 20px;
+        min-height: 90vh;
+        max-width: 1000px;
+        margin: 0 auto;
     }
 
-    .admin-container {
-        background: var(--card-bg);
-        width: 100%;
-        max-width: 1100px;
-        border-radius: 16px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-        padding: 40px;
-        border: 1px solid rgba(0, 0, 0, 0.02);
-    }
-
-    /* --- HEADER --- */
+    /* HEADER */
     .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-        flex-wrap: wrap;
-        gap: 20px;
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 40px; padding-bottom: 20px;
+        border-bottom: 2px dashed #e0d0c0;
     }
 
     .page-title {
-        color: var(--primary-dark);
-        font-family: 'Playfair Display', serif;
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin: 0;
+        font-family: 'Playfair Display', serif; font-size: 2.5rem; 
+        color: var(--primary-brown); margin: 0; font-weight: 700;
     }
 
-    .page-subtitle {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        margin: 5px 0 0 0;
+    .page-subtitle { color: var(--text-muted); font-size: 1rem; margin-top: 5px; }
+
+    /* TOMBOL TAMBAH (Modern Pill) */
+    .btn-add-service {
+        background-color: var(--primary-brown); color: #fff;
+        padding: 12px 25px; border-radius: 50px; text-decoration: none;
+        font-weight: 600; display: flex; align-items: center; gap: 10px;
+        transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(62, 43, 38, 0.2);
+    }
+    .btn-add-service:hover {
+        background-color: var(--secondary-brown); transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(62, 43, 38, 0.3); color: #fff;
     }
 
-    /* --- TOMBOL ADD --- */
-    .btn-add {
-        background-color: var(--primary-dark);
-        color: var(--primary-gold);
-        padding: 10px 20px;
-        border-radius: 30px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.9rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: 0.3s;
-        box-shadow: 0 4px 10px rgba(62, 39, 35, 0.2);
+    /* ALERT BOX */
+    .alert-modern {
+        background: #e8f5e9; color: #2e7d32; padding: 15px 20px;
+        border-radius: 12px; margin-bottom: 30px; display: flex; align-items: center; gap: 15px;
+        border-left: 5px solid #2e7d32; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
 
-    .btn-add:hover {
-        background-color: #2D1B18;
-        transform: translateY(-2px);
-        color: #fff;
+    /* SERVICE LIST (CARD BASED LAYOUT) */
+    .service-list { display: flex; flex-direction: column; gap: 20px; }
+
+    .service-card {
+        background: var(--card-bg); border-radius: 16px;
+        padding: 25px; display: flex; align-items: center; justify-content: space-between;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02);
+        transition: all 0.3s ease; position: relative; overflow: hidden;
     }
 
-    /* --- ALERT --- */
-    .alert-box {
-        background: #D1E7DD;
-        color: #0F5132;
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 25px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+    .service-card:hover {
+        transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+        border-color: rgba(203, 161, 85, 0.3);
     }
 
-    /* --- TABEL --- */
-    .table-responsive {
-        overflow-x: auto;
+    /* Dekorasi Garis Kiri */
+    .service-card::before {
+        content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+        background-color: var(--accent-gold); border-radius: 4px 0 0 4px;
+        opacity: 0.7;
     }
 
-    .custom-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        margin-top: 10px;
+    /* INFO SECTION */
+    .service-info { flex-grow: 1; margin-left: 15px; margin-right: 20px; }
+    
+    .service-name {
+        font-size: 1.25rem; font-weight: 700; color: var(--primary-brown);
+        margin: 0 0 5px 0; font-family: 'Playfair Display', serif;
+    }
+    
+    .service-desc {
+        color: var(--text-muted); font-size: 0.9rem; margin: 0;
+        line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical; overflow: hidden;
     }
 
-    .custom-table th {
-        background-color: #FAFAFA;
-        color: var(--primary-dark);
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        padding: 15px;
-        border-bottom: 2px solid var(--border-color);
-        text-align: left;
+    /* PRICE TAG */
+    .service-price {
+        background: #fdf5e6; color: #d35400; padding: 8px 16px;
+        border-radius: 10px; font-weight: 700; font-size: 1rem;
+        white-space: nowrap; margin-right: 20px;
+        border: 1px solid rgba(211, 84, 0, 0.1);
     }
 
-    .custom-table td {
-        padding: 15px;
-        vertical-align: middle;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--text-main);
-        font-size: 0.95rem;
+    /* ACTIONS BUTTONS */
+    .service-actions { display: flex; gap: 10px; }
+
+    .btn-action {
+        width: 40px; height: 40px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        border: none; cursor: pointer; transition: all 0.2s;
+        text-decoration: none; font-size: 1rem;
     }
 
-    .custom-table tr:hover td {
-        background-color: #FAFAFA;
-    }
+    .btn-edit { background: #e3f2fd; color: #1976d2; }
+    .btn-edit:hover { background: #bbdefb; color: #0d47a1; }
 
-    /* --- SPESIFIK LAYANAN --- */
-    .price-tag {
-        font-weight: 700;
-        color: var(--primary-dark);
-        background: #F5F0E6;
-        /* Cream muda */
-        padding: 5px 10px;
-        border-radius: 8px;
-        font-size: 0.9rem;
-    }
+    .btn-delete { background: #ffebee; color: #c62828; }
+    .btn-delete:hover { background: #ffcdd2; color: #b71c1c; }
 
-    /* Membatasi panjang deskripsi agar tabel tidak hancur */
-    .desc-truncate {
-        max-width: 300px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: var(--text-muted);
-        font-size: 0.85rem;
-    }
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 60px; color: #aaa; }
 
-    /* --- ACTION BUTTONS --- */
-    .action-buttons {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-    }
-
-    .btn-icon {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
-        cursor: pointer;
-        transition: 0.2s;
-        text-decoration: none;
-    }
-
-    .btn-edit {
-        background-color: #FFF3E0;
-        color: #F57C00;
-    }
-
-    .btn-edit:hover {
-        background-color: #FFE0B2;
-    }
-
-    .btn-delete {
-        background-color: #FFEBEE;
-        color: #D32F2F;
-    }
-
-    .btn-delete:hover {
-        background-color: #FFCDD2;
-    }
-
-    /* --- UTILS --- */
-    .text-center {
-        text-align: center;
-    }
-
-    .fw-bold {
-        font-weight: 600;
-    }
-
-    .text-dark {
-        color: #2d3436;
-    }
-
-    .d-inline {
-        display: inline-block;
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 40px;
-        color: #aaa;
-    }
-
-    .empty-state i {
-        font-size: 2rem;
-        margin-bottom: 10px;
-        display: block;
-    }
-
-    /* --- MOBILE --- */
+    /* RESPONSIVE */
     @media (max-width: 768px) {
-        .admin-container {
-            padding: 20px;
+        .page-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+        .btn-add-service { width: 100%; justify-content: center; }
+        
+        .service-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+        .service-info { margin: 0; width: 100%; }
+        
+        .service-footer-mobile {
+            display: flex; width: 100%; justify-content: space-between; align-items: center;
+            margin-top: 10px; border-top: 1px dashed #eee; padding-top: 15px;
         }
-
-        .page-header {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .btn-add {
-            width: 100%;
-            justify-content: center;
-        }
-
-        .desc-truncate {
-            max-width: 150px;
-        }
-
-        /* Deskripsi lebih pendek di HP */
+        
+        /* Menyembunyikan elemen desktop di mobile */
+        .desktop-actions { display: none; }
+    }
+    
+    @media (min-width: 769px) {
+        .service-footer-mobile { display: none; } /* Sembunyikan footer mobile di desktop */
     }
 </style>
+
+<div class="admin-wrapper">
+    
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Kelola Layanan</h2>
+            <p class="page-subtitle">Atur daftar menu perawatan dan harga untuk pelanggan.</p>
+        </div>
+        <a href="<?= base_url('admin/layanan/create') ?>" class="btn-add-service">
+            <i class="fas fa-plus-circle"></i> Tambah Layanan Baru
+        </a>
+    </div>
+
+    <?php if (session()->getFlashdata('pesan')) : ?>
+        <div class="alert-modern">
+            <i class="fas fa-check-circle fa-lg"></i>
+            <span><?= session()->getFlashdata('pesan'); ?></span>
+        </div>
+    <?php endif; ?>
+
+    <div class="service-list">
+        
+        <?php if (!empty($layanan)): ?>
+            <?php foreach ($layanan as $row): ?>
+                <div class="service-card">
+                    
+                    <div class="service-info">
+                        <h3 class="service-name"><?= esc($row['nama_layanan']) ?></h3>
+                        <p class="service-desc"><?= esc($row['deskripsi']) ?></p>
+                    </div>
+
+                    <div class="desktop-actions" style="display:flex; align-items:center;">
+                        <div class="service-price">Rp <?= number_format($row['harga'], 0, ',', '.') ?></div>
+                        
+                        <div class="service-actions">
+                            <a href="<?= base_url('admin/layanan/edit/' . $row['id']) ?>" class="btn-action btn-edit" title="Edit Layanan">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+
+                            <form action="<?= base_url('admin/layanan/delete/' . $row['id']) ?>" method="post" class="d-inline">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn-action btn-delete" onclick="return confirm('Yakin ingin menghapus layanan ini?')" title="Hapus Permanen">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="service-footer-mobile">
+                        <div class="service-price">Rp <?= number_format($row['harga'], 0, ',', '.') ?></div>
+                        
+                        <div class="service-actions">
+                            <a href="<?= base_url('admin/layanan/edit/' . $row['id']) ?>" class="btn-action btn-edit">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <form action="<?= base_url('admin/layanan/delete/' . $row['id']) ?>" method="post">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn-action btn-delete" onclick="return confirm('Hapus?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            <?php endforeach; ?>
+
+        <?php else: ?>
+            <div class="empty-state">
+                <i class="fas fa-clipboard-list fa-4x" style="opacity:0.2; margin-bottom:20px;"></i>
+                <h3>Belum ada layanan tersedia</h3>
+                <p>Silakan tambahkan layanan perawatan pertama Anda.</p>
+            </div>
+        <?php endif; ?>
+
+    </div>
+
+</div>
 
 <?= $this->endSection(); ?>
