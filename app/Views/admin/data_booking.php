@@ -19,6 +19,10 @@
         --status-pending-text: #e65100;
         --status-confirmed-bg: #e3f2fd;
         --status-confirmed-text: #1565c0;
+        --status-process-bg: #e0f7fa;
+        /* New: Warna untuk status Process */
+        --status-process-text: #006064;
+        /* New */
         --status-done-bg: #e8f5e9;
         --status-done-text: #2e7d32;
         --status-canceled-bg: #ffebee;
@@ -35,7 +39,6 @@
         padding: 50px 20px;
         min-height: 90vh;
         max-width: 1200px;
-        /* Lebih lebar karena tabel booking banyak kolom */
         margin: 0 auto;
     }
 
@@ -50,13 +53,14 @@
     .page-title {
         font-family: 'Playfair Display', serif;
         font-size: 2.5rem;
-        color: #ffffff;
+        color: var(--primary-brown);
+        /* Fixed: Biar kontras di background terang */
         margin: 0;
         font-weight: 700;
     }
 
     .page-subtitle {
-        color: #ffffff;
+        color: var(--text-muted);
         font-size: 1rem;
         margin-top: 5px;
     }
@@ -79,6 +83,7 @@
     .btn-add:hover {
         background-color: var(--secondary-brown);
         transform: translateY(-2px);
+        color: #fff;
     }
 
     /* ALERT */
@@ -191,6 +196,7 @@
     .service-badge {
         font-weight: 600;
         color: var(--text-dark);
+        margin-bottom: 4px;
     }
 
     .stylist-name {
@@ -211,6 +217,7 @@
     .date-val {
         font-weight: 700;
         display: block;
+        color: var(--primary-brown);
     }
 
     .time-val {
@@ -227,11 +234,8 @@
         font-weight: 600;
         cursor: pointer;
         outline: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
         text-align: center;
-        min-width: 100px;
+        min-width: 110px;
     }
 
     /* Warna Status Dinamis */
@@ -243,6 +247,11 @@
     .status-confirmed {
         background-color: var(--status-confirmed-bg);
         color: var(--status-confirmed-text);
+    }
+
+    .status-process {
+        background-color: var(--status-process-bg);
+        color: var(--status-process-text);
     }
 
     .status-done {
@@ -313,9 +322,9 @@
                         <th width="5%" style="text-align:center;">No</th>
                         <th width="20%">Pelanggan</th>
                         <th width="20%">Kontak</th>
-                        <th width="20%">Layanan & Stylist</th>
+                        <th width="25%">Layanan & Stylist</th>
                         <th width="15%" style="text-align:center;">Jadwal</th>
-                        <th width="20%" style="text-align:center;">Status</th>
+                        <th width="15%" style="text-align:center;">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -323,33 +332,70 @@
                     <?php $no = 1; ?>
                     <?php if (!empty($bookings) && is_array($bookings)): ?>
                         <?php foreach ($bookings as $booking): ?>
+
+                            <?php
+                            // --- LOGIC PHP DI VIEW ---
+
+                            // 1. Parsing Tanggal dari start_time (Source of Truth)
+                            // Jika start_time ada, pakai itu. Jika tidak, fallback ke legacy.
+                            if (!empty($booking['start_time'])) {
+                                $time = strtotime($booking['start_time']);
+                                $displayDate = date('d M Y', $time);
+                                $displayTime = date('H:i', $time);
+                            } else {
+                                // Fallback data lama
+                                $displayDate = $booking['tanggal'];
+                                $displayTime = $booking['jam'];
+                            }
+
+                            // 2. Styling Status
+                            $status = $booking['status'] ?? 'pending';
+                            $statusClass = 'status-' . strtolower($status);
+                            ?>
+
                             <tr>
                                 <td style="text-align:center; color:#aaa;"><?= $no++; ?></td>
 
                                 <td>
                                     <span class="customer-name"><?= esc($booking['name']) ?></span>
-                                    <span class="booking-id">ID: #<?= esc($booking['id']) ?></span>
+                                    <span class="booking-id">ID: #<?= str_pad($booking['id'], 6, '0', STR_PAD_LEFT) ?></span>
+                                    <div style="margin-top:5px; font-size:0.75rem;">
+                                        <?php if ($booking['source'] == 'walk_in'): ?>
+                                            <span class="badge bg-secondary text-white" style="padding:2px 6px; border-radius:4px;">Walk-In</span>
+                                        <?php else: ?>
+                                            <span class="badge bg-info text-dark" style="padding:2px 6px; border-radius:4px;">Online</span>
+                                        <?php endif; ?>
+                                    </div>
                                 </td>
 
                                 <td>
                                     <div class="contact-info">
                                         <span><i class="fas fa-phone-alt"></i> <?= esc($booking['phone']) ?></span>
-                                        <span><i class="far fa-envelope"></i> <?= esc($booking['email']) ?></span>
+                                        <?php if (!empty($booking['email'])): ?>
+                                            <span><i class="far fa-envelope"></i> <?= esc($booking['email']) ?></span>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
 
                                 <td>
-                                    <div class="service-badge"><?= esc($booking['nama_layanan'] ?? '-') ?></div>
+                                    <div class="service-badge"><?= esc($booking['nama_layanan'] ?? 'Layanan Dihapus') ?></div>
                                     <div class="stylist-name">
                                         <i class="fas fa-user-tie" style="font-size:0.7rem; margin-right:3px;"></i>
-                                        <?= !empty($booking['nama_capster']) ? esc($booking['nama_capster']) : 'Random Stylist' ?>
+                                        <?php
+                                        // Handle nama capster dari Join
+                                        if (!empty($booking['nama_capster'])) {
+                                            echo esc($booking['nama_capster']);
+                                        } else {
+                                            echo '<span style="color:#999;">Any / Random Stylist</span>';
+                                        }
+                                        ?>
                                     </div>
                                 </td>
 
                                 <td align="center">
                                     <div class="datetime-box">
-                                        <span class="date-val"><?= esc($booking['tanggal']) ?></span>
-                                        <span class="time-val"><?= esc($booking['jam']) ?> WIB</span>
+                                        <span class="date-val"><?= $displayDate ?></span>
+                                        <span class="time-val"><?= $displayTime ?> WIB</span>
                                     </div>
                                 </td>
 
@@ -357,14 +403,10 @@
                                     <form action="<?= base_url('admin/update_status/' . $booking['id']) ?>" method="post">
                                         <?= csrf_field() ?>
 
-                                        <?php
-                                        $status = $booking['status'] ?? 'pending';
-                                        $statusClass = 'status-' . strtolower($status);
-                                        ?>
-
                                         <select name="status" onchange="this.form.submit()" class="status-select <?= $statusClass ?>">
                                             <option value="pending" <?= $status === 'pending' ? 'selected' : '' ?>>Pending</option>
                                             <option value="confirmed" <?= $status === 'confirmed' ? 'selected' : '' ?>>Confirmed</option>
+                                            <option value="process" <?= $status === 'process' ? 'selected' : '' ?>>In Process</option>
                                             <option value="done" <?= $status === 'done' ? 'selected' : '' ?>>Done</option>
                                             <option value="canceled" <?= $status === 'canceled' ? 'selected' : '' ?>>Canceled</option>
                                         </select>

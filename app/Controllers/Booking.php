@@ -4,38 +4,38 @@ namespace App\Controllers;
 
 use App\Models\LayananModel;
 use App\Models\BookingModel;
-use App\Models\CapsterModel; // 1. IMPORT MODEL CAPSTER
+use App\Models\CapsterModel;
 
 class Booking extends BaseController
 {
     protected $layananModel;
     protected $bookingModel;
-    protected $capsterModel; // 2. DEFINISIKAN PROPERTI
+    protected $capsterModel;
 
     public function __construct()
     {
+        // Inisialisasi Model
         $this->layananModel = new LayananModel();
         $this->bookingModel = new BookingModel();
-        $this->capsterModel = new CapsterModel(); // 3. INISIALISASI
+        $this->capsterModel = new CapsterModel();
 
-        helper(['form', 'url', 'session']);
+        // Load Helper yang dibutuhkan
+        helper(['form', 'url', 'session', 'text']);
     }
 
+    // =========================================================================
+    // STEP 1: PILIH LAYANAN & CAPSTER
+    // =========================================================================
     public function step1()
     {
-        // 1. Ambil parameter id_capster dari URL (misal: booking?id_capster=5)
-        // Kalau tidak ada, nilainya akan null
+        // Ambil parameter id_capster dari URL (opsional, misal dari scan QR)
         $selected_capster = $this->request->getGet('id_capster');
 
-        // Siapkan data
         $data = [
             'title'            => 'Pilih Layanan & Stylist',
             'layanan'          => $this->layananModel->findAll(),
-
-            // Gunakan $this->capsterModel (jangan new lagi)
+            // Ambil hanya capster yang aktif
             'stylists'         => $this->capsterModel->where('status_aktif', 1)->findAll(),
-
-            // Lempar data ini ke View untuk pengecekan
             'selected_capster' => $selected_capster
         ];
 
@@ -44,171 +44,231 @@ class Booking extends BaseController
 
     public function step1Submit()
     {
-        // Validasi input agar user tidak bisa lanjut tanpa memilih (opsional tapi disarankan)
-        if (!$this->validate([
-            'id_layanan' => 'required',
-            // 'id_capster' => 'required' // Uncomment jika stylist wajib dipilih
-        ])) {
-            return redirect()->back()->withInput();
+        // Validasi: Layanan wajib dipilih
+        if (!$this->validate(['id_layanan' => 'required'])) {
+            return redirect()->back()->withInput()->with('error', 'Silakan pilih layanan terlebih dahulu.');
         }
 
-        session()->set('booking_step1', $this->request->getPost());
+        $input = $this->request->getPost();
+
+        // Jika user pilih "Any/Bebas", pastikan nilainya NULL agar dideteksi algoritma
+        if (empty($input['id_capster'])) {
+            $input['id_capster'] = null;
+        }
+
+        session()->set('booking_step1', $input);
         return redirect()->to('/booking/step2');
     }
 
-    // ... function step2, step3, dst (biarkan tetap sama) ...
-
+    // =========================================================================
+    // STEP 2: PILIH JADWAL (ALGORITMA CERDAS)
+    // =========================================================================
     public function step2()
     {
+        // Cegah lompat step
+        if (!session()->get('booking_step1')) {
+            return redirect()->to('/booking/step1');
+        }
         return view('booking/step2');
     }
 
     public function step2Submit()
     {
-        session()->set('booking_step2', $this->request->getPost());
+        $inputDate = $this->request->getPost('tanggal');
+        $inputTime = $this->request->getPost('jam');
+
+        // Validasi Input Dasar
+        if (!$inputDate || !$inputTime) {
+            return redirect()->back()->withInput()->with('error', 'Tanggal dan Jam wajib diisi.');
+        }
+
+        // 1. Ambil Data dari Step 1
+        $step1Data    = session()->get('booking_step1');
+        $serviceId    = $step1Data['id_layanan'];
+        $reqCapsterId = $step1Data['id_capster']; // Bisa NULL (Any)
+
+        // 2. Ambil Durasi Layanan dari Database
+        $layanan = $this->layananModel->find($serviceId);
+        if (!$layanan) {
+            return redirect()->to('/booking/step1')->with('error', 'Layanan tidak valid.');
+        }
+        $duration = $layanan['durasi'] ?? 30; // Default 30 menit jika tidak diisi
+
+        // ---------------------------------------------------------------------
+        // JANTUNG ALGORITMA: CEK KETERSEDIAAN & ASSIGNMENT
+        // ---------------------------------------------------------------------
+        // Memanggil Model untuk menjalankan Allen's Interval & Load Balancing
+        $check = $this->bookingModel->checkAvailability($inputDate, $inputTime, $duration, $reqCapsterId);
+
+        if ($check['status'] === false) {
+            // GAGAL: Penuh atau Bentrok
+            return redirect()->back()->withInput()->with('error', 'Mohon maaf, jadwal penuh. ' . $check['message']);
+        }
+
+        // BERHASIL: Simpan ID Capster yang sudah "Ditetapkan" (Fixed) oleh sistem
+        $dataToSave = [
+            'tanggal'          => $inputDate,
+            'jam'              => $inputTime,
+            'fixed_capster_id' => $check['assigned_capster_id']
+        ];
+
+        session()->set('booking_step2', $dataToSave);
         return redirect()->to('/booking/step3');
     }
 
+    // =========================================================================
+    // STEP 3: DATA DIRI
+    // =========================================================================
     public function step3()
     {
+        if (!session()->get('booking_step2')) {
+            return redirect()->to('/booking/step2');
+        }
         return view('booking/step3');
     }
 
     public function step3Submit()
     {
+        // Validasi Form Standar
+        if (!$this->validate(['name' => 'required', 'phone' => 'required'])) {
+            return redirect()->back()->withInput();
+        }
+
         session()->set('booking_step3', $this->request->getPost());
         return redirect()->to('/booking/step4');
     }
 
+    // =========================================================================
+    // STEP 4: REVIEW (CONFIRMATION)
+    // =========================================================================
     public function step4()
     {
-        // 1. Gabungkan semua data session
-        $rawSessionData = array_merge(
-            session()->get('booking_step1') ?? [],
-            session()->get('booking_step2') ?? [],
-            session()->get('booking_step3') ?? []
-        );
+        $s1 = session()->get('booking_step1');
+        $s2 = session()->get('booking_step2');
+        $s3 = session()->get('booking_step3');
 
-        // Cek jika data kosong (user tembak url)
-        if (empty($rawSessionData)) {
+        if (!$s1 || !$s2 || !$s3) {
             return redirect()->to('/booking/step1');
         }
 
-        // 2. AMBIL NAMA LAYANAN BERDASARKAN ID
-        $layananDetail = $this->layananModel->find($rawSessionData['id_layanan']);
+        // Ambil Data untuk Ditampilkan
+        $layananDetail = $this->layananModel->find($s1['id_layanan']);
 
-        // 3. AMBIL NAMA STYLIST BERDASARKAN ID (Jika dipilih)
-        $namaStylist = 'Any Stylist'; // Default
-        if (!empty($rawSessionData['id_capster'])) {
-            $stylistDetail = $this->capsterModel->find($rawSessionData['id_capster']);
-            if ($stylistDetail) {
-                $namaStylist = $stylistDetail['nama']; // Pastikan kolom di DB capster namanya 'nama'
-            }
-        }
+        // PENTING: Ambil nama capster berdasarkan ID hasil algoritma (Step 2)
+        // Bukan ID request awal (Step 1)
+        $capsterDetail = $this->capsterModel->find($s2['fixed_capster_id']);
 
-        // 4. Siapkan data matang untuk View
         $data = [
             'booking' => [
-                // Data Asli (untuk logic submit nanti jika perlu hidden input)
-                'id_layanan_raw' => $rawSessionData['id_layanan'],
-                'id_capster_raw' => $rawSessionData['id_capster'] ?? null,
-
-                // Data Tampilan (Human Readable)
-                'id_layanan'    => $layananDetail['nama_layanan'] ?? 'Layanan Tidak Ditemukan',
-                'barber'        => $namaStylist,
-                'harga'         => $layananDetail['harga'] ?? 0,
-
-                // Data Inputan User
-                'tanggal'       => $rawSessionData['tanggal'] ?? '-',
-                'jam'           => $rawSessionData['jam'] ?? '-',
-                'name'          => $rawSessionData['name'] ?? '-',
-                'phone'         => $rawSessionData['phone'] ?? '-',
-                'email'         => $rawSessionData['email'] ?? '-',
-                'note'          => $rawSessionData['note'] ?? ''
+                'layanan_nama'  => $layananDetail['nama_layanan'],
+                'layanan_harga' => $layananDetail['harga'],
+                'capster_nama'  => $capsterDetail['nama'] ?? 'Any Stylist',
+                'tanggal'       => $s2['tanggal'],
+                'jam'           => $s2['jam'],
+                'nama_cust'     => $s3['name'],
+                'phone_cust'    => $s3['phone'],
+                'email'         => $s3['email'],
+                'note_cust'     => $s3['note']
             ]
         ];
 
         return view('booking/step4', $data);
     }
 
-    // --- PERBAIKAN LOGIC SUBMIT (DATABASE) ---
+    // =========================================================================
+    // FINAL ACTION: SUBMIT (ALGORITMA OCC & DATABASE INSERT)
+    // =========================================================================
     public function submit()
     {
-        $sessionData = array_merge(
-            session()->get('booking_step1') ?? [],
-            session()->get('booking_step2') ?? [],
-            session()->get('booking_step3') ?? []
-        );
+        $s1 = session()->get('booking_step1');
+        $s2 = session()->get('booking_step2');
+        $s3 = session()->get('booking_step3');
 
-        if (empty($sessionData)) {
+        if (!$s1 || !$s2 || !$s3) {
             return redirect()->to('/booking/step1');
         }
 
-        // Logic penentuan nama barber (seperti kode Anda)
-        $namaStylist = 'Any Stylist';
-        if (!empty($sessionData['id_capster'])) {
-            $stylist = $this->capsterModel->find($sessionData['id_capster']);
-            $namaStylist = $stylist['nama'] ?? 'Any Stylist';
+        // Persiapan Data Waktu
+        $layanan  = $this->layananModel->find($s1['id_layanan']);
+        $duration = $layanan['durasi'] ?? 30;
+
+        $finalCapsterId = $s2['fixed_capster_id'];
+        $startTimeStr   = $s2['tanggal'] . ' ' . $s2['jam']; // "2025-10-20 10:00"
+
+        // Hitung End Time (Start + Durasi)
+        $endTimeStr = date('Y-m-d H:i:s', strtotime($startTimeStr . " +$duration minutes"));
+
+        // ---------------------------------------------------------------------
+        // ALGORITMA 3: OPTIMISTIC CONCURRENCY CONTROL (OCC)
+        // ---------------------------------------------------------------------
+        // Cek sekali lagi apakah slot ini MASIH kosong?
+        // Mencegah Race Condition (Diserobot orang lain saat isi nama)
+
+        $isSafe = $this->bookingModel->isSlotSafe($finalCapsterId, $startTimeStr, $endTimeStr);
+
+        if (!$isSafe) {
+            // OCC FAIL: Slot sudah diambil
+            session()->remove('booking_step2'); // Reset step waktu
+            return redirect()->to('/booking/step2')->with('error', 'Mohon maaf! Slot waktu tersebut baru saja diambil pelanggan lain beberapa detik yang lalu. Silakan pilih jam lain.');
         }
 
+        // ---------------------------------------------------------------------
+        // INSERT DATABASE
+        // ---------------------------------------------------------------------
         $saveData = [
-            'id_layanan' => $sessionData['id_layanan'],
-            'barber'     => $sessionData['id_capster'],
-            'tanggal'    => $sessionData['tanggal'],
-            'jam'        => $sessionData['jam'],
-            'name'       => $sessionData['name'],
-            'phone'      => $sessionData['phone'],
-            'email'      => $sessionData['email'],
-            'note'       => $sessionData['note'],
-            'status'     => 'pending'
+            // 1. Data Utama Sistem Baru (Untuk Algoritma)
+            'id_layanan' => $s1['id_layanan'],
+            'id_capster' => $finalCapsterId, // INT
+            'start_time' => $startTimeStr,   // DATETIME
+            'end_time'   => $endTimeStr,     // DATETIME
+
+            // 2. Data Legacy (Untuk Kompatibilitas Kode Lama)
+            'tanggal'     => $s2['tanggal'],
+            'jam'         => $s2['jam'],
+            'jam_selesai' => date('H:i:s', strtotime($endTimeStr)),
+
+            // 3. Data Pelanggan
+            'name'       => $s3['name'],
+            'phone'      => $s3['phone'],
+            'email'      => $s3['email'],
+            'note'       => $s3['note'],
+
+            // 4. Logika Bisnis
+            'source'           => 'online',
+            'status'           => 'confirmed', // Langsung confirm karena sudah lolos validasi
+            'check_in_time'    => null,
+            'reschedule_count' => 0
         ];
 
-        // 1. INSERT DATA
-        $this->bookingModel->insert($saveData);
+        // Eksekusi Simpan
+        $this->bookingModel->save($saveData);
+        $newId = $this->bookingModel->getInsertID();
 
-        // 2. AMBIL ID YANG BARU SAJA DIBUAT (PENTING!)
-        $newBookingId = $this->bookingModel->getInsertID();
-
-        // 3. HAPUS SESSION
+        // Bersihkan Session
         session()->remove(['booking_step1', 'booking_step2', 'booking_step3']);
 
-        // 4. REDIRECT KE HALAMAN SUKSES MEMBAWA ID
-        return redirect()->to("/booking/success/$newBookingId");
+        // Redirect ke Resi
+        return redirect()->to("/booking/success/$newId");
     }
 
-    // --- TAMBAHKAN METHOD BARU INI ---
+    // =========================================================================
+    // HALAMAN SUKSES (RESI)
+    // =========================================================================
     public function success($id)
     {
-        // Cari data booking berdasarkan ID untuk ditampilkan sebagai resi
-        // Join dengan tabel layanan supaya nama layanannya muncul, bukan ID doang
+        // Ambil Data Booking + Nama Layanan + Nama Capster
+        // Join ke tabel 'capster' (sesuai nama tabel di DB Anda)
         $booking = $this->bookingModel
-            ->select('bookings.*, layanan.nama_layanan, layanan.harga') // Sesuaikan nama tabel layanan
+            ->select('bookings.*, layanan.nama_layanan, layanan.harga, capster.nama as nama_capster')
             ->join('layanan', 'layanan.id = bookings.id_layanan')
-            ->where('bookings.id', $id) // Sesuaikan primary key tabel booking
+            ->join('capster', 'capster.id_capster = bookings.id_capster') // Relasi FK
+            ->where('bookings.id', $id)
             ->first();
 
-        // Validasi: Kalau user iseng nembak ID ngawur
         if (!$booking) {
             return redirect()->to('/booking')->with('error', 'Data booking tidak ditemukan.');
         }
 
-        // Ambil nama stylist lagi (karena di booking cuma simpan ID/Nama tergantung struktur DB mu)
-        // Kalau di DB booking kolom 'barber' isinya ID, lakukan query lagi ke capsterModel.
-        // Kalau isinya sudah Nama, lewatkan saja.
-        $namaStylist = 'Any Stylist';
-        if (is_numeric($booking['barber'])) {
-            $stylist = $this->capsterModel->find($booking['barber']);
-            $namaStylist = $stylist['nama'] ?? 'Any Stylist';
-        } else {
-            $namaStylist = $booking['barber'];
-        }
-
-        $data = [
-            'title'   => 'Booking Berhasil',
-            'booking' => $booking,
-            'stylist_name' => $namaStylist
-        ];
-
-        return view('booking/success', $data);
+        return view('booking/success', ['booking' => $booking]);
     }
 }
