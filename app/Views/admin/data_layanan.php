@@ -41,13 +41,13 @@
     .page-title {
         font-family: 'Playfair Display', serif;
         font-size: 2.5rem;
-        color: #5C2C27;
+        color: #ffffff;
         margin: 0;
         font-weight: 700;
     }
 
     .page-subtitle {
-        color: var(--text-muted);
+        color: #ffffff;
         font-size: 1rem;
         margin-top: 5px;
     }

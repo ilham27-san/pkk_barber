@@ -332,7 +332,7 @@
 
         <div class="page-header">
             <h2 class="page-title">Apa Kata Mereka?</h2>
-            <p class="page-subtitle">Suara jujur dari pelanggan BarberNow.</p>
+            <p class="page-subtitle">Suara jujur dari pelanggan SANBARBERS.</p>
         </div>
 
         <div class="review-hybrid-layout">

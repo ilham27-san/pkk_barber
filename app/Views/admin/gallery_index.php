@@ -39,13 +39,13 @@
     .page-title {
         font-family: 'Playfair Display', serif;
         font-size: 2.5rem;
-        color: #5C2C27;
+        color: #ffffff;
         margin: 0;
         font-weight: 700;
     }
 
     .page-subtitle {
-        color: var(--text-muted);
+        color: #ffffff;
         font-size: 1rem;
         margin-top: 5px;
     }
@@ -365,7 +365,7 @@
         </form>
     </div>
 
-    <div style="margin-bottom: 20px; font-weight: 700; color: var(--primary-brown); font-size: 1.2rem;">
+    <div style="margin-bottom: 20px; font-weight: 700; color: #ffffff;; font-size: 1.2rem;">
         Daftar Foto Saat Ini
     </div>
 

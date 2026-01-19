@@ -43,14 +43,14 @@
         font-weight: 800;
         margin: 0;
         /* Gradient Text Effect */
-        background: #5C2C27;
+        background: #ffffff;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         display: inline-block;
     }
 
     .page-subtitle {
-        color: var(--secondary-brown);
+        color:#ffffff;
         font-size: 1.05rem;
         margin-top: 10px;
         font-weight: 500;
@@ -286,7 +286,7 @@
 
     <div class="page-header">
         <h2 class="page-title">Daftar Pelanggan</h2>
-        <p class="page-subtitle">Kelola data eksklusif pelanggan BarberNow.</p>
+        <p class="page-subtitle">Kelola data eksklusif pelanggan SANBARBERS.</p>
     </div>
 
     <div class="table-card">
