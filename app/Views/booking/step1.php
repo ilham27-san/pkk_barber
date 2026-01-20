@@ -83,7 +83,7 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
 </div>
 
 <style>
-    /* --- VARIABLES (Sesuai Request) --- */
+    /* --- VARIABLES --- */
     :root {
         --bg-cream: #F5F0E6;
         --card-white: #FFFFFF;
@@ -96,8 +96,8 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
     /* --- LAYOUT UTAMA --- */
     .booking-layout-wrapper {
         background-color: var(--bg-cream);
-        height: calc(100vh - 60px);
-        /* Sesuaikan tinggi navbar */
+        height: 100vh;
+        /* Full viewport height */
         display: flex;
         flex-direction: column;
         overflow: hidden;
@@ -135,6 +135,8 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
         overflow-y: auto;
         padding: 10px 20px;
         scrollbar-width: none;
+        /* Padding bottom extra supaya scroll smooth sampai bawah */
+        padding-bottom: 20px;
     }
 
     .booking-scroll-area::-webkit-scrollbar {
@@ -142,8 +144,8 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
     }
 
     .safe-area-spacer {
+        /* Default spacer desktop */
         height: 120px;
-        /* Penting! Agar konten terbawah tidak ketutup */
     }
 
     /* --- GRID SYSTEM --- */
@@ -217,7 +219,6 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
     }
 
     /* --- LOGIC KARTU TERAKHIR (DESKTOP) --- */
-    /* Hanya aktif di layar besar agar tidak merusak tampilan mobile */
     @media (min-width: 769px) {
         .layanan-card:last-child {
             grid-column: 1 / -1;
@@ -287,10 +288,11 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
         transform: scale(1);
     }
 
-    /* --- FLOATING ACTION BAR --- */
+    /* --- FLOATING ACTION BAR (FIXED) --- */
     .floating-action-bar {
-        position: absolute;
-        bottom: 25px;
+        position: fixed;
+        /* FIXED agar nempel di viewport */
+        bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
         width: 95%;
@@ -299,7 +301,8 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
         padding: 15px 25px;
         border-radius: 50px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-        z-index: 100;
+        z-index: 1000;
+        /* Z-Index tinggi */
     }
 
     .booking-form {
@@ -368,16 +371,17 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
     @media (max-width: 768px) {
         .floating-action-bar {
             width: 92%;
-            bottom: 15px;
+
+            /* Logic Safe Area + Jarak Aman */
+            bottom: calc(20px + env(safe-area-inset-bottom));
+
             padding: 15px;
             border-radius: 20px;
         }
 
-        /* Menggunakan Grid agar tidak menumpuk ke atas (Terlalu tinggi) */
         .booking-form {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            /* Dua kolom */
             gap: 12px;
             align-items: end;
         }
@@ -386,16 +390,12 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
             grid-column: 1;
         }
 
-        /* Harga */
         .action-section.right {
             grid-column: 2;
         }
 
-        /* Tombol */
-
         .action-section.center {
             grid-column: 1 / -1;
-            /* Stylist memanjang full width di baris bawah */
             grid-row: 2;
         }
 
@@ -414,7 +414,11 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
             padding: 8px 15px;
             font-size: 0.85rem;
             background: rgba(255, 255, 255, 0.08);
-            /* Lebih transparan di HP */
+        }
+
+        /* Tambah tinggi spacer karena di HP floating bar jadi 2 baris (lebih tinggi) */
+        .safe-area-spacer {
+            height: 180px;
         }
     }
 </style>
@@ -447,7 +451,7 @@ $oldCapster = old('id_capster') ?? $oldSession['id_capster'] ?? $selected_capste
             element.querySelector('.select-btn').textContent = "Terpilih";
         }
 
-        // Auto-select jika ada old data (misal saat error validasi)
+        // Auto-select jika ada old data
         const oldId = inputLayanan.value;
         if (oldId) {
             const target = document.getElementById('card-' + oldId);
