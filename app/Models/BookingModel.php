@@ -9,23 +9,18 @@ class BookingModel extends Model
     protected $table = 'bookings';
     protected $primaryKey = 'id';
 
-    // Sesuaikan dengan kolom yang baru kita tambah
     protected $allowedFields = [
         'id_layanan',
-        'id_capster',       // Sudah diganti dari 'barber'
-        'start_time',       // Wajib ada untuk algoritma
-        'end_time',         // Wajib ada untuk algoritma
-
-        // Data Diri
+        'id_capster',
+        'start_time',
+        'end_time',
         'name',
         'phone',
         'email',
         'note',
-
-        // Logika Sistem & Legacy
         'tanggal',
         'jam',
-        'jam_selesai', // Tetap simpan untuk kompatibilitas data lama
+        'jam_selesai',
         'status',
         'source',
         'check_in_time',
@@ -63,8 +58,9 @@ class BookingModel extends Model
     public function isSlotSafe($capsterId, $startTime, $endTime)
     {
         // ALLEN'S INTERVAL ALGEBRA
+        // Cek status confirmed, pending, DAN process (sedang dicukur)
         $collision = $this->where('id_capster', $capsterId)
-            ->whereIn('status', ['confirmed', 'pending']) // Cek pending juga biar aman
+            ->whereIn('status', ['confirmed', 'pending', 'process'])
             ->groupStart()
             ->where('start_time <', $endTime)
             ->where('end_time >', $startTime)
@@ -76,27 +72,72 @@ class BookingModel extends Model
 
     public function getBookingLengkap($id = null)
     {
-        // PERHATIKAN: Join ke tabel 'capster' (bukan capsters)
         $builder = $this->select('bookings.*, capster.nama AS nama_capster, layanan.nama_layanan')
             ->join('capster', 'capster.id_capster = bookings.id_capster', 'left')
             ->join('layanan', 'layanan.id = bookings.id_layanan', 'left');
 
+        // Jika ambil 1 data (Detail)
         if ($id) {
-            return $builder->where('bookings.id', $id)->first();
+            $data = $builder->where('bookings.id', $id)->first();
+            return $this->processLateStatus($data);
         }
 
-        return $builder->orderBy('bookings.start_time', 'DESC')->findAll();
+        // Jika ambil semua data (List)
+        $bookings = $builder->orderBy('bookings.start_time', 'DESC')->findAll();
+
+        // Proses setiap baris data menggunakan array_map (Inject Status Telat & Kode Booking)
+        return array_map([$this, 'processLateStatus'], $bookings);
     }
 
     // =========================================================================
     // PRIVATE METHODS
     // =========================================================================
 
+    // --- LOGIC CENTRAL: Menghitung Telat, Format Tanggal & GENERATE KODE UNIK ---
+    private function processLateStatus($booking)
+    {
+        if (!$booking) return $booking;
+
+        // 1. Set Timezone
+        date_default_timezone_set('Asia/Jakarta');
+        $now = time();
+
+        // 2. Parsing Waktu
+        if (!empty($booking['start_time'])) {
+            $bookingTime = strtotime($booking['start_time']);
+        } else {
+            // Fallback data lama
+            $bookingTime = strtotime($booking['tanggal'] . ' ' . $booking['jam']);
+        }
+
+        // 3. Siapkan Data Tampilan (Biar View tinggal echo)
+        $booking['display_date'] = date('d M Y', $bookingTime);
+        $booking['display_time'] = date('H:i', $bookingTime);
+
+        // 4. Hitung Keterlambatan
+        $booking['is_late'] = false; // Default
+        $threshold = 15; // menit
+
+        if (in_array($booking['status'], ['confirmed', 'pending'])) {
+            $limitTime = $bookingTime + ($threshold * 60);
+            if ($now > $limitTime) {
+                $booking['is_late'] = true; // Tandai telat
+            }
+        }
+
+        // 5. GENERATE KODE BOOKING UNIK (BN-XXXXX)
+        // Logika: ID * 47 -> Hex -> Uppercase -> Pad -> Prefix BN
+        $acak = $booking['id'] * 47;
+        $hex = dechex($acak);
+        $code = strtoupper(str_pad($hex, 5, '0', STR_PAD_LEFT));
+        $booking['booking_code'] = "BN-" . $code;
+
+        return $booking;
+    }
+
     private function getBestCapster($start, $end)
     {
         $db = \Config\Database::connect();
-
-        // Ambil capster aktif dari tabel 'capster'
         $allCapsters = $db->table('capster')->where('status_aktif', 1)->get()->getResultArray();
 
         $availableCapsters = [];
@@ -126,9 +167,10 @@ class BookingModel extends Model
     private function getDailyLoad($capsterId)
     {
         $today = date('Y-m-d');
+        // Hitung beban kerja (Kecuali canceled & no_show)
         return $this->where('id_capster', $capsterId)
             ->like('start_time', $today, 'after')
-            ->where('status !=', 'cancelled') // Sesuaikan enum di DB Anda ('cancelled' double L)
+            ->whereNotIn('status', ['canceled', 'no_show'])
             ->countAllResults();
     }
 }

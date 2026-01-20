@@ -2,6 +2,29 @@
 
 <?= $this->section('content'); ?>
 
+<?php
+// --- FUNGSI GENERATOR KODE ACAK (Helper Sederhana di View) ---
+// Taruh logika ini di paling atas file view
+function generateBookingCode($id)
+{
+    // 1. KITA KALI ID DENGAN ANGKA TERTENTU AGAR TIDAK URUT (Misal: 47)
+    // ID 1 -> 47, ID 2 -> 94 (Jaraknya jauh, jadi gak ketebak urutannya)
+    $acak = $id * 47;
+
+    // 2. UBAH KE HEXADESIMAL (Biar ada huruf A-F)
+    $hex = dechex($acak);
+
+    // 3. UBAH JADI HURUF BESAR & PAD SUPAYA PANJANGNYA KONSISTEN (MIN 5 KARAKTER)
+    $code = strtoupper(str_pad($hex, 5, '0', STR_PAD_LEFT));
+
+    // 4. TAMBAH PREFIX (Misal: BN untuk BarberNow)
+    return "BN-" . $code;
+}
+
+// SIMPAN KODE KE VARIABEL
+$kodeUnik = generateBookingCode($booking['id']);
+?>
+
 <style>
     .booking-wrapper-font {
         font-family: 'Montserrat', sans-serif;
@@ -27,7 +50,6 @@
         position: relative;
     }
 
-    /* Efek lengkungan di header */
     .receipt-header::after {
         content: '';
         position: absolute;
@@ -43,14 +65,12 @@
         padding: 20px 30px 40px;
     }
 
-    /* Garis Putus-putus */
     .dashed-line {
         border-bottom: 2px dashed #eee;
         margin: 25px 0;
         position: relative;
     }
 
-    /* Dekorasi bulat di pinggir garis */
     .dashed-line::before,
     .dashed-line::after {
         content: '';
@@ -59,7 +79,7 @@
         width: 20px;
         height: 20px;
         background: #f4f6f9;
-        /* Sesuaikan dengan warna background body luar website Anda */
+        /* Sesuaikan background body luar */
         border-radius: 50%;
     }
 
@@ -71,7 +91,6 @@
         right: -40px;
     }
 
-    /* Tombol WA */
     .btn-wa-confirm {
         display: flex;
         justify-content: center;
@@ -97,13 +116,18 @@
         box-shadow: 0 12px 25px rgba(37, 211, 102, 0.35);
     }
 
+    /* GAYA KODE BOOKING BARU */
     .booking-id-big {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
+        /* Lebih besar dikit */
         font-weight: 800;
-        letter-spacing: 2px;
-        margin: 5px 0 15px;
+        letter-spacing: 4px;
+        /* Biar hurufnya berjarak kayak tiket pesawat */
+        margin: 10px 0 20px;
         color: #3e2b26;
-        font-family: 'Playfair Display', serif;
+        font-family: 'Courier New', Courier, monospace;
+        /* Font monospace biar keren */
+        text-transform: uppercase;
     }
 
     .status-badge {
@@ -134,23 +158,18 @@
                 <div class="text-center">
                     <span class="status-badge">TERKONFIRMASI</span><br>
                     <span style="color: #999; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">Kode Booking</span>
-                    <div class="booking-id-big">#<?= str_pad($booking['id'], 6, '0', STR_PAD_LEFT) ?></div>
+
+                    <div class="booking-id-big"><?= $kodeUnik ?></div>
                 </div>
 
                 <div class="dashed-line"></div>
 
                 <?php
-                // --- LOGIC PHP UTAMA ---
-
-                // 1. Parsing Waktu dari start_time (DATETIME)
-                // Kita gunakan start_time karena ini adalah sumber kebenaran algoritma
+                // --- LOGIC PHP DATA BOOKING ---
                 $waktuBooking = strtotime($booking['start_time']);
-                $tanggalFix   = date('d F Y', $waktuBooking); // Contoh: 20 Oktober 2025
-                $jamFix       = date('H:i', $waktuBooking);   // Contoh: 10:00
-
-                // 2. Handle Nama Stylist
-                // Jika user pilih "Bebas", nama_capster akan terisi oleh hasil algoritma Auto-Assign
-                $stylistFix = !empty($booking['nama_capster']) ? $booking['nama_capster'] : 'Any Stylist';
+                $tanggalFix   = date('d F Y', $waktuBooking);
+                $jamFix       = date('H:i', $waktuBooking);
+                $stylistFix   = !empty($booking['nama_capster']) ? $booking['nama_capster'] : 'Any Stylist';
                 ?>
 
                 <div class="row mb-3">
@@ -180,12 +199,12 @@
                 <div class="dashed-line"></div>
 
                 <?php
-                // --- LOGIC GENERATE LINK WHATSAPP ---
-                $noHpAdmin = '6281513728023'; // Ganti dengan nomor admin asli Anda
+                // --- LOGIC WA LINK (Updated dengan Kode Unik) ---
+                $noHpAdmin = '6281513728023';
 
-                // Membuat pesan WA yang rapi
                 $pesan  = "Halo Admin, saya mau konfirmasi booking BarberNow.\n\n";
-                $pesan .= "*KODE: #" . str_pad($booking['id'], 6, '0', STR_PAD_LEFT) . "*\n";
+                // Gunakan variable $kodeUnik di sini
+                $pesan .= "*KODE: " . $kodeUnik . "*\n";
                 $pesan .= "--------------------------------\n";
                 $pesan .= "👤 Nama: " . $booking['name'] . "\n";
                 $pesan .= "✂️ Layanan: " . $booking['nama_layanan'] . "\n";
@@ -200,7 +219,6 @@
                 $pesan .= "--------------------------------\n";
                 $pesan .= "Mohon diproses ya. Terima kasih!";
 
-                // Encode agar karakter spasi dan enter terbaca di URL
                 $pesanEncoded = urlencode($pesan);
                 $linkWA = "https://wa.me/$noHpAdmin?text=$pesanEncoded";
                 ?>

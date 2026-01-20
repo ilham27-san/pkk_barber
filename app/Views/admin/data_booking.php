@@ -20,13 +20,14 @@
         --status-confirmed-bg: #e3f2fd;
         --status-confirmed-text: #1565c0;
         --status-process-bg: #e0f7fa;
-        /* New: Warna untuk status Process */
         --status-process-text: #006064;
-        /* New */
         --status-done-bg: #e8f5e9;
         --status-done-text: #2e7d32;
         --status-canceled-bg: #ffebee;
         --status-canceled-text: #c62828;
+        --status-noshow-bg: #212121;
+        /* Hitam/Gelap */
+        --status-noshow-text: #fff;
     }
 
     body {
@@ -54,7 +55,6 @@
         font-family: 'Playfair Display', serif;
         font-size: 2.5rem;
         color: var(--primary-brown);
-        /* Fixed: Biar kontras di background terang */
         margin: 0;
         font-weight: 700;
     }
@@ -158,6 +158,42 @@
         font-size: 0.9rem;
     }
 
+    /* UPDATE CSS INDIKATOR TELAT (SUPPORT DARK MODE) */
+    .row-late td {
+        background-color: rgba(220, 53, 69, 0.2) !important;
+        box-shadow: inset 5px 0 0 #dc3545;
+    }
+
+    .badge-late {
+        background: #ff4d4d;
+        color: #fff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        margin-top: 8px;
+        display: inline-block;
+        box-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
     /* --- CONTENT STYLING --- */
 
     /* Customer Info */
@@ -166,29 +202,63 @@
         color: var(--primary-brown);
         display: block;
         margin-bottom: 3px;
+        font-size: 1rem;
     }
 
-    .booking-id {
+    /* GAYA BARU: BOOKING CODE BADGE */
+    .booking-code-badge {
+        font-family: 'Courier New', Courier, monospace;
+        /* Monospace biar kesan teknikal */
+        font-weight: 700;
         font-size: 0.75rem;
-        color: #aaa;
-        background: #f5f5f5;
-        padding: 2px 6px;
+        color: #555;
+        background: #f0f0f0;
+        padding: 3px 8px;
         border-radius: 4px;
+        border: 1px solid #ddd;
+        letter-spacing: 1px;
     }
 
-    /* Contact Info */
+    /* Contact Info & WA Button */
     .contact-info {
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 5px;
         font-size: 0.85rem;
         color: var(--text-muted);
     }
 
-    .contact-info i {
+    /* Tombol WA Mini */
+    .btn-wa-mini {
+        background-color: #25D366;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        box-shadow: 0 2px 5px rgba(37, 211, 102, 0.3);
+    }
+
+    .btn-wa-mini:hover {
+        background-color: #128C7E;
+        transform: scale(1.15);
+        color: white;
+    }
+
+    .contact-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .contact-row i {
         width: 15px;
         text-align: center;
-        margin-right: 5px;
         color: var(--accent-gold);
     }
 
@@ -235,7 +305,7 @@
         cursor: pointer;
         outline: none;
         text-align: center;
-        min-width: 110px;
+        min-width: 120px;
     }
 
     /* Warna Status Dinamis */
@@ -262,6 +332,11 @@
     .status-canceled {
         background-color: var(--status-canceled-bg);
         color: var(--status-canceled-text);
+    }
+
+    .status-no_show {
+        background-color: var(--status-noshow-bg);
+        color: var(--status-noshow-text);
     }
 
     /* EMPTY STATE */
@@ -334,31 +409,32 @@
                         <?php foreach ($bookings as $booking): ?>
 
                             <?php
-                            // --- LOGIC PHP DI VIEW ---
-
-                            // 1. Parsing Tanggal dari start_time (Source of Truth)
-                            // Jika start_time ada, pakai itu. Jika tidak, fallback ke legacy.
-                            if (!empty($booking['start_time'])) {
-                                $time = strtotime($booking['start_time']);
-                                $displayDate = date('d M Y', $time);
-                                $displayTime = date('H:i', $time);
-                            } else {
-                                // Fallback data lama
-                                $displayDate = $booking['tanggal'];
-                                $displayTime = $booking['jam'];
-                            }
-
-                            // 2. Styling Status
+                            // Setup Class Status
                             $status = $booking['status'] ?? 'pending';
                             $statusClass = 'status-' . strtolower($status);
+
+                            // Logic WhatsApp Link
+                            $hp = $booking['phone'];
+                            $hp = preg_replace('/[^0-9]/', '', $hp); // Bersihkan selain angka
+                            if (substr($hp, 0, 2) == '08') {
+                                $hp = '62' . substr($hp, 1);
+                            }
+
+                            // --- UPDATE: MENAMBAHKAN TANGGAL/HARI KE PESAN WA ---
+                            // Gunakan display_date yang sudah berisi "Hari, Tanggal" dari Model
+                            $textWA = "Halo Kak " . esc($booking['name']) . ", kami dari SANBARBERS mau konfirmasi booking untuk " . $booking['display_date'] . " pukul " . $booking['display_time'] . " WIB.";
+
+                            $linkWA = "https://wa.me/" . $hp . "?text=" . urlencode($textWA);
                             ?>
 
-                            <tr>
+                            <tr class="<?= $booking['is_late'] ? 'row-late' : '' ?>">
                                 <td style="text-align:center; color:#aaa;"><?= $no++; ?></td>
 
                                 <td>
                                     <span class="customer-name"><?= esc($booking['name']) ?></span>
-                                    <span class="booking-id">ID: #<?= str_pad($booking['id'], 6, '0', STR_PAD_LEFT) ?></span>
+
+                                    <span class="booking-code-badge"><?= $booking['booking_code'] ?></span>
+
                                     <div style="margin-top:5px; font-size:0.75rem;">
                                         <?php if ($booking['source'] == 'walk_in'): ?>
                                             <span class="badge bg-secondary text-white" style="padding:2px 6px; border-radius:4px;">Walk-In</span>
@@ -366,13 +442,31 @@
                                             <span class="badge bg-info text-dark" style="padding:2px 6px; border-radius:4px;">Online</span>
                                         <?php endif; ?>
                                     </div>
+
+                                    <?php if ($booking['is_late']): ?>
+                                        <br>
+                                        <span class="badge-late">
+                                            <i class="fas fa-exclamation-triangle"></i> TERLAMBAT > 15 MENIT
+                                        </span>
+                                    <?php endif; ?>
                                 </td>
 
                                 <td>
                                     <div class="contact-info">
-                                        <span><i class="fas fa-phone-alt"></i> <?= esc($booking['phone']) ?></span>
+                                        <div class="contact-row">
+                                            <i class="fas fa-phone-alt"></i>
+                                            <span><?= esc($booking['phone']) ?></span>
+
+                                            <a href="<?= $linkWA ?>" target="_blank" class="btn-wa-mini" title="Chat via WhatsApp">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </a>
+                                        </div>
+
                                         <?php if (!empty($booking['email'])): ?>
-                                            <span><i class="far fa-envelope"></i> <?= esc($booking['email']) ?></span>
+                                            <div class="contact-row">
+                                                <i class="far fa-envelope"></i>
+                                                <span><?= esc($booking['email']) ?></span>
+                                            </div>
                                         <?php endif; ?>
                                     </div>
                                 </td>
@@ -382,7 +476,6 @@
                                     <div class="stylist-name">
                                         <i class="fas fa-user-tie" style="font-size:0.7rem; margin-right:3px;"></i>
                                         <?php
-                                        // Handle nama capster dari Join
                                         if (!empty($booking['nama_capster'])) {
                                             echo esc($booking['nama_capster']);
                                         } else {
@@ -394,8 +487,8 @@
 
                                 <td align="center">
                                     <div class="datetime-box">
-                                        <span class="date-val"><?= $displayDate ?></span>
-                                        <span class="time-val"><?= $displayTime ?> WIB</span>
+                                        <span class="date-val"><?= $booking['display_date'] ?></span>
+                                        <span class="time-val"><?= $booking['display_time'] ?> WIB</span>
                                     </div>
                                 </td>
 
@@ -409,6 +502,7 @@
                                             <option value="process" <?= $status === 'process' ? 'selected' : '' ?>>In Process</option>
                                             <option value="done" <?= $status === 'done' ? 'selected' : '' ?>>Done</option>
                                             <option value="canceled" <?= $status === 'canceled' ? 'selected' : '' ?>>Canceled</option>
+                                            <option value="no_show" <?= $status === 'no_show' ? 'selected' : '' ?>>No Show (Hangus)</option>
                                         </select>
                                     </form>
                                 </td>

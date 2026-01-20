@@ -3,7 +3,7 @@
 <?= $this->section('content'); ?>
 
 <style>
-    /* VARIABLES (Matches Admin Theme) */
+    /* VARIABLES (Sama dengan tema Admin lainnya) */
     :root {
         --primary-brown: #3e2b26;
         --secondary-brown: #5d4037;
@@ -24,7 +24,6 @@
         padding: 50px 20px;
         min-height: 90vh;
         max-width: 700px;
-        /* Lebar ideal untuk form */
         margin: 0 auto;
     }
 
@@ -152,7 +151,7 @@
 
     <?php if (session()->getFlashdata('errors')) : ?>
         <div class="alert-error">
-            <ul>
+            <ul style="margin: 0; padding-left: 20px;">
                 <?php foreach (session()->getFlashdata('errors') as $error) : ?>
                     <li><?= esc($error) ?></li>
                 <?php endforeach ?>
@@ -171,12 +170,12 @@
                 <input type="text" name="name" class="form-control" placeholder="Masukkan nama pelanggan" value="<?= old('name') ?>" required>
             </div>
 
-            <div class="row" style="display:flex; gap:15px;">
-                <div class="form-group" style="flex:1;">
+            <div class="row" style="display:flex; gap:15px; flex-wrap:wrap;">
+                <div class="form-group" style="flex:1; min-width: 200px;">
                     <label class="form-label">Nomor HP</label>
                     <input type="text" name="phone" class="form-control" placeholder="08..." value="<?= old('phone') ?>" required>
                 </div>
-                <div class="form-group" style="flex:1;">
+                <div class="form-group" style="flex:1; min-width: 200px;">
                     <label class="form-label">Email (Opsional)</label>
                     <input type="email" name="email" class="form-control" placeholder="email@contoh.com" value="<?= old('email') ?>">
                 </div>
@@ -200,6 +199,7 @@
 
             <div class="form-group">
                 <label class="form-label">Pilih Stylist / Capster</label>
+
                 <select name="id_capster" class="form-control">
                     <option value="">-- Bebas / Siapa Saja (Auto Assign) --</option>
                     <?php if (!empty($stylists)): ?>
@@ -210,16 +210,19 @@
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
+                <small style="color: #999; font-size: 0.8rem; margin-top: 5px; display: block;">
+                    *Biarkan opsi "Bebas" jika pelanggan tidak memilih. Sistem akan mencarikan stylist yang kosong.
+                </small>
             </div>
 
-            <div class="row" style="display:flex; gap:15px;">
-                <div class="form-group" style="flex:1;">
+            <div class="row" style="display:flex; gap:15px; flex-wrap:wrap;">
+                <div class="form-group" style="flex:1; min-width: 200px;">
                     <label class="form-label">Tanggal Booking</label>
                     <input type="date" name="tanggal" class="form-control" value="<?= old('tanggal', date('Y-m-d')) ?>" required>
                 </div>
-                <div class="form-group" style="flex:1;">
+                <div class="form-group" style="flex:1; min-width: 200px;">
                     <label class="form-label">Jam Booking</label>
-                    <input type="time" name="jam" class="form-control" value="<?= old('jam') ?>" required>
+                    <input type="time" name="jam" class="form-control" value="<?= old('jam', date('H:i')) ?>" required>
                 </div>
             </div>
 
@@ -233,7 +236,7 @@
                 <select name="status" class="form-control">
                     <option value="pending">Pending (Menunggu)</option>
                     <option value="confirmed" selected>Confirmed (Disetujui)</option>
-                    <option value="process">In Process (Sedang Dikerjakan)</option>
+                    <option value="process">In Process (Langsung Dikerjakan)</option>
                     <option value="done">Done (Selesai)</option>
                 </select>
             </div>
