@@ -53,16 +53,23 @@
 
     .page-title {
         font-family: 'Playfair Display', serif;
-        font-size: 2.5rem;
-        color: var(--primary-brown);
+        font-size: 3rem;
+        font-weight: 800;
         margin: 0;
-        font-weight: 700;
+        /* Gradient Text Effect */
+        background: #ffffff;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
     }
 
     .page-subtitle {
-        color: var(--text-muted);
-        font-size: 1rem;
-        margin-top: 5px;
+        color: #ffffff;
+        font-size: 1.05rem;
+        margin-top: 10px;
+        font-weight: 500;
+        opacity: 0.8;
+        letter-spacing: 0.5px;
     }
 
     /* BUTTON ADD */
